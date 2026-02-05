@@ -1,12 +1,12 @@
-# kvr2: Educational Tool for Exploring $R^{2}$ Definitions
+# kvr2: Educational Tool for Exploring \\R^2\\ Definitions
 
 The `kvr2` package provides functions to calculate nine types of
-coefficients of determination ($R^{2}$) as classified by **Kvalseth
+coefficients of determination (\\R^2\\) as classified by **Kvalseth
 (1985)**.
 
 ### Overview
 
-The coefficient of determination, $R^{2}$, is one of the most common
+The coefficient of determination, \\R^2\\, is one of the most common
 metrics for assessing model fit. However, its mathematical definition is
 not unique. While various formulas yield identical results in standard
 linear regression with an intercept, they can diverge
@@ -29,13 +29,13 @@ as `lm` objects in R. This includes:
 
 **Note:** This package does **not** support general non-linear least
 squares (`nls`) or other complex non-linear modeling frameworks. It
-focuses on the mathematical sensitivity of $R^{2}$ within the context of
+focuses on the mathematical sensitivity of \\R^2\\ within the context of
 linear estimation and its common transformations.
 
 ### Educational Purpose
 
 The primary goal of this package is **not** to provide a definitive
-“best” $R^{2}$ for every scenario, but to serve as an educational
+“best” \\R^2\\ for every scenario, but to serve as an educational
 resource. By providing a comprehensive list of definitions, it helps
 users understand the **mathematical sensitivity** of goodness-of-fit
 indices.
@@ -49,16 +49,16 @@ Through this package, users can:
     inappropriate for specific model types (e.g., how the lack of an
     intercept affects the sum of squares).
 3.  **Analyze Recommendations**: Explore Kvalseth’s arguments for why
-    $R_{1}^{2}$ (and $R_{9}^{2}$ for robust cases) are often preferred
-    for consistency and comparability.
+    \\R^2_1\\ (and \\R^2_9\\ for robust cases) are often preferred for
+    consistency and comparability.
 
 ### Formulas Included
 
 The package calculates nine indices based on Kvalseth (1985):
 
-- **$R_{1}^{2}$** to **$R_{8}^{2}$**: A classification of existing and
+- **\\R^2_1\\** to **\\R^2_8\\**: A classification of existing and
   historical formulas used in statistical literature and software.
-- **$R_{9}^{2}$**: A robust version of the coefficient of determination
+- **\\R^2_9\\**: A robust version of the coefficient of determination
   based on median absolute deviations, as proposed in the original
   paper.
 
@@ -74,12 +74,12 @@ remotes::install_github("indenkun/kvr2")
 
 ## Usage and Examples
 
-`kvr2` provides a simple way to observe how different $R^{2}$
+`kvr2` provides a simple way to observe how different \\R^2\\
 definitions behave across various model specifications.
 
 ### 1. Basic Usage: Consistency and Divergence
 
-In standard linear models with an intercept, most $R^{2}$ definitions
+In standard linear models with an intercept, most \\R^2\\ definitions
 yield identical results. However, they can diverge significantly in
 models without an intercept or in power regression models.
 
@@ -117,9 +117,9 @@ results
 #> R2_9 :  0.9717
 ```
 
-**Observation:** In Case B, notice that $R_{2}^{2}$ and $R_{3}^{2}$
-exceed 1.0. This demonstrates why choosing the correct definition is
-critical for models without an intercept.
+**Observation:** In Case B, notice that \\R^2_2\\ and \\R^2_3\\ exceed
+1.0. This demonstrates why choosing the correct definition is critical
+for models without an intercept.
 
 ### 2. Accessing Calculated Values
 
@@ -144,7 +144,7 @@ my_val <- results$r2_1
 
 ### 3. Model Comparison with Error Metrics
 
-To complement $R^{2}$ analysis, use
+To complement \\R^2\\ analysis, use
 [`comp_fit()`](https://indenkun.github.io/kvr2/reference/comp_kvr2.md)
 to evaluate models via standard error metrics such as RMSE, MAE, and
 MSE.
@@ -160,7 +160,7 @@ For details, refer to the documentation for each function.
 
 ## References
 
-Kvalseth, T. O. (1985). Cautionary Note about $R^{2}$. The American
+Kvalseth, T. O. (1985). Cautionary Note about \\R^2\\. The American
 Statistician, 39(4), 279-285. [DOI:
 10.1080/00031305.1985.10479448](https://doi.org/10.1080/00031305.1985.10479448)
 

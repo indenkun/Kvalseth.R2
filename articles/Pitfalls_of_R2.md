@@ -1,11 +1,11 @@
 # The Pitfalls of R-squared: Understanding Mathematical Sensitivity
 
-## Introduction: Why $R^{2}$ is Not Unique
+## Introduction: Why \\R^2\\ is Not Unique
 
 In many statistical software packages, the coefficient of determination
-($R^{2}$) is presented as a singular, definitive value. However, as
+(\\R^2\\) is presented as a singular, definitive value. However, as
 Tarald O. Kvalseth pointed out in his seminal 1985 paper, “Cautionary
-Note about $R^{2}$”, there are multiple ways to define and calculate
+Note about \\R^2\\”, there are multiple ways to define and calculate
 this metric.
 
 While these definitions converge in standard linear regression with an
@@ -21,34 +21,36 @@ robust alternative. Here are the core definitions used in this package:
 
 ### Standard Definitions
 
-- $R_{1}^{2}$: The most common form, measuring the proportion of
-  variance explained. Kvalseth strongly recommends this for consistency.
+- \\R^2_1\\: The most common form, measuring the proportion of variance
+  explained. Kvalseth strongly recommends this for consistency.
 
-$$R_{1}^{2} = 1 - \frac{\sum\left( y - \widehat{y} \right)^{2}}{\sum\left( y - \bar{y} \right)^{2}}$$
+\\R_1^2 = 1 - \frac{\sum(y - \hat{y})^2}{\sum(y - \bar{y})^2}\\
 
-- $R_{2}^{2}$: Often used in some contexts, but can exceed 1.0 in
+- \\R^2_2\\: Often used in some contexts, but can exceed 1.0 in
   no-intercept models.
 
-$$R_{2}^{2} = \frac{\sum\left( \widehat{y} - \bar{y} \right)^{2}}{\sum\left( y - \bar{y} \right)^{2}}$$
+\\R_2^2 = \frac{\sum(\hat{y} - \bar{y})^2}{\sum(y - \bar{y})^2}\\
 
-- $R_{6}^{2}$: The square of Pearson’s correlation coefficient between
+- \\R^2_6\\: The square of Pearson’s correlation coefficient between
   observed and predicted values.
 
-$$R_{6}^{2} = \frac{\left( \sum\left( y - \bar{y} \right)\left( \widehat{y} - \bar{\widehat{y}} \right) \right)^{2}}{\sum\left( y - \bar{y} \right)^{2}\sum\left( \widehat{y} - \bar{\widehat{y}} \right)^{2}}$$
+\\R_6^2 = \frac{\left( \sum(y - \bar{y})(\hat{y} - \bar{\hat{y}})
+\right)^2}{\sum(y - \bar{y})^2 \sum(\hat{y} - \bar{\hat{y}})^2}\\
 
 ### Definitions for No-Intercept Models
 
-- $R_{7}^{2}$: Specifically designed for models passing through the
+- \\R^2_7\\: Specifically designed for models passing through the
   origin.
 
-$$R_{7}^{2} = 1 - \frac{\sum\left( y - \widehat{y} \right)^{2}}{\sum y^{2}}$$
+\\R_7^2 = 1 - \frac{\sum(y - \hat{y})^2}{\sum y^2}\\
 
 ### Robust Definition
 
-- $R_{9}^{2}$: Proposed by Kvalseth to resist the influence of outliers
-  by using medians ($M$).
+- \\R^2_9\\: Proposed by Kvalseth to resist the influence of outliers by
+  using medians (\\M\\).
 
-$$R_{9}^{2} = 1 - \left( \frac{M\{\left| y_{i} - {\widehat{y}}_{i} \right|\}}{M\{\left| y_{i} - \bar{y} \right|\}} \right)^{2}$$
+\\R_9^2 = 1 - \left( \frac{M\\\|y_i - \hat{y}\_i\|\\}{M\\\|y_i -
+\bar{y}\|\\} \right)^2\\
 
 ------------------------------------------------------------------------
 
@@ -80,13 +82,12 @@ results
 
 ### The Trap
 
-Notice that $R_{2}^{2}$ and $R_{3}^{2}$ are greater than 1.0. This
-happens because, without an intercept, the standard sum of squares
-relationship ($SS_{tot} = SS_{reg} + SS_{res}$) no longer holds. If a
-researcher blindly reports $R_{2}^{2}$, the result is mathematically
-nonsensical.
+Notice that \\R^2_2\\ and \\R^2_3\\ are greater than 1.0. This happens
+because, without an intercept, the standard sum of squares relationship
+(\\SS\_{tot} = SS\_{reg} + SS\_{res}\\) no longer holds. If a researcher
+blindly reports \\R^2_2\\, the result is mathematically nonsensical.
 
-Kvalseth argues that $R_{1}^{2}$ is generally preferable because it
+Kvalseth argues that \\R^2_1\\ is generally preferable because it
 remains bounded by 1.0 and maintains a clear interpretation of “error
 reduction.”
 
@@ -96,7 +97,7 @@ reduction.”
 
 In power regression models (typically fitted via log-log
 transformation), the definition of the “mean” and “residuals” becomes
-ambiguous. Does the $R^{2}$ refer to the transformed space or the
+ambiguous. Does the \\R^2\\ refer to the transformed space or the
 original space?
 
 ``` r
@@ -122,18 +123,18 @@ consistent with your research goals.
 
 ## Conclusion
 
-The `kvr2` package demonstrates that $R^{2}$ is not a “plug-and-play”
+The `kvr2` package demonstrates that \\R^2\\ is not a “plug-and-play”
 statistic. By comparing these nine definitions, users can:
 
 1.  Identify when a model fit is being over- or under-represented by a
     specific formula.
-2.  Understand why Kvalseth recommended $R_{1}^{2}$ for its consistency
-    and $R_{9}^{2}$ for its robustness.
-3.  Be more critical of $R^{2}$ values reported in scientific
+2.  Understand why Kvalseth recommended \\R^2_1\\ for its consistency
+    and \\R^2_9\\ for its robustness.
+3.  Be more critical of \\R^2\\ values reported in scientific
     literature.
 
 ## References
 
-Kvalseth, T. O. (1985). Cautionary Note about $R^{2}$. The American
+Kvalseth, T. O. (1985). Cautionary Note about \\R^2\\. The American
 Statistician, 39(4), 279-285. [DOI:
 10.1080/00031305.1985.10479448](https://doi.org/10.1080/00031305.1985.10479448)
