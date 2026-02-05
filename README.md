@@ -1,25 +1,77 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# kvr2
+# kvr2: Educational Tool for Exploring $R^2$ Definitions
 
 <!-- badges: start -->
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/kvr2)](https://CRAN.R-project.org/package=kvr2)
 <!-- badges: end -->
 
-The determination coefficient for linear or power regression models is
-based on the determination coefficients according to Kvalseth’s nine
-classifications (eight classifications of existing methods and one
-proposed method).
+The `kvr2` package provides functions to calculate nine types of
+coefficients of determination ($R^2$) as classified by **Kvalseth
+(1985)**.
 
-Kvalseth’s classification is based on Tarald O. Kvalseth (1985)
-Cautionary Note about R 2 , The American Statistician, 39:4, 279-285,
-DOI: 10.1080/00031305.1985.10479448.
+### Overview
 
-This package is not intended for detailed verification of the
-coefficient of determination. It is an educational package designed to
-confirm that the coefficient of determination may differ depending on
-the specific definition formula used, as classified by Kvalseth (1985).
+The coefficient of determination, $R^2$, is one of the most common
+metrics for assessing model fit. However, its mathematical definition is
+not unique. While various formulas yield identical results in standard
+linear regression with an intercept, they can diverge
+significantly—sometimes producing negative values or values exceeding
+1—when applied to:
+
+- **Models without an intercept** (No-intercept models)
+- **Power regression models**
+- **Other fits via transformations** (e.g., log-log models)
+
+### Scope and Compatibility
+
+This package is specifically designed for models that can be represented
+as `lm` objects in R. This includes:
+
+- **Standard Linear Models** (with an intercept)
+- **No-intercept Models** (e.g., `lm(y ~ x - 1)`)
+- **Power Regression Models** (fitted via log-transformation, such as
+  `lm(log(y) ~ log(x))`)
+
+**Note:** This package does **not** support general non-linear least
+squares (`nls`) or other complex non-linear modeling frameworks. It
+focuses on the mathematical sensitivity of $R^2$ within the context of
+linear estimation and its common transformations.
+
+### Educational Purpose
+
+The primary goal of this package is **not** to provide a definitive
+“best” $R^2$ for every scenario, but to serve as an educational
+resource. By providing a comprehensive list of definitions, it helps
+users understand the **mathematical sensitivity** of goodness-of-fit
+indices.
+
+Through this package, users can:
+
+1.  **Observe Variability**: See firsthand how the choice of an
+    algebraic formula can lead to different interpretations of the same
+    model.
+2.  **Identify Pitfalls**: Recognize why certain definitions are
+    inappropriate for specific model types (e.g., how the lack of an
+    intercept affects the sum of squares).
+3.  **Analyze Recommendations**: Explore Kvalseth’s arguments for why
+    $R^2_1$ (and $R^2_9$ for robust cases) are often preferred for
+    consistency and comparability.
+
+### Formulas Included
+
+The package calculates nine indices based on Kvalseth (1985):
+
+- **$R^2_1$** to **$R^2_8$**: A classification of existing and
+  historical formulas used in statistical literature and software.
+- **$R^2_9$**: A robust version of the coefficient of determination
+  based on median absolute deviations, as proposed in the original
+  paper.
+
+------------------------------------------------------------------------
 
 ## Installation
 
@@ -29,23 +81,26 @@ You can install the development version of kvr2 like so:
 remotes::install_github("indenkun/kvr2")
 ```
 
-## Example
+## Usage and Examples
 
-The `R2()` function can calculate nine types of determination
-coefficients all at once.
+`kvr2` provides a simple way to observe how different $R^2$ definitions
+behave across various model specifications.
+
+### 1. Basic Usage: Consistency and Divergence
+
+In standard linear models with an intercept, most $R^2$ definitions
+yield identical results. However, they can diverge significantly in
+models without an intercept or in power regression models.
 
 ``` r
 library(kvr2)
-# Example data set 1. Kvalseth (1985).
-df1 <- data.frame(x = c(1:6),
-                  y = c(15,37,52,59,83,92))
-# Linear regression model with intercept
-model_intercept1 <- lm(y ~ x, df1)
-# Linear regression model without intercept
-model_without1 <- lm(y ~ x - 1, df1)
-# Power regression model
-model_power1 <- lm(log(y) ~ log(x), df1)
-r2(model_intercept1)
+
+# Dataset from Kvalseth (1985)
+df1 <- data.frame(x = 1:6, y = c(15, 37, 52, 59, 83, 92))
+
+# Case A: Linear regression with intercept (Values are consistent)
+model_int <- lm(y ~ x, data = df1)
+r2(model_int)
 #> R2_1 :  0.9808 
 #> R2_2 :  0.9808 
 #> R2_3 :  0.9808 
@@ -55,7 +110,11 @@ r2(model_intercept1)
 #> R2_7 :  0.9966 
 #> R2_8 :  0.9966 
 #> R2_9 :  0.9778
-r2(model_without1)
+
+# Case B: Linear regression without intercept (Values diverge)
+model_no_int <- lm(y ~ x - 1, data = df1)
+results <- r2(model_no_int)
+results
 #> R2_1 :  0.9777 
 #> R2_2 :  1.0836 
 #> R2_3 :  1.0830 
@@ -65,44 +124,48 @@ r2(model_without1)
 #> R2_7 :  0.9961 
 #> R2_8 :  0.9961 
 #> R2_9 :  0.9717
-r2(model_power1)
-#> R2_1 :  0.9777 
-#> R2_2 :  1.0984 
-#> R2_3 :  1.0983 
-#> R2_4 :  0.9778 
-#> R2_5 :  0.9816 
-#> R2_6 :  0.9811 
-#> R2_7 :  0.9961 
-#> R2_8 :  1.0232 
-#> R2_9 :  0.9706
 ```
 
-The `comparison_measure()` function to calculate comparison metrics for
-regression models, such as RMSE, MAE, and MSE.
+**Observation:** In Case B, notice that $R^2_2$ and $R^2_3$ exceed 1.0.
+This demonstrates why choosing the correct definition is critical for
+models without an intercept.
+
+### 2. Accessing Calculated Values
+
+The `r2()` function returns a list object. While the output is formatted
+for readability, you can easily access individual values for further
+analysis or reporting.
 
 ``` r
-comparison_measure(model_intercept1)
-#> RMES :  3.6165 
-#> MAE :  3.5238 
-#> MSE :  19.6190
-comparison_measure(model_without1)
+# Accessing specific R2 values from the result object
+results$r2_1
+#>      r2_1 
+#> 0.9776853
+
+results$r2_9
+#>      r2_9 
+#> 0.9717156
+
+# You can also use it in your custom functions or data frames
+my_val <- results$r2_1
+```
+
+### 3. Model Comparison with Error Metrics
+
+To complement $R^2$ analysis, use `comp_fit()` to evaluate models via
+standard error metrics such as RMSE, MAE, and MSE.
+
+``` r
+comp_fit(model_no_int)
 #> RMES :  3.9008 
 #> MAE :  3.6520 
 #> MSE :  18.2593
-comparison_measure(model_power1)
-#> RMES :  3.8982 
-#> MAE :  3.6334 
-#> MSE :  22.7938
 ```
 
 For details, refer to the documentation for each function.
 
 ## References
 
-Tarald O. Kvalseth (1985) Cautionary Note about R 2 , The American
-Statistician, 39:4, 279-285, DOI: 10.1080/00031305.1985.10479448
-
-Box, George E. P., Hunter, William G., Hunter, J. Stuart. (1978)
-Statistics for experimenters: an introduction to design, data analysis,
-and model building. New York, United States, J. Wiley, p. 462-473,
-<ISBN:9780471093152>.
+Kvalseth, T. O. (1985). Cautionary Note about $R^2$. The American
+Statistician, 39(4), 279-285. [DOI:
+10.1080/00031305.1985.10479448](https://doi.org/10.1080/00031305.1985.10479448)

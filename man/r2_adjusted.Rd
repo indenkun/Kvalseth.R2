@@ -7,7 +7,7 @@
 r2_adjusted(model, r2)
 }
 \arguments{
-\item{model}{A linear regression model or power regression model of the lm class created by the \code{lm()} function.}
+\item{model}{A linear model or power regression model of the \code{lm}.}
 
 \item{r2}{A numeric. Coefficient of determination.}
 }

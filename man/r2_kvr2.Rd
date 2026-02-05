@@ -11,7 +11,7 @@
 \alias{r2_7}
 \alias{r2_8}
 \alias{r2_9}
-\title{Coefficient of Determination According to Kvalseth's Classification}
+\title{Calculate Multiple Definitions of Coefficient of Determination (R-squared)}
 \usage{
 r2(model, type = c("auto", "liner", "power"), adjusted = FALSE)
 
@@ -34,43 +34,51 @@ r2_8(model, type = c("auto", "liner", "power"))
 r2_9(model, type = c("auto", "liner", "power"))
 }
 \arguments{
-\item{model}{A linear regression model or power regression model of the lm class created by the \code{lm()} function.}
+\item{model}{A linear model or power regression model of the \code{lm}.}
 
-\item{type}{Selects whether the regression model is a linear regression model or a power regression model.
-When set to auto, it determines whether the dependent variable contains a log transformation and selects accordingly.
-See note.}
+\item{type}{Character string. Selects the model type: \code{"linear"}, \code{"power"},
+or \code{"auto"} (default). In \code{"auto"}, the function detects if the dependent
+variable is log-transformed.}
 
-\item{adjusted}{Logical value. Whether to calculate the adjusted coefficient of determination.
-If TRUE, the adjusted coefficient of determination is calculated. See details.
-See details.}
+\item{adjusted}{Logical. If \code{TRUE}, calculates the adjusted coefficient
+of determination for each formula.}
+}
+\value{
+An object of class \code{r2_kvr2}, which is a list containing the
+calculated values for each \eqn{R^2} formula.
 }
 \description{
-Function for calculating the coefficient of determination according to Tarald O. Kvalseth's (1985) classification.
-See note.
+Calculates nine types of coefficients of determination (\eqn{R^2}) based on
+the classification by Kvalseth (1985). This function is designed to demonstrate
+how \eqn{R^2} values can vary depending on their mathematical definition,
+particularly in models without an intercept or in power regression models
 }
 \details{
 The nine coefficient equations from \eqn{R^2_1} to \eqn{R^2_9} are based on Kvalseth (1985) and are as follows:
-\eqn{R^2_1}: Proportion of total variance explained (most common form).
-\deqn{R_1^2 = 1 - \frac{\sum(y - \hat{y})^2}{\sum(y - \bar{y})^2}}
-\eqn{R^2_2}: Form based on fluctuations in predicted values.
-\deqn{R^2_2 = \frac{\sum(\hat{y} - \bar{y})^2}{\sum(y - \bar{y})^2}}
-\eqn{R^2_3}: Ratio of variation using the mean of the predicted values.
-\deqn{R_3^2 = \frac{\sum(\hat{y} - \bar{\hat{y}})^2}{\sum(y - \bar{y})^2}}
-\eqn{R^2_4}: Formula incorporating the mean residual.
-\deqn{R_4^2 = 1 - \frac{\sum(e - \bar{e})^2}{\sum(y - \bar{y})^2}, \quad e = y - \hat{y}}
-\eqn{R^2_5}: The square of the multiple correlation coefficient between the dependent variable and the independent variable (a comprehensive indicator in linearized models).
-\deqn{R_5^2 = \text{squared multiple correlation coefficient between the regressand and the regressors}}
-\eqn{R^2_6}: The square of the correlation coefficient between the observed value \eqn{y} and the predicted value \eqn{\hat{y}} (the square of Pearson's correlation coefficient).
-\deqn{R_6^2 = \frac{\left( \sum(y - \bar{y})(\hat{y} - \bar{\hat{y}}) \right)^2}{\sum(y - \bar{y})^2 \sum(\hat{y} - \bar{\hat{y}})^2}}
-\eqn{R^2_7}: Recommended format for models without slices.
-\deqn{R_7^2 = 1 - \frac{\sum(y - \hat{y})^2}{\sum y^2}}
-\eqn{R^2_8}: Another format for models without slices
-\deqn{R_8^2 = \frac{\sum \hat{y}^2}{\sum y^2}}
-\eqn{R^2_9}: An equation proposed as an outlier-resistant indicator (Coefficient of determination of persistence).
-\deqn{R_9^2 = 1 - \left( \frac{M\{|y_i - \hat{y}_i|\}}{M\{|y_i - \bar{y}|\}} \right)^2}
-\eqn{M} represents the median of the sample.
 
-For details on degree of freedom adjustment, refer to \link{r2_adjusted}.
+\itemize{
+\item \eqn{R^2_1}: Proportion of total variance explained.
+\deqn{R_1^2 = 1 - \frac{\sum(y - \hat{y})^2}{\sum(y - \bar{y})^2}}
+\item \eqn{R^2_2}: Based on the variation of predicted values.
+\deqn{R^2_2 = \frac{\sum(\hat{y} - \bar{y})^2}{\sum(y - \bar{y})^2}}
+\item \eqn{R^2_3}: Ratio of variation using the mean of predicted values.
+\deqn{R_3^2 = \frac{\sum(\hat{y} - \bar{\hat{y}})^2}{\sum(y - \bar{y})^2}}
+\item \eqn{R^2_4}: Incorporates the mean residual.
+\deqn{R_4^2 = 1 - \frac{\sum(e - \bar{e})^2}{\sum(y - \bar{y})^2}, \quad e = y - \hat{y}}
+\item \eqn{R^2_5}: The square of the multiple correlation coefficient between the dependent variable and the independent variable (a comprehensive indicator in linearized models).
+\deqn{R_5^2 = \text{squared multiple correlation coefficient between the regressand and the regressors}}
+\item \eqn{R^2_6}: Square of Pearson's correlation coefficient between observed \eqn{y} and predicted \eqn{\hat{y}}.
+\deqn{R_6^2 = \frac{\left( \sum(y - \bar{y})(\hat{y} - \bar{\hat{y}}) \right)^2}{\sum(y - \bar{y})^2 \sum(\hat{y} - \bar{\hat{y}})^2}}
+\item \eqn{R^2_7}: Recommended for models without an intercept.
+\deqn{R_7^2 = 1 - \frac{\sum(y - \hat{y})^2}{\sum y^2}}
+\item \eqn{R^2_8}: Alternative form for models without an intercept.
+\deqn{R_8^2 = \frac{\sum \hat{y}^2}{\sum y^2}}
+\item \eqn{R^2_9}: Robust version using medians to resist outliers.
+\deqn{R_9^2 = 1 - \left( \frac{M\{|y_i - \hat{y}_i|\}}{M\{|y_i - \bar{y}|\}} \right)^2}
+}
+where \eqn{M} represents the median of the sample.
+
+For degree of freedom adjustment \code{adjusted = TRUE}, refer to \link{r2_adjusted}.
 }
 \note{
 The power regression model must be based on a logarithmic transformation.

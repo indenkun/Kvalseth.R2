@@ -1,6 +1,6 @@
 Package: kvr2
 Type: Package
-Title: Coefficient of Determination According to Kvalseth's Classification
+Title: Calculate and Compare Multiple Definitions of Coefficient of Determination
 Version: 0.0.0.9000
 Authors@R: c(
     person(
@@ -9,14 +9,9 @@ Authors@R: c(
       role = c("aut", "cre")
     )
   )
-Description: The determination coefficient for linear or power regression models 
-   is based on the determination coefficients according to Kvalseth's nine 
-  classifications (eight classifications of existing methods and one proposed method).
-  Kvalseth's classification is based on Tarald O. Kvålseth (1985) Cautionary Note 
-  about R 2 , The American Statistician, 39:4, 279-285, DOI: 10.1080/00031305.1985.10479448.
-  This package is not intended for detailed verification of the coefficient of determination.
-  It is an educational package designed to confirm that the coefficient of determination 
-  may differ depending on the specific definition formula used, as classified by Kvalseth (1985).
+Description: Provides functions to calculate nine types of coefficients of determination (R-squared) based on the classification by Kvalseth (1985) doi:10.1080/00031305.1985.10479448. 
+    This package is designed for educational purposes to demonstrate how R-squared values can fluctuate depending on the choice of formula, particularly in power regression models or linear models without an intercept. 
+    By providing a comprehensive list of definitions, it helps users understand the mathematical sensitivity of goodness-of-fit indices.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

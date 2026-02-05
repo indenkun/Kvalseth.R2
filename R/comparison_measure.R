@@ -1,11 +1,34 @@
-#' Comparative Measures for Regression Models
+#' Calculate Comparative Fit Measures for Regression Models
+#'
 #' @description
-#' A function to calculate comparison metrics for regression models, such as RMSE, MAE, and MSE.
-#' `comparison_measure` displays all three metrics together.
-#' Each value can be calculated using its respective function.
-#' Each definition is based on Tarald O. Kvalseth's (1985) work.
-#' Particular attention should be paid to MSE. See details.
+#' Calculates goodness-of-fit metrics based on Kvalseth (1985), including
+#' Root Mean Squared Error (RMSE), Mean Absolute Error (MAE), and Mean Squared
+#' Error (MSE). This function provides a unified output for comparing different
+#' model specifications.
+#'
 #' @inheritParams r2
+#'
+#' @details
+#' The metrics are calculated according to the formulas in Kvalseth (1985):
+#'
+#' \itemize{
+#'   \item \bold{RMSE}: Root Mean Squared Residual or Error
+#'     \deqn{RMSE = \sqrt{\frac{\sum (y - \hat{y})^2}{n}}}
+#'   \item \bold{MAE}: Mean Absolute Residual or Error
+#'     \deqn{MAE = \frac{\sum |y - \hat{y}|}{n}}
+#'   \item \bold{MSE}: Mean Squared Residual or Error (Adjusted for degrees of freedom)
+#'     \deqn{MSE = \frac{\sum (y - \hat{y})^2}{n - p}}
+#' }
+#' where \eqn{n} is the sample size and \eqn{p} is the number of model parameters
+#' (including the intercept).
+#'
+#' **Note on MSE:** In many modern contexts, "MSE" refers to the mean
+#' squared error without degree-of-freedom adjustment (denominator \eqn{n}).
+#' However, this function follows Kvalseth's definition, which uses \eqn{n - p}
+#' as the denominator.
+#'
+#' @return An object of class \code{comp_kvr2}, which is a list containing
+#'   the calculated RMSE, MAE, and MSE values.
 #' @examples
 #' # example data set 1. Kvålseth (1985).
 #' df1 <- data.frame(x = c(1:6),
@@ -13,34 +36,28 @@
 #' model_intercept <- lm(y ~ x, df1)
 #' model_without <- lm(y ~ x - 1, df1)
 #' model_power <- lm(log(y) ~ log(x), df1)
-#' comparison_measure(model_intercept)
-#' comparison_measure(model_without)
-#' comparison_measure(model_power)
-#' @details
-#' The root mean squared residual or error (RMSE), mean absolute residual (MAE), and the mean squared residual (MSE) defined as based on Kvålseth (1985).
-#' \deqn{\text{RMSE} = [{\frac{\sum (y - \hat{y})^2}{n}}]^{1/2}}
-#' \deqn{\text{MAE} = \frac{\sum |y - \hat{y}|}{n}}
-#' \deqn{\text{MSE} = \frac{\sum (y - \hat{y})^2}{n - p}}
-#' where \eqn{p} denotes the number of model parameters.
-#' Note that the MSE generally used today is not adjusted for the number of parameters, whereas Kvalseth's (1985) MSE is adjusted for the number of parameters.
+#' comp_fit(model_intercept)
+#' comp_fit(model_without)
+#' comp_fit(model_power)
+#'
 #' @references
 #' Tarald O. Kvalseth (1985) Cautionary Note about R 2 , The American Statistician, 39:4, 279-285, \doi{DOI: 10.1080/00031305.1985.10479448}
 #' @inherit r2 note
-#' @rdname comparison_measure
+#' @rdname comp_kvr2
 #' @export
-comparison_measure <- function(model, type = c("auto", "liner", "power")){
+comp_fit <- function(model, type = c("auto", "liner", "power")){
   type <- match.arg(type)
 
   ans <- list()
 
   ans <- c(RMSE(model, type), MAE(model, type), MSE(model, type))
 
-  class(ans) <- "comparison_measure"
+  class(ans) <- "comp_kvr2"
 
   ans
 }
 
-#' @rdname comparison_measure
+#' @rdname comp_kvr2
 #' @export
 RMSE <- function(model, type = c("auto", "liner", "power")){
   type <- match.arg(type)
@@ -52,11 +69,11 @@ RMSE <- function(model, type = c("auto", "liner", "power")){
   names(rmse) <- "RMES"
 
   ans$rmse <- rmse
-  class(ans) <- "comparison_measure"
+  class(ans) <- "comp_kvr2"
   ans
 }
 
-#' @rdname comparison_measure
+#' @rdname comp_kvr2
 #' @export
 MAE <- function(model, type = c("auto", "liner", "power")){
   type <- match.arg(type)
@@ -68,11 +85,11 @@ MAE <- function(model, type = c("auto", "liner", "power")){
   names(mae) <- "MAE"
 
   ans$mae <- mae
-  class(ans) <- "comparison_measure"
+  class(ans) <- "comp_kvr2"
   ans
 }
 
-#' @rdname comparison_measure
+#' @rdname comp_kvr2
 #' @export
 MSE <- function(model, type = c("auto", "liner", "power")){
   type <- match.arg(type)
@@ -84,6 +101,6 @@ MSE <- function(model, type = c("auto", "liner", "power")){
   names(mse) <- "MSE"
 
   ans$mse <- mse
-  class(ans) <- "comparison_measure"
+  class(ans) <- "comp_kvr2"
   ans
 }

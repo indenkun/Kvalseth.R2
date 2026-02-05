@@ -1,14 +1,16 @@
-#' Coefficient of Determination According to Kvalseth's Classification
+#' Calculate Multiple Definitions of Coefficient of Determination (R-squared)
 #' @description
-#' Function for calculating the coefficient of determination according to Tarald O. Kvalseth's (1985) classification.
-#' See note.
-#' @param model A linear regression model or power regression model of the lm class created by the `lm()` function.
-#' @param type Selects whether the regression model is a linear regression model or a power regression model.
-#' When set to auto, it determines whether the dependent variable contains a log transformation and selects accordingly.
-#' See note.
-#' @param adjusted Logical value. Whether to calculate the adjusted coefficient of determination.
-#' If TRUE, the adjusted coefficient of determination is calculated. See details.
-#' See details.
+#' Calculates nine types of coefficients of determination (\eqn{R^2}) based on
+#' the classification by Kvalseth (1985). This function is designed to demonstrate
+#' how \eqn{R^2} values can vary depending on their mathematical definition,
+#' particularly in models without an intercept or in power regression models
+#'
+#' @param model A linear model or power regression model of the `lm`.
+#' @param type Character string. Selects the model type: `"linear"`, `"power"`,
+#'   or `"auto"` (default). In `"auto"`, the function detects if the dependent
+#'   variable is log-transformed.
+#' @param adjusted Logical. If `TRUE`, calculates the adjusted coefficient
+#'   of determination for each formula.
 #' @examples
 #' # Example data set 1. Kvalseth (1985).
 #' df1 <- data.frame(x = c(1:6),
@@ -44,27 +46,33 @@
 #' r2(model_power3)
 #' @details
 #' The nine coefficient equations from \eqn{R^2_1} to \eqn{R^2_9} are based on Kvalseth (1985) and are as follows:
-#' \eqn{R^2_1}: Proportion of total variance explained (most common form).
-#' \deqn{R_1^2 = 1 - \frac{\sum(y - \hat{y})^2}{\sum(y - \bar{y})^2}}
-#' \eqn{R^2_2}: Form based on fluctuations in predicted values.
-#' \deqn{R^2_2 = \frac{\sum(\hat{y} - \bar{y})^2}{\sum(y - \bar{y})^2}}
-#' \eqn{R^2_3}: Ratio of variation using the mean of the predicted values.
-#' \deqn{R_3^2 = \frac{\sum(\hat{y} - \bar{\hat{y}})^2}{\sum(y - \bar{y})^2}}
-#' \eqn{R^2_4}: Formula incorporating the mean residual.
-#' \deqn{R_4^2 = 1 - \frac{\sum(e - \bar{e})^2}{\sum(y - \bar{y})^2}, \quad e = y - \hat{y}}
-#' \eqn{R^2_5}: The square of the multiple correlation coefficient between the dependent variable and the independent variable (a comprehensive indicator in linearized models).
-#' \deqn{R_5^2 = \text{squared multiple correlation coefficient between the regressand and the regressors}}
-#' \eqn{R^2_6}: The square of the correlation coefficient between the observed value \eqn{y} and the predicted value \eqn{\hat{y}} (the square of Pearson's correlation coefficient).
-#' \deqn{R_6^2 = \frac{\left( \sum(y - \bar{y})(\hat{y} - \bar{\hat{y}}) \right)^2}{\sum(y - \bar{y})^2 \sum(\hat{y} - \bar{\hat{y}})^2}}
-#' \eqn{R^2_7}: Recommended format for models without slices.
-#' \deqn{R_7^2 = 1 - \frac{\sum(y - \hat{y})^2}{\sum y^2}}
-#' \eqn{R^2_8}: Another format for models without slices
-#' \deqn{R_8^2 = \frac{\sum \hat{y}^2}{\sum y^2}}
-#' \eqn{R^2_9}: An equation proposed as an outlier-resistant indicator (Coefficient of determination of persistence).
-#' \deqn{R_9^2 = 1 - \left( \frac{M\{|y_i - \hat{y}_i|\}}{M\{|y_i - \bar{y}|\}} \right)^2}
-#' \eqn{M} represents the median of the sample.
 #'
-#' For details on degree of freedom adjustment, refer to [r2_adjusted].
+#' \itemize{
+#'   \item \eqn{R^2_1}: Proportion of total variance explained.
+#'     \deqn{R_1^2 = 1 - \frac{\sum(y - \hat{y})^2}{\sum(y - \bar{y})^2}}
+#'   \item \eqn{R^2_2}: Based on the variation of predicted values.
+#'     \deqn{R^2_2 = \frac{\sum(\hat{y} - \bar{y})^2}{\sum(y - \bar{y})^2}}
+#'   \item \eqn{R^2_3}: Ratio of variation using the mean of predicted values.
+#'     \deqn{R_3^2 = \frac{\sum(\hat{y} - \bar{\hat{y}})^2}{\sum(y - \bar{y})^2}}
+#'   \item \eqn{R^2_4}: Incorporates the mean residual.
+#'     \deqn{R_4^2 = 1 - \frac{\sum(e - \bar{e})^2}{\sum(y - \bar{y})^2}, \quad e = y - \hat{y}}
+#'   \item \eqn{R^2_5}: The square of the multiple correlation coefficient between the dependent variable and the independent variable (a comprehensive indicator in linearized models).
+#'     \deqn{R_5^2 = \text{squared multiple correlation coefficient between the regressand and the regressors}}
+#'   \item \eqn{R^2_6}: Square of Pearson's correlation coefficient between observed \eqn{y} and predicted \eqn{\hat{y}}.
+#'     \deqn{R_6^2 = \frac{\left( \sum(y - \bar{y})(\hat{y} - \bar{\hat{y}}) \right)^2}{\sum(y - \bar{y})^2 \sum(\hat{y} - \bar{\hat{y}})^2}}
+#'   \item \eqn{R^2_7}: Recommended for models without an intercept.
+#'     \deqn{R_7^2 = 1 - \frac{\sum(y - \hat{y})^2}{\sum y^2}}
+#'   \item \eqn{R^2_8}: Alternative form for models without an intercept.
+#'     \deqn{R_8^2 = \frac{\sum \hat{y}^2}{\sum y^2}}
+#'   \item \eqn{R^2_9}: Robust version using medians to resist outliers.
+#'     \deqn{R_9^2 = 1 - \left( \frac{M\{|y_i - \hat{y}_i|\}}{M\{|y_i - \bar{y}|\}} \right)^2}
+#' }
+#' where \eqn{M} represents the median of the sample.
+#'
+#' For degree of freedom adjustment `adjusted = TRUE`, refer to [r2_adjusted].
+#'
+#' @return An object of class \code{r2_kvr2}, which is a list containing the
+#'   calculated values for each \eqn{R^2} formula.
 #'
 #' @note
 #' The power regression model must be based on a logarithmic transformation.
@@ -75,7 +83,7 @@
 #' @references
 #' Tarald O. Kvalseth (1985) Cautionary Note about R 2 , The American Statistician, 39:4, 279-285, \doi{10.1080/00031305.1985.10479448}
 #' Box, George E. P., Hunter, William G., Hunter, J. Stuart. (1978) Statistics for experimenters: an introduction to design, data analysis, and model building. New York, United States, J. Wiley, p. 462-473, ISBN:9780471093152.
-#' @rdname r2
+#' @rdname r2_kvr2
 #' @export
 r2 <- function(model, type = c("auto", "liner", "power"), adjusted = FALSE){
   type <- match.arg(type)
@@ -104,12 +112,12 @@ r2 <- function(model, type = c("auto", "liner", "power"), adjusted = FALSE){
              r2_adjusted(model, ans$r2_9))
   }
 
-  class(ans) <- "r2"
+  class(ans) <- "r2_kvr2"
 
   ans
 }
 
-#' @rdname r2
+#' @rdname r2_kvr2
 #' @export
 r2_1 <- function(model, type = c("auto", "liner", "power")){
   type <- match.arg(type)
@@ -121,11 +129,11 @@ r2_1 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_1"
 
   ans$r2_1 <- r2
-  class(ans) <- "r2"
+  class(ans) <- "r2_kvr2"
   ans
 }
 
-#' @rdname r2
+#' @rdname r2_kvr2
 #' @export
 r2_2 <- function(model, type = c("auto", "liner", "power")){
   type <- match.arg(type)
@@ -137,11 +145,11 @@ r2_2 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_2"
 
   ans$r2_2 <- r2
-  class(ans) <- "r2"
+  class(ans) <- "r2_kvr2"
   ans
 }
 
-#' @rdname r2
+#' @rdname r2_kvr2
 #' @export
 r2_3 <- function(model, type = c("auto", "liner", "power")){
   type <- match.arg(type)
@@ -153,11 +161,11 @@ r2_3 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_3"
 
   ans$r2_3 <- r2
-  class(ans) <- "r2"
+  class(ans) <- "r2_kvr2"
   ans
 }
 
-#' @rdname r2
+#' @rdname r2_kvr2
 #' @export
 r2_4 <- function(model, type = c("auto", "liner", "power")){
   type <- match.arg(type)
@@ -169,11 +177,11 @@ r2_4 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_4"
 
   ans$r2_4 <- r2
-  class(ans) <- "r2"
+  class(ans) <- "r2_kvr2"
   ans
 }
 
-#' @rdname r2
+#' @rdname r2_kvr2
 #' @export
 r2_5 <- function(model, type = c("auto", "liner", "power")){
   type <- match.arg(type)
@@ -189,11 +197,11 @@ r2_5 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_5"
 
   ans$r2_5 <- r2
-  class(ans) <- "r2"
+  class(ans) <- "r2_kvr2"
   ans
 }
 
-#' @rdname r2
+#' @rdname r2_kvr2
 #' @export
 r2_6 <- function(model, type = c("auto", "liner", "power")){
   type <- match.arg(type)
@@ -205,11 +213,11 @@ r2_6 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_6"
 
   ans$r2_6 <- r2
-  class(ans) <- "r2"
+  class(ans) <- "r2_kvr2"
   ans
 }
 
-#' @rdname r2
+#' @rdname r2_kvr2
 #' @export
 r2_7 <- function(model, type = c("auto", "liner", "power")){
   type <- match.arg(type)
@@ -221,11 +229,11 @@ r2_7 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_7"
 
   ans$r2_7 <- r2
-  class(ans) <- "r2"
+  class(ans) <- "r2_kvr2"
   ans
 }
 
-#' @rdname r2
+#' @rdname r2_kvr2
 #' @export
 r2_8 <- function(model, type = c("auto", "liner", "power")){
   type <- match.arg(type)
@@ -237,11 +245,11 @@ r2_8 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_8"
 
   ans$r2_8 <- r2
-  class(ans) <- "r2"
+  class(ans) <- "r2_kvr2"
   ans
 }
 
-#' @rdname r2
+#' @rdname r2_kvr2
 #' @export
 r2_9 <- function(model, type = c("auto", "liner", "power")){
   type <- match.arg(type)
@@ -253,6 +261,6 @@ r2_9 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_9"
 
   ans$r2_9 <- r2
-  class(ans) <- "r2"
+  class(ans) <- "r2_kvr2"
   ans
 }
