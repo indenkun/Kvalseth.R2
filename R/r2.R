@@ -187,14 +187,27 @@ r2_4 <- function(model, type = c("auto", "liner", "power")){
 r2_5 <- function(model, type = c("auto", "liner", "power")){
   type <- match.arg(type)
 
-  v <- values_lm(model, type)
+  # v <- values_lm(model, type)
+  v <- lm_forced_int(model)
   ans <- list()
 
-  # if(v$k == 2) r2 <- stats::cor(v$y, v$f)^2
-  # else{
-  model <- stats::update(model, . ~ . + 1)
-  r2 <- stats::summary.lm(model)$r.squared
-  # }
+  r <- v$residuals
+  f <- v$fitted_values
+  w <- v$weights
+  if(is.null(w)){
+    mss <- sum((f - mean(f))^2)
+    rss <- sum(r^2)
+  }else{
+    m <- sum(w * f /sum(w))
+    mss <-sum(w * (f - m)^2)
+    rss <- sum(w * (sqrt(w) * r)^2)
+  }
+
+  r2 <- mss/(mss + rss)
+
+  # model <- stats::update(model, . ~ . + 1)
+  # r2 <- stats::summary.lm(model)$r.square
+
   names(r2) <- "r2_5"
 
   ans$r2_5 <- r2
