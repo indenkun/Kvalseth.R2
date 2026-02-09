@@ -66,7 +66,13 @@ The package calculates nine indices based on Kvalseth (1985):
 
 ## Installation
 
-You can install the development version of kvr2 like so:
+You can install the released version of `kvr2` from CRAN with:
+
+``` r
+install.packages("kvr2")
+```
+
+You can install the development version of `kvr2` like so:
 
 ``` r
 remotes::install_github("indenkun/kvr2")

@@ -1,5 +1,5 @@
 # Changelog
 
-## kvr2 0.0.0.9000
+## kvr2 0.1.0
 
-- First releases on GitHub.
+- First releases on CRAN.

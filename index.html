@@ -119,8 +119,11 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of kvr2 like so:</p>
+<p>You can install the released version of <code>kvr2</code> from CRAN with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"kvr2"</span><span class="op">)</span></span></code></pre></div>
+<p>You can install the development version of <code>kvr2</code> like so:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"indenkun/kvr2"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -131,7 +134,7 @@
 <h3 id="id_1-basic-usage-consistency-and-divergence">1. Basic Usage: Consistency and Divergence<a class="anchor" aria-label="anchor" href="#id_1-basic-usage-consistency-and-divergence"></a>
 </h3>
 <p>In standard linear models with an intercept, most <span class="math inline">\(R^2\)</span> definitions yield identical results. However, they can diverge significantly in models without an intercept or in power regression models.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/indenkun/kvr2" class="external-link">kvr2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Dataset from Kvalseth (1985)</span></span>
@@ -169,7 +172,7 @@
 <h3 id="id_2-accessing-calculated-values">2. Accessing Calculated Values<a class="anchor" aria-label="anchor" href="#id_2-accessing-calculated-values"></a>
 </h3>
 <p>The <code><a href="reference/r2_kvr2.html">r2()</a></code> function returns a list object. While the output is formatted for readability, you can easily access individual values for further analysis or reporting.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Accessing specific R2 values from the result object</span></span>
 <span><span class="va">results</span><span class="op">$</span><span class="va">r2_1</span></span>
 <span><span class="co">#&gt;      r2_1 </span></span>
@@ -186,7 +189,7 @@
 <h3 id="id_3-model-comparison-with-error-metrics">3. Model Comparison with Error Metrics<a class="anchor" aria-label="anchor" href="#id_3-model-comparison-with-error-metrics"></a>
 </h3>
 <p>To complement <span class="math inline">\(R^2\)</span> analysis, use <code><a href="reference/comp_kvr2.html">comp_fit()</a></code> to evaluate models via standard error metrics such as RMSE, MAE, and MSE.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/comp_kvr2.html">comp_fit</a></span><span class="op">(</span><span class="va">model_no_int</span><span class="op">)</span></span>
 <span><span class="co">#&gt; RMES :  3.9008 </span></span>
 <span><span class="co">#&gt; MAE :  3.6520 </span></span>

@@ -19,6 +19,83 @@ package is designed as an educational tool to explore this
 Kvalseth (1985) classified eight existing formulas and proposed one
 robust alternative. Here are the core definitions used in this package:
 
+## When Goes Negative: Interpretation and Risks
+
+One of the most confusing moments for a researcher is encountering a
+negative . Mathematically, is often expected to be between and .
+However, in several formulas—most notably —the value can become
+negative.
+
+### Meaning of Negative Values
+
+A negative indicates that the chosen model predicts the data **worse
+than a horizontal line representing the mean of the observed data**.
+
+In , this occurs when the Residual Sum of Squares (RSS) exceeds the
+Total Sum of Squares (TSS). This is a clear signal that:
+
+- The model is fundamentally inappropriate for the data.
+- You are forcing a model through a specific constraint (like a
+  zero-intercept) that the data strongly resists.
+
+### Case Study: Forcing a No-Intercept Model
+
+Consider a dataset with a strong negative trend where we force the model
+through the origin.
+
+``` r
+library(kvr2)
+
+# Example: Data with a trend that doesn't pass through (0,0)
+df_neg <- data.frame(
+  x = c(110, 120, 130, 140, 150, 160, 170, 180, 190, 200),
+  y = c(180, 170, 180, 170, 160, 160, 150, 145, 140, 145)
+)
+
+model_forced <- lm(y ~ x - 1, data = df_neg)
+r2(model_forced)
+#> R2_1 :  -8.2183 
+#> R2_2 :  4.3883 
+#> R2_3 :  4.0856 
+#> R2_4 :  -7.9156 
+#> R2_5 :  0.8976 
+#> R2_6 :  0.8976 
+#> R2_7 :  0.9303 
+#> R2_8 :  0.9303 
+#> R2_9 :  -9.0197
+```
+
+In this case, is approximately. This massive negative value tells us
+that using the mean of as a predictor would be far more accurate than
+this zero-intercept model. Interestingly, and remain positive because
+they measure correlation or re-fit the intercept, potentially masking
+how poor the original forced model actually is.
+
+------------------------------------------------------------------------
+
+## Technical Note: How R Calculates
+
+It is important to understand how the standard R function
+[`summary.lm()`](https://rdrr.io/r/stats/summary.lm.html) computes its
+reported . Internally, R uses the ratio of sums of squares:
+
+Where is the Model Sum of Squares and is the Residual Sum of Squares.
+
+### The Shift in Baseline
+
+- **With Intercept**: is calculated relative to the mean. In this case,
+  , and the formula is equivalent to .
+- **Without Intercept**: R changes the definition of to the sum of
+  squares about the origin.
+
+Because R shifts the baseline for no-intercept models, the reported by
+`summary(lm(y ~ x - 1))` can appear high even if the model is poor. The
+`kvr2` package helps expose this by showing (relative to the mean)
+alongside R’s default behavior, allowing you to see if your model is
+truly better than a simple average.
+
+------------------------------------------------------------------------
+
 ### Standard Definitions
 
 - \\R^2_1\\: The most common form, measuring the proportion of variance
@@ -60,7 +137,6 @@ Let’s use the example data from Kvalseth (1985) to see how these values
 diverge when we remove the intercept.
 
 ``` r
-library(kvr2)
 df1 <- data.frame(x = 1:6, y = c(15, 37, 52, 59, 83, 92))
 
 # Model without an intercept
@@ -121,20 +197,26 @@ consistent with your research goals.
 
 ------------------------------------------------------------------------
 
-## Conclusion
+## Conclusion: A Multi-Metric Approach
 
-The `kvr2` package demonstrates that \\R^2\\ is not a “plug-and-play”
-statistic. By comparing these nine definitions, users can:
+As demonstrated, a single value can be misleading. When is negative or
+exceeds, it is a diagnostic signal. We recommend:
 
-1.  Identify when a model fit is being over- or under-represented by a
-    specific formula.
-2.  Understand why Kvalseth recommended \\R^2_1\\ for its consistency
-    and \\R^2_9\\ for its robustness.
-3.  Be more critical of \\R^2\\ values reported in scientific
-    literature.
+1.  **Compare and** : If they differ wildly, your intercept constraint
+    is likely problematic.
+2.  **Check Absolute Errors**: Always look at RMSE or MAE alongside to
+    understand the actual scale of the prediction error.
+3.  **Context Matters**: Use for legitimate origin-constrained physical
+    models, but be wary of its tendency to inflate the perception of
+    fit.
 
 ## References
 
-Kvalseth, T. O. (1985). Cautionary Note about \\R^2\\. The American
+Kvalseth, T. O. (1985) Cautionary Note about \\R^2\\. The American
 Statistician, 39(4), 279-285. [DOI:
 10.1080/00031305.1985.10479448](https://doi.org/10.1080/00031305.1985.10479448)
+
+Yutaka Iguchi. (2025) Differences in the Coefficient of Determination
+\\R^2\\: Using Excel, OpenOffice, LibreOffice, and the statistical
+analysis software R. Authorea. December 23, [DOI:
+10.22541/au.176650719.94164489/v1](https://www.authorea.com/users/623380/articles/1372459)

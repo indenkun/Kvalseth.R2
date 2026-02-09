@@ -130,17 +130,49 @@ model_without1 <- lm(y ~ x - 1, df1)
 # Power regression model
 model_power1 <- lm(log(y) ~ log(x), df1)
 r2(model_intercept1)
-#> Error in eval(mf, parent.frame()): object 'df1' not found
+#> R2_1 :  0.9808 
+#> R2_2 :  0.9808 
+#> R2_3 :  0.9808 
+#> R2_4 :  0.9808 
+#> R2_5 :  0.9808 
+#> R2_6 :  0.9808 
+#> R2_7 :  0.9966 
+#> R2_8 :  0.9966 
+#> R2_9 :  0.9778 
 r2(model_without1)
-#> Error in eval(mf, parent.frame()): object 'df1' not found
+#> R2_1 :  0.9777 
+#> R2_2 :  1.0836 
+#> R2_3 :  1.0830 
+#> R2_4 :  0.9783 
+#> R2_5 :  0.9808 
+#> R2_6 :  0.9808 
+#> R2_7 :  0.9961 
+#> R2_8 :  0.9961 
+#> R2_9 :  0.9717 
 r2(model_power1)
-#> Error in eval(mf, parent.frame()): object 'df1' not found
+#> R2_1 :  0.9777 
+#> R2_2 :  1.0984 
+#> R2_3 :  1.0983 
+#> R2_4 :  0.9778 
+#> R2_5 :  0.9816 
+#> R2_6 :  0.9811 
+#> R2_7 :  0.9961 
+#> R2_8 :  1.0232 
+#> R2_9 :  0.9706 
 # Example data set 2. Kvalseth (1985).
 df2 <- data.frame(x = 6:13,
                   y = c(3882, 1266, 733, 450, 410, 305, 185, 112))
 power_model2 <- lm(log((y/7343)) ~ log(x), data = df2)
 r2(power_model2)
-#> Error in eval(mf, parent.frame()): object 'df2' not found
+#> R2_1 :  0.9019 
+#> R2_2 :  0.5858 
+#> R2_3 :  0.5825 
+#> R2_4 :  0.9051 
+#> R2_5 :  0.9668 
+#> R2_6 :  0.9498 
+#> R2_7 :  0.9392 
+#> R2_8 :  0.6879 
+#> R2_9 :  0.9782 
 # Example of a Multiple Regression Analysis Model.
 # The data for two independent variables given by Box et al. (1978, p. 462)
 # as used in Kvalseth (1985).
@@ -154,9 +186,33 @@ model_without3 <- lm(y ~ x1 + x2 - 1, df3)
 # Multiple power regression analysis model
 model_power3 <- lm(log(y) ~ log(x1) + log(x2), df3)
 r2(model_intercept3)
-#> Error in eval(mf, parent.frame()): object 'df3' not found
+#> R2_1 :  0.9657 
+#> R2_2 :  0.9657 
+#> R2_3 :  0.9657 
+#> R2_4 :  0.9657 
+#> R2_5 :  0.9657 
+#> R2_6 :  0.9657 
+#> R2_7 :  0.9977 
+#> R2_8 :  0.9977 
+#> R2_9 :  0.9729 
 r2(model_without3)
-#> Error in eval(mf, parent.frame()): object 'df3' not found
+#> R2_1 :  0.9247 
+#> R2_2 :  0.6169 
+#> R2_3 :  0.6153 
+#> R2_4 :  0.9263 
+#> R2_5 :  0.9657 
+#> R2_6 :  0.9656 
+#> R2_7 :  0.9950 
+#> R2_8 :  0.9950 
+#> R2_9 :  0.9661 
 r2(model_power3)
-#> Error in eval(mf, parent.frame()): object 'df3' not found
+#> R2_1 :  0.9653 
+#> R2_2 :  0.9639 
+#> R2_3 :  0.9638 
+#> R2_4 :  0.9653 
+#> R2_5 :  0.9500 
+#> R2_6 :  0.9653 
+#> R2_7 :  0.9977 
+#> R2_8 :  0.9949 
+#> R2_9 :  0.9729 
 ```
