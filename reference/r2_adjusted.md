@@ -19,6 +19,12 @@ r2_adjusted(model, r2)
 
   A numeric. Coefficient of determination.
 
+## Value
+
+A numeric vector or a list of class `r2_kvr2` containing the adjusted
+\\R^2\\ values. Each element represents the adjusted version of the
+corresponding \\R^2\\ definition, accounting for the degrees of freedom.
+
 ## Details
 
 The adjustment factor \\a\\ is calculated using the following formula.
@@ -37,7 +43,7 @@ to \\R^2_6\\ (the square of the correlation coefficient) or to \\R^2_7\\
 and \\R^2_8\\, which depend on specific model forms.
 
 For details on each coefficient of determination, refer to
-[r2](https://indenkun.github.io/kvr2/reference/r2_kvr2.md).
+[`r2()`](https://indenkun.github.io/kvr2/reference/r2_kvr2.md).
 
 ## References
 
@@ -47,4 +53,4 @@ Statistician, 39:4, 279-285,
 
 ## See also
 
-[r2](https://indenkun.github.io/kvr2/reference/r2_kvr2.md)
+[`r2()`](https://indenkun.github.io/kvr2/reference/r2_kvr2.md)

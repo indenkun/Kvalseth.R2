@@ -117,6 +117,11 @@ Statistics for experimenters: an introduction to design, data analysis,
 and model building. New York, United States, J. Wiley, p. 462-473,
 ISBN:9780471093152.
 
+## See also
+
+[`print.r2_kvr2()`](https://indenkun.github.io/kvr2/reference/print.kvr2.md)
+[`r2_adjusted()`](https://indenkun.github.io/kvr2/reference/r2_adjusted.md)
+
 ## Examples
 
 ``` r
