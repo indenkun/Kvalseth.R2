@@ -27,7 +27,7 @@
 #' However, this function follows Kvalseth's definition, which uses \eqn{n - p}
 #' as the denominator.
 #'
-#' @return An object of class \code{comp_kvr2}, which is a list containing
+#' @return An object of class `comp_kvr2`, which is a list containing
 #'   the calculated RMSE, MAE, and MSE values.
 #' @examples
 #' # example data set 1. Kvålseth (1985).
@@ -42,6 +42,9 @@
 #'
 #' @references
 #' Tarald O. Kvalseth (1985) Cautionary Note about R 2 , The American Statistician, 39:4, 279-285, \doi{DOI: 10.1080/00031305.1985.10479448}
+#'
+#' @seealso [print.comp_kvr2()]
+#'
 #' @inherit r2 note
 #' @rdname comp_kvr2
 #' @export

@@ -4,7 +4,7 @@ The `kvr2` package provides functions to calculate nine types of
 coefficients of determination (\\R^2\\) as classified by **Kvalseth
 (1985)**.
 
-### Overview
+## Overview
 
 The coefficient of determination, \\R^2\\, is one of the most common
 metrics for assessing model fit. However, its mathematical definition is
@@ -17,7 +17,7 @@ significantly—sometimes producing negative values or values exceeding
 - **Power regression models**
 - **Other fits via transformations** (e.g., log-log models)
 
-### Scope and Compatibility
+## Scope and Compatibility
 
 This package is specifically designed for models that can be represented
 as `lm` objects in R. This includes:
@@ -32,27 +32,31 @@ squares (`nls`) or other complex non-linear modeling frameworks. It
 focuses on the mathematical sensitivity of \\R^2\\ within the context of
 linear estimation and its common transformations.
 
-### Educational Purpose
+## Educational Purpose: Demystifying
 
-The primary goal of this package is **not** to provide a definitive
-“best” \\R^2\\ for every scenario, but to serve as an educational
-resource. By providing a comprehensive list of definitions, it helps
-users understand the **mathematical sensitivity** of goodness-of-fit
-indices.
+The primary goal of `kvr2` is **not** to provide a definitive “best” for
+every scenario, but to serve as an educational and diagnostic resource.
+Many users rely on the single value provided by standard software, but
+as this package demonstrates, that value is sensitive to the underlying
+mathematical definition and the software’s internal defaults.
 
 Through this package, users can:
 
-1.  **Observe Variability**: See firsthand how the choice of an
-    algebraic formula can lead to different interpretations of the same
-    model.
-2.  **Identify Pitfalls**: Recognize why certain definitions are
-    inappropriate for specific model types (e.g., how the lack of an
-    intercept affects the sum of squares).
-3.  **Analyze Recommendations**: Explore Kvalseth’s arguments for why
-    \\R^2_1\\ (and \\R^2_9\\ for robust cases) are often preferred for
-    consistency and comparability.
+- **Understand Mathematical Sensitivity**: Observe firsthand how
+  different algebraic formulas (eight + one definitions) can lead to
+  dramatically different interpretations of the same model fit,
+  especially in non-intercept models.
+- **Diagnose Negative** : It is imperative to acknowledge that a
+  negative (typically in) should not be interpreted as a “bug”; rather,
+  it functions as a critical diagnostic signal. This signal indicates
+  that the model predicts outcomes that fall below the mean of a simple
+  horizontal line.
+- **Evaluate Robustness and Transformations**: Explore Kvalseth’s
+  recommendations for using for consistency and for robustness against
+  outliers, and see how behaves when models are fitted in transformed
+  spaces (e.g., log power regression models).
 
-### Formulas Included
+## Formulas Included
 
 The package calculates nine indices based on Kvalseth (1985):
 
@@ -66,7 +70,13 @@ The package calculates nine indices based on Kvalseth (1985):
 
 ## Installation
 
-You can install the development version of kvr2 like so:
+You can install the released version of `kvr2` from CRAN with:
+
+``` r
+install.packages("kvr2")
+```
+
+You can install the development version of `kvr2` like so:
 
 ``` r
 remotes::install_github("indenkun/kvr2")

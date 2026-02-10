@@ -72,3 +72,6 @@ comp_fit(model_power)
 \references{
 Tarald O. Kvalseth (1985) Cautionary Note about R 2 , The American Statistician, 39:4, 279-285, \doi{DOI: 10.1080/00031305.1985.10479448}
 }
+\seealso{
+\code{\link[=print.comp_kvr2]{print.comp_kvr2()}}
+}

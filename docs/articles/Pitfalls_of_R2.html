@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kvr2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,6 +92,87 @@ this <strong>mathematical sensitivity</strong>.</p>
 <p>Kvalseth (1985) classified eight existing formulas and proposed one
 robust alternative. Here are the core definitions used in this
 package:</p>
+</div>
+<div class="section level2">
+<h2 id="when-goes-negative-interpretation-and-risks">When Goes Negative: Interpretation and Risks<a class="anchor" aria-label="anchor" href="#when-goes-negative-interpretation-and-risks"></a>
+</h2>
+<p>One of the most confusing moments for a researcher is encountering a
+negative . Mathematically, is often expected to be between and .
+However, in several formulas—most notably —the value can become
+negative.</p>
+<div class="section level3">
+<h3 id="meaning-of-negative-values">Meaning of Negative Values<a class="anchor" aria-label="anchor" href="#meaning-of-negative-values"></a>
+</h3>
+<p>A negative indicates that the chosen model predicts the data
+<strong>worse than a horizontal line representing the mean of the
+observed data</strong>.</p>
+<p>In , this occurs when the Residual Sum of Squares (RSS) exceeds the
+Total Sum of Squares (TSS). This is a clear signal that:</p>
+<ul>
+<li>The model is fundamentally inappropriate for the data.</li>
+<li>You are forcing a model through a specific constraint (like a
+zero-intercept) that the data strongly resists.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="case-study-forcing-a-no-intercept-model">Case Study: Forcing a No-Intercept Model<a class="anchor" aria-label="anchor" href="#case-study-forcing-a-no-intercept-model"></a>
+</h3>
+<p>Consider a dataset with a strong negative trend where we force the
+model through the origin.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/indenkun/kvr2" class="external-link">kvr2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Example: Data with a trend that doesn't pass through (0,0)</span></span>
+<span><span class="va">df_neg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">110</span>, <span class="fl">120</span>, <span class="fl">130</span>, <span class="fl">140</span>, <span class="fl">150</span>, <span class="fl">160</span>, <span class="fl">170</span>, <span class="fl">180</span>, <span class="fl">190</span>, <span class="fl">200</span><span class="op">)</span>,</span>
+<span>  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">180</span>, <span class="fl">170</span>, <span class="fl">180</span>, <span class="fl">170</span>, <span class="fl">160</span>, <span class="fl">160</span>, <span class="fl">150</span>, <span class="fl">145</span>, <span class="fl">140</span>, <span class="fl">145</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">model_forced</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span> <span class="op">-</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">df_neg</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/r2_kvr2.html">r2</a></span><span class="op">(</span><span class="va">model_forced</span><span class="op">)</span></span>
+<span><span class="co">#&gt; R2_1 :  -8.2183 </span></span>
+<span><span class="co">#&gt; R2_2 :  4.3883 </span></span>
+<span><span class="co">#&gt; R2_3 :  4.0856 </span></span>
+<span><span class="co">#&gt; R2_4 :  -7.9156 </span></span>
+<span><span class="co">#&gt; R2_5 :  0.8976 </span></span>
+<span><span class="co">#&gt; R2_6 :  0.8976 </span></span>
+<span><span class="co">#&gt; R2_7 :  0.9303 </span></span>
+<span><span class="co">#&gt; R2_8 :  0.9303 </span></span>
+<span><span class="co">#&gt; R2_9 :  -9.0197</span></span></code></pre></div>
+<p>In this case, is approximately. This massive negative value tells us
+that using the mean of as a predictor would be far more accurate than
+this zero-intercept model. Interestingly, and remain positive because
+they measure correlation or re-fit the intercept, potentially masking
+how poor the original forced model actually is.</p>
+<hr>
+</div>
+</div>
+<div class="section level2">
+<h2 id="technical-note-how-r-calculates">Technical Note: How R Calculates<a class="anchor" aria-label="anchor" href="#technical-note-how-r-calculates"></a>
+</h2>
+<p>It is important to understand how the standard R function
+<code><a href="https://rdrr.io/r/stats/summary.lm.html" class="external-link">summary.lm()</a></code> computes its reported . Internally, R uses the
+ratio of sums of squares:</p>
+<p>Where is the Model Sum of Squares and is the Residual Sum of
+Squares.</p>
+<div class="section level3">
+<h3 id="the-shift-in-baseline">The Shift in Baseline<a class="anchor" aria-label="anchor" href="#the-shift-in-baseline"></a>
+</h3>
+<ul>
+<li>
+<strong>With Intercept</strong>: is calculated relative to the mean.
+In this case, , and the formula is equivalent to .</li>
+<li>
+<strong>Without Intercept</strong>: R changes the definition of to
+the sum of squares about the origin.</li>
+</ul>
+<p>Because R shifts the baseline for no-intercept models, the reported
+by <code>summary(lm(y ~ x - 1))</code> can appear high even if the model
+is poor. The <code>kvr2</code> package helps expose this by showing
+(relative to the mean) alongside R’s default behavior, allowing you to
+see if your model is truly better than a simple average.</p>
+<hr>
+</div>
 <div class="section level3">
 <h3 id="standard-definitions">Standard Definitions<a class="anchor" aria-label="anchor" href="#standard-definitions"></a>
 </h3>
@@ -148,9 +229,8 @@ resist the influence of outliers by using medians (<span class="math inline">\(M
 </h2>
 <p>Let’s use the example data from Kvalseth (1985) to see how these
 values diverge when we remove the intercept.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/indenkun/kvr2" class="external-link">kvr2</a></span><span class="op">)</span></span>
-<span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">37</span>, <span class="fl">52</span>, <span class="fl">59</span>, <span class="fl">83</span>, <span class="fl">92</span><span class="op">)</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">37</span>, <span class="fl">52</span>, <span class="fl">59</span>, <span class="fl">83</span>, <span class="fl">92</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Model without an intercept</span></span>
 <span><span class="va">model_no_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span> <span class="op">-</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">df1</span><span class="op">)</span></span>
@@ -188,7 +268,7 @@ clear interpretation of “error reduction.”</p>
 transformation), the definition of the “mean” and “residuals” becomes
 ambiguous. Does the <span class="math inline">\(R^2\)</span> refer to
 the transformed space or the original space?</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Power model via log-transformation</span></span>
 <span><span class="va">model_power</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">df1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/r2_kvr2.html">r2</a></span><span class="op">(</span><span class="va">model_power</span><span class="op">)</span></span>
@@ -207,24 +287,34 @@ the reported fit is consistent with your research goals.</p>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
+<h2 id="conclusion-a-multi-metric-approach">Conclusion: A Multi-Metric Approach<a class="anchor" aria-label="anchor" href="#conclusion-a-multi-metric-approach"></a>
 </h2>
-<p>The <code>kvr2</code> package demonstrates that <span class="math inline">\(R^2\)</span> is not a “plug-and-play” statistic.
-By comparing these nine definitions, users can:</p>
+<p>As demonstrated, a single value can be misleading. When is negative
+or exceeds, it is a diagnostic signal. We recommend:</p>
 <ol style="list-style-type: decimal">
-<li>Identify when a model fit is being over- or under-represented by a
-specific formula.</li>
-<li>Understand why Kvalseth recommended <span class="math inline">\(R^2_1\)</span> for its consistency and <span class="math inline">\(R^2_9\)</span> for its robustness.</li>
-<li>Be more critical of <span class="math inline">\(R^2\)</span> values
-reported in scientific literature.</li>
+<li>
+<strong>Compare and </strong>: If they differ wildly, your intercept
+constraint is likely problematic.</li>
+<li>
+<strong>Check Absolute Errors</strong>: Always look at RMSE or MAE
+alongside to understand the actual scale of the prediction error.</li>
+<li>
+<strong>Context Matters</strong>: Use for legitimate
+origin-constrained physical models, but be wary of its tendency to
+inflate the perception of fit.</li>
 </ol>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<p>Kvalseth, T. O. (1985). Cautionary Note about <span class="math inline">\(R^2\)</span>. The American Statistician, 39(4),
+<p>Kvalseth, T. O. (1985) Cautionary Note about <span class="math inline">\(R^2\)</span>. The American Statistician, 39(4),
 279-285. <a href="https://doi.org/10.1080/00031305.1985.10479448" class="external-link">DOI:
 10.1080/00031305.1985.10479448</a></p>
+<p>Yutaka Iguchi. (2025) Differences in the Coefficient of Determination
+<span class="math inline">\(R^2\)</span>: Using Excel, OpenOffice,
+LibreOffice, and the statistical analysis software R. Authorea. December
+23, <a href="https://www.authorea.com/users/623380/articles/1372459" class="external-link">DOI:
+10.22541/au.176650719.94164489/v1</a></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

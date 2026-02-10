@@ -9,7 +9,7 @@ Authors@R: c(
       role = c("aut", "cre")
     )
   )
-Description: Provides functions to calculate nine types of coefficients of determination (R-squared) based on the classification by Kvalseth (1985) <doi:10.1080/00031305.1985.10479448>. 
+Description: Calculate nine types of coefficients of determination (R-squared) based on the classification by Kvalseth (1985) <doi:10.1080/00031305.1985.10479448>. 
     This package is designed for educational purposes to demonstrate how R-squared values can fluctuate depending on the choice of formula, particularly in power regression models or linear models without an intercept. 
     By providing a comprehensive list of definitions, it helps users understand the mathematical sensitivity of goodness-of-fit indices.
 URL: https://github.com/indenkun/kvr2,

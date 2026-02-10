@@ -125,3 +125,6 @@ Tarald O. Kvalseth (1985) Cautionary Note about R 2 , The American Statistician,
 
 Box, George E. P., Hunter, William G., Hunter, J. Stuart. (1978) Statistics for experimenters: an introduction to design, data analysis, and model building. New York, United States, J. Wiley, p. 462-473, ISBN:9780471093152.
 }
+\seealso{
+\code{\link[=print.r2_kvr2]{print.r2_kvr2()}} \code{\link[=r2_adjusted]{r2_adjusted()}}
+}

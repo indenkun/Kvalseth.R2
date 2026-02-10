@@ -1,4 +1,4 @@
 # License
 
     YEAR: 2026
-    COPYRIGHT HOLDER: Kvalseth.R2 authors
+    COPYRIGHT HOLDER: kvr2 authors

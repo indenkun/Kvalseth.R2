@@ -80,6 +80,8 @@
 #' The auto-selection between linear regression and power regression models is determined by whether the dependent variable's name contains “log”.
 #' If the name “log” is intentionally used for a linear regression model, the selection cannot be made correctly.
 #'
+#' @seealso [print.r2_kvr2()] [r2_adjusted()]
+#'
 #' @references
 #' Tarald O. Kvalseth (1985) Cautionary Note about R 2 , The American Statistician, 39:4, 279-285, \doi{10.1080/00031305.1985.10479448}
 #'
@@ -200,7 +202,7 @@ r2_5 <- function(model, type = c("auto", "liner", "power")){
   }else{
     m <- sum(w * f /sum(w))
     mss <-sum(w * (f - m)^2)
-    rss <- sum(w * (sqrt(w) * r)^2)
+    rss <- sum(w * r^2)
   }
 
   r2 <- mss/(mss + rss)

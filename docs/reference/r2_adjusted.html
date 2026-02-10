@@ -15,7 +15,7 @@ See details."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">kvr2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,6 +68,11 @@ See details.</p>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>A numeric vector or a list of class <code>r2_kvr2</code> containing the adjusted \(R^2\) values.
+Each element represents the adjusted version of the corresponding \(R^2\) definition, accounting for the degrees of freedom.</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The adjustment factor \(a\) is calculated using the following formula.
 $$a = (n - 1) / (n - k - 1)$$
@@ -76,7 +81,7 @@ $$a = (n - 1) / (n - k - 1)$$
 $$R^2_a = 1 - a (1 - R^2)$$</p>
 <p>This function performs freedom-of-degrees adjustment for all coefficients based on the above formula. However, Kvalseth (1985) recommends applying freedom-of-degrees adjustment only to \(R^2_1\) and \(R^2_9\), based on the principle of consistency in coefficients.
 Furthermore, there is no basis for applying the same type of adjustment to \(R^2_6\) (the square of the correlation coefficient) or to \(R^2_7\) and \(R^2_8\), which depend on specific model forms.</p>
-<p>For details on each coefficient of determination, refer to <a href="r2_kvr2.html">r2</a>.</p>
+<p>For details on each coefficient of determination, refer to <code><a href="r2_kvr2.html">r2()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -84,7 +89,7 @@ Furthermore, there is no basis for applying the same type of adjustment to \(R^2
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><a href="r2_kvr2.html">r2</a></p></div>
+    <div class="dont-index"><p><code><a href="r2_kvr2.html">r2()</a></code></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

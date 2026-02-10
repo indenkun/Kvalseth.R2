@@ -71,6 +71,10 @@ Tarald O. Kvalseth (1985) Cautionary Note about R 2 , The American
 Statistician, 39:4, 279-285, [doi:
 10.1080/00031305.1985.10479448](https://doi.org/%2010.1080/00031305.1985.10479448)
 
+## See also
+
+[`print.comp_kvr2()`](https://indenkun.github.io/kvr2/reference/print.kvr2.md)
+
 ## Examples
 
 ``` r
