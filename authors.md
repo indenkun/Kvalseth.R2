@@ -7,7 +7,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/indenkun/kvr2/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/indenkun/kvr2/blob/v0.1.0/DESCRIPTION)
 
 Kobayashi M (2026). *kvr2: Calculate and Compare Multiple Definitions of
 Coefficient of Determination*. R package version 0.1.0,
