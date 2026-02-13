@@ -219,4 +219,4 @@ Statistician, 39(4), 279-285. [DOI:
 Yutaka Iguchi. (2025) Differences in the Coefficient of Determination
 \\R^2\\: Using Excel, OpenOffice, LibreOffice, and the statistical
 analysis software R. Authorea. December 23, [DOI:
-10.22541/au.176650719.94164489/v1](https://www.authorea.com/users/623380/articles/1372459)
+10.22541/au.176650719.94164489/v1](https://doi.org/10.22541/au.176650719.94164489/v1)
