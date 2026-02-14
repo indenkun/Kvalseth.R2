@@ -19,6 +19,41 @@ package is designed as an educational tool to explore this
 Kvalseth (1985) classified eight existing formulas and proposed one
 robust alternative. Here are the core definitions used in this package:
 
+### Standard Definitions
+
+- \\R^2_1\\: The most common form, measuring the proportion of variance
+  explained. Kvalseth strongly recommends this for consistency.
+
+\\R_1^2 = 1 - \frac{\sum(y - \hat{y})^2}{\sum(y - \bar{y})^2}\\
+
+- \\R^2_2\\: Often used in some contexts, but can exceed 1.0 in
+  no-intercept models.
+
+\\R_2^2 = \frac{\sum(\hat{y} - \bar{y})^2}{\sum(y - \bar{y})^2}\\
+
+- \\R^2_6\\: The square of Pearson’s correlation coefficient between
+  observed and predicted values.
+
+\\R_6^2 = \frac{\left( \sum(y - \bar{y})(\hat{y} - \bar{\hat{y}})
+\right)^2}{\sum(y - \bar{y})^2 \sum(\hat{y} - \bar{\hat{y}})^2}\\
+
+### Definitions for No-Intercept Models
+
+- \\R^2_7\\: Specifically designed for models passing through the
+  origin.
+
+\\R_7^2 = 1 - \frac{\sum(y - \hat{y})^2}{\sum y^2}\\
+
+### Robust Definition
+
+- \\R^2_9\\: Proposed by Kvalseth to resist the influence of outliers by
+  using medians (\\M\\).
+
+\\R_9^2 = 1 - \left( \frac{M\\\|y_i - \hat{y}\_i\|\\}{M\\\|y_i -
+\bar{y}\|\\} \right)^2\\
+
+------------------------------------------------------------------------
+
 ## When Goes Negative: Interpretation and Risks
 
 One of the most confusing moments for a researcher is encountering a
@@ -93,41 +128,6 @@ Because R shifts the baseline for no-intercept models, the reported by
 `kvr2` package helps expose this by showing (relative to the mean)
 alongside R’s default behavior, allowing you to see if your model is
 truly better than a simple average.
-
-------------------------------------------------------------------------
-
-### Standard Definitions
-
-- \\R^2_1\\: The most common form, measuring the proportion of variance
-  explained. Kvalseth strongly recommends this for consistency.
-
-\\R_1^2 = 1 - \frac{\sum(y - \hat{y})^2}{\sum(y - \bar{y})^2}\\
-
-- \\R^2_2\\: Often used in some contexts, but can exceed 1.0 in
-  no-intercept models.
-
-\\R_2^2 = \frac{\sum(\hat{y} - \bar{y})^2}{\sum(y - \bar{y})^2}\\
-
-- \\R^2_6\\: The square of Pearson’s correlation coefficient between
-  observed and predicted values.
-
-\\R_6^2 = \frac{\left( \sum(y - \bar{y})(\hat{y} - \bar{\hat{y}})
-\right)^2}{\sum(y - \bar{y})^2 \sum(\hat{y} - \bar{\hat{y}})^2}\\
-
-### Definitions for No-Intercept Models
-
-- \\R^2_7\\: Specifically designed for models passing through the
-  origin.
-
-\\R_7^2 = 1 - \frac{\sum(y - \hat{y})^2}{\sum y^2}\\
-
-### Robust Definition
-
-- \\R^2_9\\: Proposed by Kvalseth to resist the influence of outliers by
-  using medians (\\M\\).
-
-\\R_9^2 = 1 - \left( \frac{M\\\|y_i - \hat{y}\_i\|\\}{M\\\|y_i -
-\bar{y}\|\\} \right)^2\\
 
 ------------------------------------------------------------------------
 
@@ -219,4 +219,4 @@ Statistician, 39(4), 279-285. [DOI:
 Yutaka Iguchi. (2025) Differences in the Coefficient of Determination
 \\R^2\\: Using Excel, OpenOffice, LibreOffice, and the statistical
 analysis software R. Authorea. December 23, [DOI:
-10.22541/au.176650719.94164489/v1](https://www.authorea.com/users/623380/articles/1372459)
+10.22541/au.176650719.94164489/v1](https://doi.org/10.22541/au.176650719.94164489/v1)
