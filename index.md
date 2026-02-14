@@ -46,10 +46,10 @@ Through this package, users can:
   different algebraic formulas (eight + one definitions) can lead to
   dramatically different interpretations of the same model fit,
   especially in non-intercept models.
-- **Diagnose Negative** : It is imperative to acknowledge that a
-  negative (typically in) should not be interpreted as a “bug”; rather,
-  it functions as a critical diagnostic signal. This signal indicates
-  that the model predicts outcomes that fall below the mean of a simple
+- **Diagnose Negative**: It is imperative to acknowledge that a negative
+  (typically in) should not be interpreted as a “bug”; rather, it
+  functions as a critical diagnostic signal. This signal indicates that
+  the model predicts outcomes that fall below the mean of a simple
   horizontal line.
 - **Evaluate Robustness and Transformations**: Explore Kvalseth’s
   recommendations for using for consistency and for robustness against
