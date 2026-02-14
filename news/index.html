@@ -44,6 +44,23 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="kvr2-development-version">kvr2 (development version)<a class="anchor" aria-label="anchor" href="#kvr2-development-version"></a></h2>
+<div class="section level3">
+<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li>Added <code><a href="../reference/model_info.html">model_info()</a></code> function to extract metadata used for calculations, such as regression type (linear/power), sample size (<span class="math inline">\(n\)</span>), and degrees of freedom (<span class="math inline">\(k\)</span>, <span class="math inline">\(df_{res}\)</span>).</li>
+<li>The <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> methods for <code>r2_kvr2</code> and <code>comp_kvr2</code> objects now display model information at the end of the output by default.</li>
+<li>Added a new argument <code>model_info</code> (default is <code>TRUE</code>) to <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> methods, allowing users to toggle the display of model metadata.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
+<ul><li>Improved the auto-detection logic for power regression models. It now correctly distinguishes between a variable named “log” and the <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code> function call (e.g., <code>lm(log(y) ~ x)</code> is correctly identified while <code>lm(log ~ x)</code> is treated as linear).</li>
+<li>Internal calculations now explicitly store model attributes to ensure consistency between <code><a href="../reference/r2_kvr2.html">r2()</a></code> and <code><a href="../reference/model_info.html">model_info()</a></code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<ul><li>Fixed several typographical errors in the output and documentation. Notably, corrected “RMES” to “RMSE” (Root Mean Square Error) in the output of <code><a href="../reference/comp_kvr2.html">comp_fit()</a></code>.</li>
+<li>Fixed a misclassification issue where models with a dependent variable named “log” were incorrectly identified as power regression when using <code>type = "auto"</code>.</li>
+<li>Corrected “liner” to “linear” in various internal labels and documentation to ensure consistency with standard statistical terminology.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="kvr2-010">kvr2 0.1.0<a class="anchor" aria-label="anchor" href="#kvr2-010"></a></h2>
