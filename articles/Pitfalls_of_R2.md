@@ -97,7 +97,9 @@ r2(model_forced)
 #> R2_6 :  0.8976 
 #> R2_7 :  0.9303 
 #> R2_8 :  0.9303 
-#> R2_9 :  -9.0197
+#> R2_9 :  -9.0197 
+#> ---------------------------------
+#> (Type: linear, without intercept, n: 10, k: 1)
 ```
 
 In this case, is approximately. This massive negative value tells us
@@ -153,7 +155,9 @@ results
 #> R2_6 :  0.9808 
 #> R2_7 :  0.9961 
 #> R2_8 :  0.9961 
-#> R2_9 :  0.9717
+#> R2_9 :  0.9717 
+#> ---------------------------------
+#> (Type: linear, without intercept, n: 6, k: 1)
 ```
 
 ### The Trap
@@ -188,7 +192,9 @@ r2(model_power)
 #> R2_6 :  0.9811 
 #> R2_7 :  0.9961 
 #> R2_8 :  1.0232 
-#> R2_9 :  0.9706
+#> R2_9 :  0.9706 
+#> ---------------------------------
+#> (Type: power, with intercept, n: 6, k: 2)
 ```
 
 In this case, `kvr2` automatically detects the transformation (if

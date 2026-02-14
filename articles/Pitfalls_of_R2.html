@@ -188,7 +188,9 @@ model through the origin.</p>
 <span><span class="co">#&gt; R2_6 :  0.8976 </span></span>
 <span><span class="co">#&gt; R2_7 :  0.9303 </span></span>
 <span><span class="co">#&gt; R2_8 :  0.9303 </span></span>
-<span><span class="co">#&gt; R2_9 :  -9.0197</span></span></code></pre></div>
+<span><span class="co">#&gt; R2_9 :  -9.0197 </span></span>
+<span><span class="co">#&gt; ---------------------------------</span></span>
+<span><span class="co">#&gt; (Type: linear, without intercept, n: 10, k: 1)</span></span></code></pre></div>
 <p>In this case, is approximately. This massive negative value tells us
 that using the mean of as a predictor would be far more accurate than
 this zero-intercept model. Interestingly, and remain positive because
@@ -246,7 +248,9 @@ values diverge when we remove the intercept.</p>
 <span><span class="co">#&gt; R2_6 :  0.9808 </span></span>
 <span><span class="co">#&gt; R2_7 :  0.9961 </span></span>
 <span><span class="co">#&gt; R2_8 :  0.9961 </span></span>
-<span><span class="co">#&gt; R2_9 :  0.9717</span></span></code></pre></div>
+<span><span class="co">#&gt; R2_9 :  0.9717 </span></span>
+<span><span class="co">#&gt; ---------------------------------</span></span>
+<span><span class="co">#&gt; (Type: linear, without intercept, n: 6, k: 1)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="the-trap">The Trap<a class="anchor" aria-label="anchor" href="#the-trap"></a>
 </h3>
@@ -280,7 +284,9 @@ the transformed space or the original space?</p>
 <span><span class="co">#&gt; R2_6 :  0.9811 </span></span>
 <span><span class="co">#&gt; R2_7 :  0.9961 </span></span>
 <span><span class="co">#&gt; R2_8 :  1.0232 </span></span>
-<span><span class="co">#&gt; R2_9 :  0.9706</span></span></code></pre></div>
+<span><span class="co">#&gt; R2_9 :  0.9706 </span></span>
+<span><span class="co">#&gt; ---------------------------------</span></span>
+<span><span class="co">#&gt; (Type: power, with intercept, n: 6, k: 2)</span></span></code></pre></div>
 <p>In this case, <code>kvr2</code> automatically detects the
 transformation (if <code>type = "auto"</code>) and helps you evaluate if
 the reported fit is consistent with your research goals.</p>

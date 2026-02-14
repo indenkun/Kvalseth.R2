@@ -110,7 +110,9 @@ r2(model_int)
 #> R2_6 :  0.9808 
 #> R2_7 :  0.9966 
 #> R2_8 :  0.9966 
-#> R2_9 :  0.9778
+#> R2_9 :  0.9778 
+#> ---------------------------------
+#> (Type: linear, with intercept, n: 6, k: 2)
 
 # Case B: Linear regression without intercept (Values diverge)
 model_no_int <- lm(y ~ x - 1, data = df1)
@@ -124,7 +126,9 @@ results
 #> R2_6 :  0.9808 
 #> R2_7 :  0.9961 
 #> R2_8 :  0.9961 
-#> R2_9 :  0.9717
+#> R2_9 :  0.9717 
+#> ---------------------------------
+#> (Type: linear, without intercept, n: 6, k: 1)
 ```
 
 **Observation:** In Case B, notice that \\R^2_2\\ and \\R^2_3\\ exceed
@@ -161,9 +165,11 @@ MSE.
 
 ``` r
 comp_fit(model_no_int)
-#> RMES :  3.9008 
+#> RMSE :  3.9008 
 #> MAE :  3.6520 
-#> MSE :  18.2593
+#> MSE :  18.2593 
+#> ---------------------------------
+#> (Type: linear, without intercept, n: 6, k: 1)
 ```
 
 For details, refer to the documentation for each function.

@@ -58,25 +58,25 @@ particularly in models without an intercept or in power regression models</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">r2</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"liner"</span>, <span class="st">"power"</span><span class="op">)</span>, adjusted <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">r2</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"linear"</span>, <span class="st">"power"</span><span class="op">)</span>, adjusted <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">r2_1</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"liner"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">r2_1</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"linear"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">r2_2</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"liner"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">r2_2</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"linear"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">r2_3</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"liner"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">r2_3</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"linear"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">r2_4</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"liner"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">r2_4</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"linear"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">r2_5</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"liner"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">r2_5</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"linear"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">r2_6</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"liner"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">r2_6</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"linear"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">r2_7</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"liner"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">r2_7</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"linear"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">r2_8</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"liner"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">r2_8</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"linear"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">r2_9</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"liner"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">r2_9</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"linear"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -164,6 +164,8 @@ If the name “log” is intentionally used for a linear regression model, the s
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_7 :  0.9966 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_8 :  0.9966 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_9 :  0.9778 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Type: linear, with intercept, n: 6, k: 2)</span>
 <span class="r-in"><span><span class="fu">r2</span><span class="op">(</span><span class="va">model_without1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_1 :  0.9777 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_2 :  1.0836 </span>
@@ -174,6 +176,8 @@ If the name “log” is intentionally used for a linear regression model, the s
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_7 :  0.9961 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_8 :  0.9961 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_9 :  0.9717 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Type: linear, without intercept, n: 6, k: 1)</span>
 <span class="r-in"><span><span class="fu">r2</span><span class="op">(</span><span class="va">model_power1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_1 :  0.9777 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_2 :  1.0984 </span>
@@ -184,6 +188,8 @@ If the name “log” is intentionally used for a linear regression model, the s
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_7 :  0.9961 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_8 :  1.0232 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_9 :  0.9706 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Type: power, with intercept, n: 6, k: 2)</span>
 <span class="r-in"><span><span class="co"># Example data set 2. Kvalseth (1985).</span></span></span>
 <span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">6</span><span class="op">:</span><span class="fl">13</span>,</span></span>
 <span class="r-in"><span>                  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3882</span>, <span class="fl">1266</span>, <span class="fl">733</span>, <span class="fl">450</span>, <span class="fl">410</span>, <span class="fl">305</span>, <span class="fl">185</span>, <span class="fl">112</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -198,6 +204,8 @@ If the name “log” is intentionally used for a linear regression model, the s
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_7 :  0.9392 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_8 :  0.6879 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_9 :  0.9782 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Type: power, with intercept, n: 8, k: 2)</span>
 <span class="r-in"><span><span class="co"># Example of a Multiple Regression Analysis Model.</span></span></span>
 <span class="r-in"><span><span class="co"># The data for two independent variables given by Box et al. (1978, p. 462)</span></span></span>
 <span class="r-in"><span><span class="co"># as used in Kvalseth (1985).</span></span></span>
@@ -220,6 +228,8 @@ If the name “log” is intentionally used for a linear regression model, the s
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_7 :  0.9977 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_8 :  0.9977 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_9 :  0.9729 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Type: linear, with intercept, n: 6, k: 3)</span>
 <span class="r-in"><span><span class="fu">r2</span><span class="op">(</span><span class="va">model_without3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_1 :  0.9247 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_2 :  0.6169 </span>
@@ -230,6 +240,8 @@ If the name “log” is intentionally used for a linear regression model, the s
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_7 :  0.9950 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_8 :  0.9950 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_9 :  0.9661 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Type: linear, without intercept, n: 6, k: 2)</span>
 <span class="r-in"><span><span class="fu">r2</span><span class="op">(</span><span class="va">model_power3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_1 :  0.9653 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_2 :  0.9639 </span>
@@ -240,6 +252,8 @@ If the name “log” is intentionally used for a linear regression model, the s
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_7 :  0.9977 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_8 :  0.9949 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R2_9 :  0.9729 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Type: power, with intercept, n: 6, k: 3)</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

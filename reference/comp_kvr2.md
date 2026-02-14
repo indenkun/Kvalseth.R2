@@ -8,13 +8,13 @@ comparing different model specifications.
 ## Usage
 
 ``` r
-comp_fit(model, type = c("auto", "liner", "power"))
+comp_fit(model, type = c("auto", "linear", "power"))
 
-RMSE(model, type = c("auto", "liner", "power"))
+RMSE(model, type = c("auto", "linear", "power"))
 
-MAE(model, type = c("auto", "liner", "power"))
+MAE(model, type = c("auto", "linear", "power"))
 
-MSE(model, type = c("auto", "liner", "power"))
+MSE(model, type = c("auto", "linear", "power"))
 ```
 
 ## Arguments
@@ -85,15 +85,21 @@ model_intercept <- lm(y ~ x, df1)
 model_without <- lm(y ~ x - 1, df1)
 model_power <- lm(log(y) ~ log(x), df1)
 comp_fit(model_intercept)
-#> RMES :  3.6165 
+#> RMSE :  3.6165 
 #> MAE :  3.5238 
 #> MSE :  19.6190 
+#> ---------------------------------
+#> (Type: linear, with intercept, n: 6, k: 2)
 comp_fit(model_without)
-#> RMES :  3.9008 
+#> RMSE :  3.9008 
 #> MAE :  3.6520 
 #> MSE :  18.2593 
+#> ---------------------------------
+#> (Type: linear, without intercept, n: 6, k: 1)
 comp_fit(model_power)
-#> RMES :  3.8982 
+#> RMSE :  3.8982 
 #> MAE :  3.6334 
 #> MSE :  22.7938 
+#> ---------------------------------
+#> (Type: power, with intercept, n: 6, k: 2)
 ```

@@ -10,17 +10,17 @@ respectively, by simple print methods.
 
 ``` r
 # S3 method for class 'r2_kvr2'
-print(x, ..., digits = 4)
+print(x, ..., digits = 4, model_info = TRUE)
 
 # S3 method for class 'comp_kvr2'
-print(x, ..., digits = 4)
+print(x, ..., digits = 4, model_info = TRUE)
 ```
 
 ## Arguments
 
 - x:
 
-  AN object of class "`r2_kvr2`" or "`comp_kvr2`".
+  An object of class "`r2_kvr2`" or "`comp_kvr2`".
 
 - ...:
 
@@ -28,8 +28,13 @@ print(x, ..., digits = 4)
 
 - digits:
 
-  The number of significant digits to be used for printing. Default to
-  4.
+  The number of decimal places to be used for rounding the results.
+  Default is 4.
+
+- model_info:
+
+  Logical. If `TRUE` (default), additional information about the model
+  (type, intercept, n, k) is printed below the results.
 
 ## Value
 

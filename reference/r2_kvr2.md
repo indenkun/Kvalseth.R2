@@ -9,25 +9,25 @@ regression models
 ## Usage
 
 ``` r
-r2(model, type = c("auto", "liner", "power"), adjusted = FALSE)
+r2(model, type = c("auto", "linear", "power"), adjusted = FALSE)
 
-r2_1(model, type = c("auto", "liner", "power"))
+r2_1(model, type = c("auto", "linear", "power"))
 
-r2_2(model, type = c("auto", "liner", "power"))
+r2_2(model, type = c("auto", "linear", "power"))
 
-r2_3(model, type = c("auto", "liner", "power"))
+r2_3(model, type = c("auto", "linear", "power"))
 
-r2_4(model, type = c("auto", "liner", "power"))
+r2_4(model, type = c("auto", "linear", "power"))
 
-r2_5(model, type = c("auto", "liner", "power"))
+r2_5(model, type = c("auto", "linear", "power"))
 
-r2_6(model, type = c("auto", "liner", "power"))
+r2_6(model, type = c("auto", "linear", "power"))
 
-r2_7(model, type = c("auto", "liner", "power"))
+r2_7(model, type = c("auto", "linear", "power"))
 
-r2_8(model, type = c("auto", "liner", "power"))
+r2_8(model, type = c("auto", "linear", "power"))
 
-r2_9(model, type = c("auto", "liner", "power"))
+r2_9(model, type = c("auto", "linear", "power"))
 ```
 
 ## Arguments
@@ -144,6 +144,8 @@ r2(model_intercept1)
 #> R2_7 :  0.9966 
 #> R2_8 :  0.9966 
 #> R2_9 :  0.9778 
+#> ---------------------------------
+#> (Type: linear, with intercept, n: 6, k: 2)
 r2(model_without1)
 #> R2_1 :  0.9777 
 #> R2_2 :  1.0836 
@@ -154,6 +156,8 @@ r2(model_without1)
 #> R2_7 :  0.9961 
 #> R2_8 :  0.9961 
 #> R2_9 :  0.9717 
+#> ---------------------------------
+#> (Type: linear, without intercept, n: 6, k: 1)
 r2(model_power1)
 #> R2_1 :  0.9777 
 #> R2_2 :  1.0984 
@@ -164,6 +168,8 @@ r2(model_power1)
 #> R2_7 :  0.9961 
 #> R2_8 :  1.0232 
 #> R2_9 :  0.9706 
+#> ---------------------------------
+#> (Type: power, with intercept, n: 6, k: 2)
 # Example data set 2. Kvalseth (1985).
 df2 <- data.frame(x = 6:13,
                   y = c(3882, 1266, 733, 450, 410, 305, 185, 112))
@@ -178,6 +184,8 @@ r2(power_model2)
 #> R2_7 :  0.9392 
 #> R2_8 :  0.6879 
 #> R2_9 :  0.9782 
+#> ---------------------------------
+#> (Type: power, with intercept, n: 8, k: 2)
 # Example of a Multiple Regression Analysis Model.
 # The data for two independent variables given by Box et al. (1978, p. 462)
 # as used in Kvalseth (1985).
@@ -200,6 +208,8 @@ r2(model_intercept3)
 #> R2_7 :  0.9977 
 #> R2_8 :  0.9977 
 #> R2_9 :  0.9729 
+#> ---------------------------------
+#> (Type: linear, with intercept, n: 6, k: 3)
 r2(model_without3)
 #> R2_1 :  0.9247 
 #> R2_2 :  0.6169 
@@ -210,6 +220,8 @@ r2(model_without3)
 #> R2_7 :  0.9950 
 #> R2_8 :  0.9950 
 #> R2_9 :  0.9661 
+#> ---------------------------------
+#> (Type: linear, without intercept, n: 6, k: 2)
 r2(model_power3)
 #> R2_1 :  0.9653 
 #> R2_2 :  0.9639 
@@ -220,4 +232,6 @@ r2(model_power3)
 #> R2_7 :  0.9977 
 #> R2_8 :  0.9949 
 #> R2_9 :  0.9729 
+#> ---------------------------------
+#> (Type: power, with intercept, n: 6, k: 3)
 ```
