@@ -77,8 +77,15 @@
 #' @note
 #' The power regression model must be based on a logarithmic transformation.
 #'
-#' The auto-selection between linear regression and power regression models is determined by whether the dependent variable's name contains “log”.
-#' If the name “log” is intentionally used for a linear regression model, the selection cannot be made correctly.
+#' When `type = "auto"`, the choice between linear and power regression
+#' is determined by analyzing the model formula. It identifies a power
+#' regression if the dependent variable is a function call to `log()`
+#' (e.g., `lm(log(y) ~ x)`).
+#'
+#' Note that simple variable names containing the string "log" (e.g.,
+#' `lm(log_value ~ x)`) are correctly treated as linear regression.
+#' To override this automatic detection, manually specify `type = "linear"`
+#' or `type = "power"`.
 #'
 #' @seealso [print.r2_kvr2()] [r2_adjusted()]
 #'
