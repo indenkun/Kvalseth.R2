@@ -105,8 +105,14 @@ as the denominator.</p>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
     <p>The power regression model must be based on a logarithmic transformation.</p>
-<p>The auto-selection between linear regression and power regression models is determined by whether the dependent variable's name contains “log”.
-If the name “log” is intentionally used for a linear regression model, the selection cannot be made correctly.</p>
+<p>When <code>type = "auto"</code>, the choice between linear and power regression
+is determined by analyzing the model formula. It identifies a power
+regression if the dependent variable is a function call to <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code>
+(e.g., <code>lm(log(y) ~ x)</code>).</p>
+<p>Note that simple variable names containing the string "log" (e.g.,
+<code>lm(log_value ~ x)</code>) are correctly treated as linear regression.
+To override this automatic detection, manually specify <code>type = "linear"</code>
+or <code>type = "power"</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
