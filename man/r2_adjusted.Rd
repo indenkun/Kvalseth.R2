@@ -2,7 +2,7 @@
 % Please edit documentation in R/r2_adjusted.R
 \name{r2_adjusted}
 \alias{r2_adjusted}
-\title{Calculate the adjusted determination coefficient}
+\title{Calculate the Adjusted Determination Coefficient}
 \usage{
 r2_adjusted(model, r2)
 }

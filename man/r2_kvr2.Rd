@@ -13,25 +13,25 @@
 \alias{r2_9}
 \title{Calculate Multiple Definitions of Coefficient of Determination (R-squared)}
 \usage{
-r2(model, type = c("auto", "liner", "power"), adjusted = FALSE)
+r2(model, type = c("auto", "linear", "power"), adjusted = FALSE)
 
-r2_1(model, type = c("auto", "liner", "power"))
+r2_1(model, type = c("auto", "linear", "power"))
 
-r2_2(model, type = c("auto", "liner", "power"))
+r2_2(model, type = c("auto", "linear", "power"))
 
-r2_3(model, type = c("auto", "liner", "power"))
+r2_3(model, type = c("auto", "linear", "power"))
 
-r2_4(model, type = c("auto", "liner", "power"))
+r2_4(model, type = c("auto", "linear", "power"))
 
-r2_5(model, type = c("auto", "liner", "power"))
+r2_5(model, type = c("auto", "linear", "power"))
 
-r2_6(model, type = c("auto", "liner", "power"))
+r2_6(model, type = c("auto", "linear", "power"))
 
-r2_7(model, type = c("auto", "liner", "power"))
+r2_7(model, type = c("auto", "linear", "power"))
 
-r2_8(model, type = c("auto", "liner", "power"))
+r2_8(model, type = c("auto", "linear", "power"))
 
-r2_9(model, type = c("auto", "liner", "power"))
+r2_9(model, type = c("auto", "linear", "power"))
 }
 \arguments{
 \item{model}{A linear model or power regression model of the \code{lm}.}

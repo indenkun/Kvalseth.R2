@@ -5,17 +5,18 @@
 \alias{print.comp_kvr2}
 \title{Print Methods for r2 and comp_fit calculation Objects}
 \usage{
-\method{print}{r2_kvr2}(x, ..., digits = 4)
+\method{print}{r2_kvr2}(x, ..., digits = 4, model_info = TRUE)
 
-\method{print}{comp_kvr2}(x, ..., digits = 4)
+\method{print}{comp_kvr2}(x, ..., digits = 4, model_info = TRUE)
 }
 \arguments{
-\item{x}{AN object of class "\code{r2_kvr2}" or "\code{comp_kvr2}".}
+\item{x}{An object of class "\code{r2_kvr2}" or "\code{comp_kvr2}".}
 
 \item{...}{Further arguments passed to or from other methods.}
 
-\item{digits}{The number of significant digits to be used for printing.
-Default to 4.}
+\item{digits}{The number of decimal places to be used for rounding the results. Default is 4.}
+
+\item{model_info}{Logical. If \code{TRUE} (default), additional information about the model (type, intercept, n, k) is printed below the results.}
 }
 \value{
 The input object is returned invisibly (via \code{invisible(x)}).

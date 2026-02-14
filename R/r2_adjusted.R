@@ -1,4 +1,4 @@
-#' Calculate the adjusted determination coefficient
+#' Calculate the Adjusted Determination Coefficient
 #' @description
 #' Calculate the adjusted coefficient of determination by entering the regression model and coefficient of determination.
 #' See details.
@@ -33,7 +33,8 @@ r2_adjusted <- function(model, r2){
 
   r2_adjusted <- 1 - (1 - r2) * v$a
   names(r2_adjusted) <- paste(names(r2), "adjusted", sep = "_")
-  class(r2_adjusted) <- "r2_kvr2"
+  # class(r2_adjusted) <- "r2_kvr2"
+  r2_adjusted <- set_kvr2_attr(r2_adjusted, v = v, class_name = "r2_kvr2")
 
   r2_adjusted
 }

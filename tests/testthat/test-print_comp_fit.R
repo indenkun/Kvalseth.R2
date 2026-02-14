@@ -4,15 +4,17 @@ test_that("Test that comp_fit() output format is correct", {
   res <- comp_fit(model)
 
   # Check whether a specific string is displayed
-  expect_output(print(res), "RMES :")
+  expect_output(print(res), "RMSE :")
   expect_output(print(res), "MAE :")
   expect_output(print(res), "MSE :")
 
   # Validate the format of a number (e.g., four decimal places) using regular expressions
   expected_pattern <- paste(
-    "RMES :  3.6165",
+    "RMSE :  3.6165",
     "MAE :  3.5238",
     "MSE :  19.6190",
+    "---------------------------------",
+    "\\(Type: linear, with intercept, n: 6, k: 2\\)",
     sep = "\\s+"
   )
   expect_output(print(res), expected_pattern)
@@ -25,9 +27,11 @@ test_that("Test that model without intercept", {
 
   # Validate the format of a number (e.g., four decimal places) using regular expressions
   expected_pattern <- paste(
-    "RMES :  3.9008",
+    "RMSE :  3.9008",
     "MAE :  3.6520",
     "MSE :  18.2593",
+    "---------------------------------",
+    "\\(Type: linear, without intercept, n: 6, k: 1\\)",
     sep = "\\s+"
   )
   expect_output(print(res), expected_pattern)
@@ -40,9 +44,11 @@ test_that("Test that power model", {
 
   # Validate the format of a number (e.g., four decimal places) using regular expressions
   expected_pattern <- paste(
-    "RMES :  3.8982",
+    "RMSE :  3.8982",
     "MAE :  3.6334",
     "MSE :  22.7938",
+    "---------------------------------",
+    "\\(Type: power, with intercept, n: 6, k: 2\\)",
     sep = "\\s+"
   )
   expect_output(print(res), expected_pattern)
@@ -57,7 +63,7 @@ test_that("Test that multiple model", {
 
   # Validate the format of a number (e.g., four decimal places) using regular expressions
   expected_pattern <- paste(
-    "RMES :  0.3177",
+    "RMSE :  0.3177",
     "MAE :  0.2665",
     "MSE :  0.2019",
     sep = "\\s+"
@@ -74,7 +80,7 @@ test_that("Test that multiple model without intercept", {
 
   # Validate the format of a number (e.g., four decimal places) using regular expressions
   expected_pattern <- paste(
-    "RMES :  0.4709",
+    "RMSE :  0.4709",
     "MAE :  0.3897",
     "MSE :  0.3327",
     sep = "\\s+"

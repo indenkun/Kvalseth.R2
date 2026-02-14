@@ -71,7 +71,7 @@
 #'
 #' For degree of freedom adjustment `adjusted = TRUE`, refer to [r2_adjusted].
 #'
-#' @return An object of class \code{r2_kvr2}, which is a list containing the
+#' @return An object of class `r2_kvr2`, which is a list containing the
 #'   calculated values for each \eqn{R^2} formula.
 #'
 #' @note
@@ -88,7 +88,7 @@
 #' Box, George E. P., Hunter, William G., Hunter, J. Stuart. (1978) Statistics for experimenters: an introduction to design, data analysis, and model building. New York, United States, J. Wiley, p. 462-473, ISBN:9780471093152.
 #' @rdname r2_kvr2
 #' @export
-r2 <- function(model, type = c("auto", "liner", "power"), adjusted = FALSE){
+r2 <- function(model, type = c("auto", "linear", "power"), adjusted = FALSE){
   type <- match.arg(type)
 
   ans <- list()
@@ -115,14 +115,15 @@ r2 <- function(model, type = c("auto", "liner", "power"), adjusted = FALSE){
              r2_adjusted(model, ans$r2_9))
   }
 
-  class(ans) <- "r2_kvr2"
+  v <- values_lm(model, type)
+  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
 
   ans
 }
 
 #' @rdname r2_kvr2
 #' @export
-r2_1 <- function(model, type = c("auto", "liner", "power")){
+r2_1 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
@@ -132,13 +133,13 @@ r2_1 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_1"
 
   ans$r2_1 <- r2
-  class(ans) <- "r2_kvr2"
+  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
 #' @rdname r2_kvr2
 #' @export
-r2_2 <- function(model, type = c("auto", "liner", "power")){
+r2_2 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
@@ -148,13 +149,13 @@ r2_2 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_2"
 
   ans$r2_2 <- r2
-  class(ans) <- "r2_kvr2"
+  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
 #' @rdname r2_kvr2
 #' @export
-r2_3 <- function(model, type = c("auto", "liner", "power")){
+r2_3 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
@@ -164,13 +165,13 @@ r2_3 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_3"
 
   ans$r2_3 <- r2
-  class(ans) <- "r2_kvr2"
+  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
 #' @rdname r2_kvr2
 #' @export
-r2_4 <- function(model, type = c("auto", "liner", "power")){
+r2_4 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
@@ -180,13 +181,13 @@ r2_4 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_4"
 
   ans$r2_4 <- r2
-  class(ans) <- "r2_kvr2"
+  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
 #' @rdname r2_kvr2
 #' @export
-r2_5 <- function(model, type = c("auto", "liner", "power")){
+r2_5 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   # v <- values_lm(model, type)
@@ -213,13 +214,13 @@ r2_5 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_5"
 
   ans$r2_5 <- r2
-  class(ans) <- "r2_kvr2"
+  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
 #' @rdname r2_kvr2
 #' @export
-r2_6 <- function(model, type = c("auto", "liner", "power")){
+r2_6 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
@@ -229,13 +230,13 @@ r2_6 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_6"
 
   ans$r2_6 <- r2
-  class(ans) <- "r2_kvr2"
+  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
 #' @rdname r2_kvr2
 #' @export
-r2_7 <- function(model, type = c("auto", "liner", "power")){
+r2_7 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
@@ -245,13 +246,13 @@ r2_7 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_7"
 
   ans$r2_7 <- r2
-  class(ans) <- "r2_kvr2"
+  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
 #' @rdname r2_kvr2
 #' @export
-r2_8 <- function(model, type = c("auto", "liner", "power")){
+r2_8 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
@@ -261,13 +262,13 @@ r2_8 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_8"
 
   ans$r2_8 <- r2
-  class(ans) <- "r2_kvr2"
+  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
 #' @rdname r2_kvr2
 #' @export
-r2_9 <- function(model, type = c("auto", "liner", "power")){
+r2_9 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
@@ -277,6 +278,6 @@ r2_9 <- function(model, type = c("auto", "liner", "power")){
   names(r2) <- "r2_9"
 
   ans$r2_9 <- r2
-  class(ans) <- "r2_kvr2"
+  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }

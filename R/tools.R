@@ -1,13 +1,13 @@
 # internal tools
 check_lm <- function(model) stopifnot(class(model) == "lm")
 
-values_lm <- function(model, type = c("auto", "liner", "power")){
+values_lm <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
   check_lm(model)
 
   if(type == "auto"){
     if(check_power(model)) type <- "power"
-    else type <- "liner"
+    else type <- "linear"
   }
 
   ans <- NULL
@@ -18,7 +18,7 @@ values_lm <- function(model, type = c("auto", "liner", "power")){
   ans$f <- model$fitted.values
   ans$y <- stats::model.frame(model)[[1]]
   ans$n <- length(ans$y)
-  ans$k <- length(stats::model.frame(model))
+  ans$k <- length(stats::coef(model))
 
   if(type == "power"){
     ans$r <- exp(ans$r)
@@ -31,11 +31,14 @@ values_lm <- function(model, type = c("auto", "liner", "power")){
   ans$df_int <- attr(model$terms, "intercept")
   ans$a <- (ans$n - ans$df_int) / ans$rdf
 
+  ans$type <- type
+
   ans
 }
 
 check_power <- function(model){
-  "log" %in% as.character(model$call$formula[[2]])
+  resp <- as.character(attr(model$terms, "variables"))[2]
+  grepl("^log\\(", resp)
 }
 
 lm_forced_int <- function(model){
@@ -77,4 +80,14 @@ lm_forced_int <- function(model){
   )
 
   results
+}
+
+set_kvr2_attr <- function(x, v, class_name) {
+  structure(x,
+            type = v$type,
+            has_intercept = (v$df_int == 1),
+            n = v$n,
+            k = v$k,
+            df_res = v$rdf,
+            class = class_name)
 }

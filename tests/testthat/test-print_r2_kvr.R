@@ -19,6 +19,8 @@ test_that("Test that r2() output format is correct", {
     "R2_7 :  0.9966",
     "R2_8 :  0.9966",
     "R2_9 :  0.9778",
+    "---------------------------------",
+    "\\(Type: linear, with intercept, n: 6, k: 2\\)",
     sep = "\\s+"
   )
   expect_output(print(res), expected_pattern)

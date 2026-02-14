@@ -7,13 +7,13 @@
 \alias{MSE}
 \title{Calculate Comparative Fit Measures for Regression Models}
 \usage{
-comp_fit(model, type = c("auto", "liner", "power"))
+comp_fit(model, type = c("auto", "linear", "power"))
 
-RMSE(model, type = c("auto", "liner", "power"))
+RMSE(model, type = c("auto", "linear", "power"))
 
-MAE(model, type = c("auto", "liner", "power"))
+MAE(model, type = c("auto", "linear", "power"))
 
-MSE(model, type = c("auto", "liner", "power"))
+MSE(model, type = c("auto", "linear", "power"))
 }
 \arguments{
 \item{model}{A linear model or power regression model of the \code{lm}.}

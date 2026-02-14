@@ -48,37 +48,39 @@
 #' @inherit r2 note
 #' @rdname comp_kvr2
 #' @export
-comp_fit <- function(model, type = c("auto", "liner", "power")){
+comp_fit <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   ans <- list()
 
   ans <- c(RMSE(model, type), MAE(model, type), MSE(model, type))
 
-  class(ans) <- "comp_kvr2"
+  # class(ans) <- "comp_kvr2"
+  v <- values_lm(model, type)
+  ans <- set_kvr2_attr(ans, v = v, class_name = "comp_kvr2")
 
   ans
 }
 
 #' @rdname comp_kvr2
 #' @export
-RMSE <- function(model, type = c("auto", "liner", "power")){
+RMSE <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
   ans <- list()
 
   rmse <- sqrt(sum((v$y - v$f)^2) / v$n)
-  names(rmse) <- "RMES"
+  names(rmse) <- "RMSE"
 
   ans$rmse <- rmse
-  class(ans) <- "comp_kvr2"
+  ans <- set_kvr2_attr(ans, v = v, class_name = "comp_kvr2")
   ans
 }
 
 #' @rdname comp_kvr2
 #' @export
-MAE <- function(model, type = c("auto", "liner", "power")){
+MAE <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
@@ -88,13 +90,13 @@ MAE <- function(model, type = c("auto", "liner", "power")){
   names(mae) <- "MAE"
 
   ans$mae <- mae
-  class(ans) <- "comp_kvr2"
+  ans <- set_kvr2_attr(ans, v = v, class_name = "comp_kvr2")
   ans
 }
 
 #' @rdname comp_kvr2
 #' @export
-MSE <- function(model, type = c("auto", "liner", "power")){
+MSE <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
@@ -104,6 +106,6 @@ MSE <- function(model, type = c("auto", "liner", "power")){
   names(mse) <- "MSE"
 
   ans$mse <- mse
-  class(ans) <- "comp_kvr2"
+  ans <- set_kvr2_attr(ans, v = v, class_name = "comp_kvr2")
   ans
 }
