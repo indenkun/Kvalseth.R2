@@ -144,10 +144,11 @@ resist the influence of outliers by using medians (<span class="math inline">\(M
 </div>
 </div>
 <div class="section level2">
-<h2 id="when-goes-negative-interpretation-and-risks">When Goes Negative: Interpretation and Risks<a class="anchor" aria-label="anchor" href="#when-goes-negative-interpretation-and-risks"></a>
+<h2 id="when-r2-goes-negative-interpretation-and-risks">When <span class="math inline">\(R^2\)</span> Goes Negative:
+Interpretation and Risks<a class="anchor" aria-label="anchor" href="#when-r2-goes-negative-interpretation-and-risks"></a>
 </h2>
 <p>One of the most confusing moments for a researcher is encountering a
-negative . Mathematically, is often expected to be between and .
+negative . Mathematically, is often expected to be between 0 and 1.
 However, in several formulas—most notably —the value can become
 negative.</p>
 <div class="section level3">
@@ -191,11 +192,113 @@ model through the origin.</p>
 <span><span class="co">#&gt; R2_9 :  -9.0197 </span></span>
 <span><span class="co">#&gt; ---------------------------------</span></span>
 <span><span class="co">#&gt; (Type: linear, without intercept, n: 10, k: 1)</span></span></code></pre></div>
-<p>In this case, is approximately. This massive negative value tells us
-that using the mean of as a predictor would be far more accurate than
-this zero-intercept model. Interestingly, and remain positive because
-they measure correlation or re-fit the intercept, potentially masking
-how poor the original forced model actually is.</p>
+<p>In this case, is approximately -15.2. This massive negative value
+tells us that using the mean of as a predictor would be far more
+accurate than this zero-intercept model. Interestingly, <span class="math inline">\(R^2_6\)</span> and <span class="math inline">\(R^2_8\)</span> remain positive because they
+measure correlation or re-fit the intercept, potentially masking how
+poor the original forced model actually is.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="the-transformation-trap-power-models">The Transformation Trap (Power Models)<a class="anchor" aria-label="anchor" href="#the-transformation-trap-power-models"></a>
+</h2>
+<p>In power regression models (typically fitted via log-log
+transformation), the definition of the “mean” and “residuals” becomes
+ambiguous. Does the <span class="math inline">\(R^2\)</span> refer to
+the transformed space or the original space?</p>
+<p>When <code>type = "auto"</code> (the default), <code>kvr2</code>
+detects whether the model is a power regression by analyzing the model
+formula. It specifically looks for the <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code> function call
+on the dependent variable.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Power model via log-transformation</span></span>
+<span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">37</span>, <span class="fl">52</span>, <span class="fl">59</span>, <span class="fl">83</span>, <span class="fl">92</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">model_power</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">df1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/r2_kvr2.html">r2</a></span><span class="op">(</span><span class="va">model_power</span><span class="op">)</span></span>
+<span><span class="co">#&gt; R2_1 :  0.9777 </span></span>
+<span><span class="co">#&gt; R2_2 :  1.0984 </span></span>
+<span><span class="co">#&gt; R2_3 :  1.0983 </span></span>
+<span><span class="co">#&gt; R2_4 :  0.9778 </span></span>
+<span><span class="co">#&gt; R2_5 :  0.9816 </span></span>
+<span><span class="co">#&gt; R2_6 :  0.9811 </span></span>
+<span><span class="co">#&gt; R2_7 :  0.9961 </span></span>
+<span><span class="co">#&gt; R2_8 :  1.0232 </span></span>
+<span><span class="co">#&gt; R2_9 :  0.9706 </span></span>
+<span><span class="co">#&gt; ---------------------------------</span></span>
+<span><span class="co">#&gt; (Type: power, with intercept, n: 6, k: 2)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="distinguishing-variable-names-from-functions">Distinguishing Variable Names from Functions<a class="anchor" aria-label="anchor" href="#distinguishing-variable-names-from-functions"></a>
+</h2>
+<p>Unlike simpler string-matching approaches, <code>kvr2</code>
+distinguishes between a variable actually named “log” and the
+logarithmic function. This prevents misclassification when you have a
+linear model where a variable is named “log”.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># A linear model where the dependent variable is named 'log'</span></span>
+<span><span class="va">df_log_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, log <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">37</span>, <span class="fl">52</span>, <span class="fl">59</span>, <span class="fl">83</span>, <span class="fl">92</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">model_linear_log</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">log</span> <span class="op">~</span> <span class="va">x</span>, data <span class="op">=</span> <span class="va">df_log_name</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># kvr2 correctly identifies this as "linear", not "power"</span></span>
+<span><span class="fu"><a href="../reference/model_info.html">model_info</a></span><span class="op">(</span><span class="fu"><a href="../reference/r2_kvr2.html">r2</a></span><span class="op">(</span><span class="va">model_linear_log</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">type</span></span>
+<span><span class="co">#&gt; [1] "linear"</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="transparency-and-metadata-beyond-the-numbers">Transparency and Metadata: Beyond the Numbers<a class="anchor" aria-label="anchor" href="#transparency-and-metadata-beyond-the-numbers"></a>
+</h2>
+<p>When comparing nine different definitions of <span class="math inline">\(R^2\)</span>, it is crucial to know the exact
+parameters used in the calculation. The <code>kvr2</code> package
+ensures transparency by storing and displaying the model metadata.</p>
+<div class="section level3">
+<h3 id="inspecting-model-information">Inspecting Model Information<a class="anchor" aria-label="anchor" href="#inspecting-model-information"></a>
+</h3>
+<p>The <code><a href="../reference/model_info.html">model_info()</a></code> function allows you to retrieve the
+underlying specifications of the calculation:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_no_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span> <span class="op">-</span> <span class="fl">1</span>, <span class="va">df1</span><span class="op">)</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/r2_kvr2.html">r2</a></span><span class="op">(</span><span class="va">model_no_int</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/model_info.html">model_info</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $type</span></span>
+<span><span class="co">#&gt; [1] "linear"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $has_intercept</span></span>
+<span><span class="co">#&gt; [1] FALSE</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $n</span></span>
+<span><span class="co">#&gt; [1] 6</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $k</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $df_res</span></span>
+<span><span class="co">#&gt; [1] 5</span></span></code></pre></div>
+<p>This returns:</p>
+<ul>
+<li>
+<strong>type</strong>: Whether the calculation treated the model as
+linear or power.</li>
+<li>
+<strong>has_intercept</strong>: Verification of the intercept’s
+presence.</li>
+<li>
+<strong>n</strong>: The actual sample size used (excluding any
+missing values).</li>
+<li>
+<strong>k</strong>: The number of parameters (important for adjusted
+<span class="math inline">\(R^2\)</span>).</li>
+<li>
+<strong>df_res</strong>: Residual degrees of freedom (<span class="math inline">\(n - k\)</span>).</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="enhanced-console-output">Enhanced Console Output<a class="anchor" aria-label="anchor" href="#enhanced-console-output"></a>
+</h3>
+<p>By default, the print method for <code>r2_kvr2</code> and
+<code>comp_kvr2</code> objects now displays this information at the
+bottom. This feature serves as a built-in “sanity check” to ensure you
+are comparing like with like. If you only need the numerical results,
+you can disable this using print(results,
+<code>model_info = FALSE</code>).</p>
 <hr>
 </div>
 </div>
@@ -231,7 +334,7 @@ see if your model is truly better than a simple average.</p>
 </h2>
 <p>Let’s use the example data from Kvalseth (1985) to see how these
 values diverge when we remove the intercept.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">37</span>, <span class="fl">52</span>, <span class="fl">59</span>, <span class="fl">83</span>, <span class="fl">92</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Model without an intercept</span></span>
@@ -266,48 +369,26 @@ clear interpretation of “error reduction.”</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="the-transformation-trap-power-models">The Transformation Trap (Power Models)<a class="anchor" aria-label="anchor" href="#the-transformation-trap-power-models"></a>
-</h2>
-<p>In power regression models (typically fitted via log-log
-transformation), the definition of the “mean” and “residuals” becomes
-ambiguous. Does the <span class="math inline">\(R^2\)</span> refer to
-the transformed space or the original space?</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Power model via log-transformation</span></span>
-<span><span class="va">model_power</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">df1</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/r2_kvr2.html">r2</a></span><span class="op">(</span><span class="va">model_power</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R2_1 :  0.9777 </span></span>
-<span><span class="co">#&gt; R2_2 :  1.0984 </span></span>
-<span><span class="co">#&gt; R2_3 :  1.0983 </span></span>
-<span><span class="co">#&gt; R2_4 :  0.9778 </span></span>
-<span><span class="co">#&gt; R2_5 :  0.9816 </span></span>
-<span><span class="co">#&gt; R2_6 :  0.9811 </span></span>
-<span><span class="co">#&gt; R2_7 :  0.9961 </span></span>
-<span><span class="co">#&gt; R2_8 :  1.0232 </span></span>
-<span><span class="co">#&gt; R2_9 :  0.9706 </span></span>
-<span><span class="co">#&gt; ---------------------------------</span></span>
-<span><span class="co">#&gt; (Type: power, with intercept, n: 6, k: 2)</span></span></code></pre></div>
-<p>In this case, <code>kvr2</code> automatically detects the
-transformation (if <code>type = "auto"</code>) and helps you evaluate if
-the reported fit is consistent with your research goals.</p>
-<hr>
-</div>
-<div class="section level2">
 <h2 id="conclusion-a-multi-metric-approach">Conclusion: A Multi-Metric Approach<a class="anchor" aria-label="anchor" href="#conclusion-a-multi-metric-approach"></a>
 </h2>
 <p>As demonstrated, a single value can be misleading. When is negative
 or exceeds, it is a diagnostic signal. We recommend:</p>
 <ol style="list-style-type: decimal">
 <li>
-<strong>Compare and </strong>: If they differ wildly, your intercept
-constraint is likely problematic.</li>
+<strong>Compare <span class="math inline">\(R^2_1\)</span> and <span class="math inline">\(R^2_{reported}\)</span></strong>: If they differ
+wildly, your intercept constraint is likely problematic.</li>
 <li>
 <strong>Check Absolute Errors</strong>: Always look at RMSE or MAE
-alongside to understand the actual scale of the prediction error.</li>
+alongside <span class="math inline">\(R^2\)</span> to understand the
+actual scale of the prediction error.</li>
 <li>
-<strong>Context Matters</strong>: Use for legitimate
-origin-constrained physical models, but be wary of its tendency to
-inflate the perception of fit.</li>
+<strong>Verify the Calculation Context</strong>: Use
+<code><a href="../reference/model_info.html">model_info()</a></code> to ensure that the sample size (<span class="math inline">\(n\)</span>) and model type (linear vs. power)
+match your expectations across different model comparisons.</li>
+<li>
+<strong>Context Matters</strong>: Use <span class="math inline">\(R^2_7\)</span> for legitimate origin-constrained
+physical models, but be wary of its tendency to inflate the perception
+of fit.</li>
 </ol>
 </div>
 <div class="section level2">
