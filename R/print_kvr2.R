@@ -21,7 +21,7 @@
 #'
 #' @export
 print.r2_kvr2 <- function(x, ..., digits = 4, model_info = TRUE){
-  stopifnot(class(x) == "r2_kvr2")
+  stopifnot(inherits(x, "r2_kvr2"))
 
   sapply(x, function(x){
     cat(chartr("r", "R", names(x)), ": ", format(round(x, digits = digits), nsmall = digits), "\n")
@@ -35,7 +35,7 @@ print.r2_kvr2 <- function(x, ..., digits = 4, model_info = TRUE){
 #' @rdname print.kvr2
 #' @export
 print.comp_kvr2 <- function(x, ..., digits = 4, model_info = TRUE){
-  stopifnot(class(x) == "comp_kvr2")
+  stopifnot(inherits(x, "comp_kvr2"))
 
   sapply(x, function(x){
     cat(names(x), ": ", format(round(x,  digits = digits), nsmall = digits), "\n")

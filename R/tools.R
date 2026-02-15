@@ -1,5 +1,5 @@
 # internal tools
-check_lm <- function(model) stopifnot(class(model) == "lm")
+check_lm <- function(model) stopifnot(inherits(model, "lm"))
 
 values_lm <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
