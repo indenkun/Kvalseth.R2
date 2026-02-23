@@ -44,8 +44,13 @@ variable is log-transformed.}
 of determination for each formula.}
 }
 \value{
-An object of class \code{r2_kvr2}, which is a list containing the
+\itemize{
+\item For \code{r2()}: An object of class \code{r2_kvr2}, which is a list containing
+calculated values for all \eqn{R^2} formulas.
+\item For individual functions (\code{r2_1()} to \code{r2_9()}): A named numeric
+value of the specific \eqn{R^2} definition.
 calculated values for each \eqn{R^2} formula.
+}
 }
 \description{
 Calculates nine types of coefficients of determination (\eqn{R^2}) based on

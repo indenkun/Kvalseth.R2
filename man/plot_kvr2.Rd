@@ -4,10 +4,19 @@
 \alias{plot_kvr2}
 \title{Plot Method for Kvalseth's R-squared Objects}
 \usage{
-plot_kvr2(x, plot_type = c("both", "r2", "diag"), ...)
+plot_kvr2(
+  x,
+  type = c("auto", "linear", "power"),
+  plot_type = c("both", "r2", "diag"),
+  ...
+)
 }
 \arguments{
 \item{x}{An object of class \code{lm}.}
+
+\item{type}{Character string. Selects the model type: \code{"linear"}, \code{"power"},
+or \code{"auto"} (default). In \code{"auto"}, the function detects if the dependent
+variable is log-transformed.}
 
 \item{plot_type}{A string specifying the plot layout: \code{"both"} (default) displays
 the bar plot and diagnostic plot side-by-side using \code{par(mfrow = c(1, 2))},
@@ -15,6 +24,8 @@ the bar plot and diagnostic plot side-by-side using \code{par(mfrow = c(1, 2))},
 and \code{"diag"} shows only the observed-vs-predicted plot.}
 
 \item{...}{Further graphical parameters passed to \code{barplot()} or \code{plot()}.}
+
+\item{r2}{type}
 }
 \value{
 The function is called for its side effect of generating a plot.

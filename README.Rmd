@@ -134,6 +134,14 @@ comp_fit(model_no_int)
 
 For details, refer to the documentation for each function.
 
+### 5. Direct Comparison of Constraints
+
+The `comp_model()` function allows you to instantly see the impact of the intercept constraint. In the example below, notice how $R^2_2$ remains misleadingly high in the no-intercept model, whereas $R^2_1$ drops, reflecting the true decrease in predictive accuracy relative to the mean.
+
+```{r}
+comp_model(model_no_int)
+```
+
 ## References
 
 Kvalseth, T. O. (1985). Cautionary Note about $R^2$. The American Statistician, 39(4), 279-285. [DOI: 10.1080/00031305.1985.10479448](https://doi.org/10.1080/00031305.1985.10479448)

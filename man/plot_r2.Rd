@@ -4,10 +4,14 @@
 \alias{plot_r2}
 \title{Plot Method for r2_kvr2 Objects}
 \usage{
-plot_r2(x, ...)
+plot_r2(x, type = c("auto", "linear", "power"), ...)
 }
 \arguments{
 \item{x}{An object of class \code{lm}.}
+
+\item{type}{Character string. Selects the model type: \code{"linear"}, \code{"power"},
+or \code{"auto"} (default). In \code{"auto"}, the function detects if the dependent
+variable is log-transformed.}
 
 \item{...}{Further graphical parameters passed to \code{barplot()} or \code{plot()}.}
 }

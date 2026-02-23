@@ -23,8 +23,12 @@ or \code{"auto"} (default). In \code{"auto"}, the function detects if the depend
 variable is log-transformed.}
 }
 \value{
-An object of class \code{comp_kvr2}, which is a list containing
-the calculated RMSE, MAE, and MSE values.
+\itemize{
+\item For \code{comp_fit()}: An object of class \code{comp_kvr2}, which is a list
+containing the calculated RMSE, MAE, and MSE values.
+\item For individual functions (\code{RMSE()}, \code{MAE()}, \code{MSE()}):
+A named numeric value of the specific metric.
+}
 }
 \description{
 Calculates goodness-of-fit metrics based on Kvalseth (1985), including

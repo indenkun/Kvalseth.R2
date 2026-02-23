@@ -26,6 +26,10 @@ print.r2_kvr2 <- function(x, ..., digits = 4, model_info = TRUE){
   sapply(x, function(x){
     cat(chartr("r", "R", names(x)), ": ", format(round(x, digits = digits), nsmall = digits), "\n")
   })
+  # res <- as.data.frame.list(x)
+  # names(res) <- chartr("r", "R", names(res))
+  #
+  # print(insight::export_table(res, digits = digits))
 
   if(model_info) .print_model_info(x)
 
@@ -40,6 +44,10 @@ print.comp_kvr2 <- function(x, ..., digits = 4, model_info = TRUE){
   sapply(x, function(x){
     cat(names(x), ": ", format(round(x,  digits = digits), nsmall = digits), "\n")
   })
+  # res <- as.data.frame.list(x)
+  # names(res) <- toupper(names(res))
+  #
+  # print(insight::export_table(res, digits = digits))
 
   if(model_info) .print_model_info(x)
 

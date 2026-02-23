@@ -9,7 +9,9 @@
 #'   the bar plot and diagnostic plot side-by-side using `par(mfrow = c(1, 2))`,
 #'   `"r2"` shows only the R-squared comparison,
 #'   and `"diag"` shows only the observed-vs-predicted plot.
+#' @inheritParams r2
 #' @param ... Further graphical parameters passed to `barplot()` or `plot()`.
+#' @param r2 type
 #'
 #' @details
 #' When `plot_type = "r2"`, the function creates a bar plot comparing all nine
@@ -46,9 +48,9 @@
 #' plot_kvr2(model, plot_type = "diag")
 #'
 #' @export
-plot_kvr2 <- function(x, plot_type = c("both", "r2", "diag"), ...) {
+plot_kvr2 <- function(x, type = c("auto", "linear", "power"), plot_type = c("both", "r2", "diag"), ...) {
   plot_type <- match.arg(plot_type)
-  check_lm(x)
+  type <- match.arg(type)
 
   oldpar <- graphics::par(no.readonly = TRUE)
   on.exit(graphics::par(oldpar))
@@ -58,7 +60,7 @@ plot_kvr2 <- function(x, plot_type = c("both", "r2", "diag"), ...) {
   }
 
   if(plot_type %in% c("both", "r2")){
-    plot_r2(x, ...)
+    plot_r2(x, type, ...)
   }
   if(plot_type %in% c("both", "diag")) {
     plot_diagnostic(x, ...)
@@ -81,8 +83,9 @@ plot_kvr2 <- function(x, plot_type = c("both", "r2", "diag"), ...) {
 #' plot_r2(model)
 #'
 #' @export
-plot_r2 <- function(x, ...) {
-  x <- r2(x)
+plot_r2 <- function(x, type = c("auto", "linear", "power"), ...) {
+  type <- match.arg(type)
+  x <- r2(x, type)
   vals <- unlist(x)
   names(vals) <- toupper(names(x))
 
@@ -93,8 +96,8 @@ plot_r2 <- function(x, ...) {
                                   col = ifelse(vals < 0 | vals > 1, "orange", "skyblue"),
                                   las = 2)
 
-  graphics::abline(h = 1, col = "blue", lwd = 2, lty = 2) # 上限ライン
-  graphics::abline(h = 0, col = "red", lwd = 2, lty = 2)  # 下限ライン
+  graphics::abline(h = 1, col = "blue", lwd = 2, lty = 2)
+  graphics::abline(h = 0, col = "red", lwd = 2, lty = 2)
 
   if(any(vals > 1)) graphics::mtext("Warning: Some values exceed 1.0", side = 3, col = "orange")
   if(any(vals < 0)) graphics::mtext("Warning: Some values are negative", side = 1, col = "red", line = 4)

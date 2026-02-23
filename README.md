@@ -202,6 +202,30 @@ comp_fit(model_no_int)
 
 For details, refer to the documentation for each function.
 
+### 5. Direct Comparison of Constraints
+
+The `comp_model()` function allows you to instantly see the impact of
+the intercept constraint. In the example below, notice how $R^2_2$
+remains misleadingly high in the no-intercept model, whereas $R^2_1$
+drops, reflecting the true decrease in predictive accuracy relative to
+the mean.
+
+``` r
+comp_model(model_no_int)
+#> model             |   R2_1 |   R2_2 |   R2_3 |   R2_4 |   R2_5 |   R2_6
+#> -----------------------------------------------------------------------
+#> with intercept    | 0.9808 | 0.9808 | 0.9808 | 0.9808 | 0.9808 | 0.9808
+#> without intercept | 0.9777 | 1.0836 | 1.0830 | 0.9783 | 0.9808 | 0.9808
+#> 
+#> model             |   R2_7 |   R2_8 |   R2_9 |   RMSE |    MAE |     MSE
+#> ------------------------------------------------------------------------
+#> with intercept    | 0.9966 | 0.9966 | 0.9778 | 3.6165 | 3.5238 | 19.6190
+#> without intercept | 0.9961 | 0.9961 | 0.9717 | 3.9008 | 3.6520 | 18.2593
+#> ---------------------------------
+#> 
+#> Note: Some R2 values exceed 1.0 or are negative, indicating that these definitions may be inappropriate for the no-intercept model.
+```
+
 ## References
 
 Kvalseth, T. O. (1985). Cautionary Note about $R^2$. The American

@@ -4,6 +4,8 @@
 * Added `model_info()` function to extract metadata used for calculations, such as regression type (linear/power), sample size ($n$), and degrees of freedom ($k$, $df_{res}$).
 * The `print()` methods for `r2_kvr2` and `comp_kvr2` objects now display model information at the end of the output by default. 
 * Added a new argument `model_info` (default is `TRUE`) to `print()` methods, allowing users to toggle the display of model metadata.
+* Added `comp_model()` to contrast intercept and no-intercept versions of the same model using QR-decomposition for robust re-calculation.
+* Added a set of plot functions that visually display the difference between the actual and predicted values of the dependent variable in the model and the coefficient of determination.
 
 ## Improvements
 * Improved the auto-detection logic for power regression models. It now correctly distinguishes between a variable named "log" and the `log()` function call (e.g., `lm(log(y) ~ x)` is correctly identified while `lm(log ~ x)` is treated as linear).

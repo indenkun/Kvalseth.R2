@@ -71,8 +71,14 @@
 #'
 #' For degree of freedom adjustment `adjusted = TRUE`, refer to [r2_adjusted].
 #'
-#' @return An object of class `r2_kvr2`, which is a list containing the
+#' @return
+#' \itemize{
+#'   \item For `r2()`: An object of class `r2_kvr2`, which is a list containing
+#'     calculated values for all \eqn{R^2} formulas.
+#'   \item For individual functions (`r2_1()` to `r2_9()`): A named numeric
+#'     value of the specific \eqn{R^2} definition.
 #'   calculated values for each \eqn{R^2} formula.
+#'   }
 #'
 #' @note
 #' The power regression model must be based on a logarithmic transformation.
@@ -98,28 +104,28 @@
 r2 <- function(model, type = c("auto", "linear", "power"), adjusted = FALSE){
   type <- match.arg(type)
 
-  ans <- list()
+  # ans <- list()
 
-  ans <- c(r2_1(model, type),
-           r2_2(model, type),
-           r2_3(model, type),
-           r2_4(model, type),
-           r2_5(model, type),
-           r2_6(model, type),
-           r2_7(model, type),
-           r2_8(model, type),
-           r2_9(model, type))
+  ans <- list(r2_1 = r2_1(model, type),
+              r2_2 = r2_2(model, type),
+              r2_3 = r2_3(model, type),
+              r2_4 = r2_4(model, type),
+              r2_5 = r2_5(model, type),
+              r2_6 = r2_6(model, type),
+              r2_7 = r2_7(model, type),
+              r2_8 = r2_8(model, type),
+              r2_9 = r2_9(model, type))
 
   if(adjusted){
-    ans <- c(r2_adjusted(model, ans$r2_1),
-             r2_adjusted(model, ans$r2_2),
-             r2_adjusted(model, ans$r2_3),
-             r2_adjusted(model, ans$r2_4),
-             r2_adjusted(model, ans$r2_5),
-             r2_adjusted(model, ans$r2_6),
-             r2_adjusted(model, ans$r2_7),
-             r2_adjusted(model, ans$r2_8),
-             r2_adjusted(model, ans$r2_9))
+    ans <- list(r2_1_adj = r2_adjusted(model, ans$r2_1),
+                r2_2_adj = r2_adjusted(model, ans$r2_2),
+                r2_3_adj = r2_adjusted(model, ans$r2_3),
+                r2_4_adj = r2_adjusted(model, ans$r2_4),
+                r2_5_adj = r2_adjusted(model, ans$r2_5),
+                r2_6_adj = r2_adjusted(model, ans$r2_6),
+                r2_7_adj = r2_adjusted(model, ans$r2_7),
+                r2_8_adj = r2_adjusted(model, ans$r2_8),
+                r2_9_adj = r2_adjusted(model, ans$r2_9))
   }
 
   v <- values_lm(model, type)
@@ -134,13 +140,13 @@ r2_1 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
-  ans <- list()
+  # ans <- list()
 
-  r2 <- 1 - sum((v$y - v$f)^2) / sum((v$y - mean(v$y))^2)
-  names(r2) <- "r2_1"
+  ans <- 1 - sum((v$y - v$f)^2) / sum((v$y - mean(v$y))^2)
+  names(ans) <- "r2_1"
 
-  ans$r2_1 <- r2
-  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
+  # ans$r2_1 <- r2
+  # ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
@@ -150,13 +156,13 @@ r2_2 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
-  ans <- list()
+  # ans <- list()
 
-  r2 <- sum((v$f - mean(v$y))^2) / sum((v$y - mean(v$y))^2)
-  names(r2) <- "r2_2"
+  ans <- sum((v$f - mean(v$y))^2) / sum((v$y - mean(v$y))^2)
+  names(ans) <- "r2_2"
 
-  ans$r2_2 <- r2
-  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
+  # ans$r2_2 <- r2
+  # ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
@@ -166,13 +172,13 @@ r2_3 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
-  ans <- list()
+  # ans <- list()
 
-  r2 <- sum((v$f - mean(v$f))^2) / sum((v$y - mean(v$y))^2)
-  names(r2) <- "r2_3"
+  ans <- sum((v$f - mean(v$f))^2) / sum((v$y - mean(v$y))^2)
+  names(ans) <- "r2_3"
 
-  ans$r2_3 <- r2
-  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
+  # ans$r2_3 <- r2
+  # ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
@@ -182,13 +188,13 @@ r2_4 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
-  ans <- list()
+  # ans <- list()
 
-  r2 <- 1 - sum((v$e - mean(v$e))^2) / sum((v$y - mean(v$y))^2)
-  names(r2) <- "r2_4"
+  ans <- 1 - sum((v$e - mean(v$e))^2) / sum((v$y - mean(v$y))^2)
+  names(ans) <- "r2_4"
 
-  ans$r2_4 <- r2
-  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
+  # ans$r2_4 <- r2
+  # ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
@@ -199,7 +205,7 @@ r2_5 <- function(model, type = c("auto", "linear", "power")){
 
   # v <- values_lm(model, type)
   v <- lm_forced_int(model)
-  ans <- list()
+  # ans <- list()
 
   r <- v$residuals
   f <- v$fitted_values
@@ -213,15 +219,15 @@ r2_5 <- function(model, type = c("auto", "linear", "power")){
     rss <- sum(w * r^2)
   }
 
-  r2 <- mss/(mss + rss)
+  ans <- mss/(mss + rss)
 
   # model <- stats::update(model, . ~ . + 1)
   # r2 <- stats::summary.lm(model)$r.square
 
-  names(r2) <- "r2_5"
+  names(ans) <- "r2_5"
 
-  ans$r2_5 <- r2
-  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
+  # ans$r2_5 <- r2
+  # ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
@@ -231,13 +237,13 @@ r2_6 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
-  ans <- list()
+  # ans <- list()
 
-  r2 <- stats::cor(v$y, v$f)^2
-  names(r2) <- "r2_6"
+  ans <- stats::cor(v$y, v$f)^2
+  names(ans) <- "r2_6"
 
-  ans$r2_6 <- r2
-  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
+  # ans$r2_6 <- r2
+  # ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
@@ -247,13 +253,13 @@ r2_7 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
-  ans <- list()
+  # ans <- list()
 
-  r2 <- 1 - sum((v$y - v$f)^2) / sum(v$y^2)
-  names(r2) <- "r2_7"
+  ans <- 1 - sum((v$y - v$f)^2) / sum(v$y^2)
+  names(ans) <- "r2_7"
 
-  ans$r2_7 <- r2
-  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
+  # ans$r2_7 <- r2
+  # ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
@@ -263,13 +269,13 @@ r2_8 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
-  ans <- list()
+  # ans <- list()
 
-  r2 <- sum(v$f^2) / sum(v$y^2)
-  names(r2) <- "r2_8"
+  ans <- sum(v$f^2) / sum(v$y^2)
+  names(ans) <- "r2_8"
 
-  ans$r2_8 <- r2
-  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
+  # ans$r2_8 <- r2
+  # ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
 
@@ -279,12 +285,12 @@ r2_9 <- function(model, type = c("auto", "linear", "power")){
   type <- match.arg(type)
 
   v <- values_lm(model, type)
-  ans <- list()
+  # ans <- list()
 
-  r2 <- 1 - (stats::median(abs(v$y - v$f)) / stats::median(abs(v$y - mean(v$y))))^2
-  names(r2) <- "r2_9"
+  ans <- 1 - (stats::median(abs(v$y - v$f)) / stats::median(abs(v$y - mean(v$y))))^2
+  names(ans) <- "r2_9"
 
-  ans$r2_9 <- r2
-  ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
+  # ans$r2_9 <- r2
+  # ans <- set_kvr2_attr(ans, v = v, class_name = "r2_kvr2")
   ans
 }
