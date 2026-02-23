@@ -46,10 +46,10 @@ Through this package, users can:
   different algebraic formulas (eight + one definitions) can lead to
   dramatically different interpretations of the same model fit,
   especially in non-intercept models.
-- **Diagnose Negative** : It is imperative to acknowledge that a
-  negative (typically in) should not be interpreted as a “bug”; rather,
-  it functions as a critical diagnostic signal. This signal indicates
-  that the model predicts outcomes that fall below the mean of a simple
+- **Diagnose Negative**: It is imperative to acknowledge that a negative
+  (typically in) should not be interpreted as a “bug”; rather, it
+  functions as a critical diagnostic signal. This signal indicates that
+  the model predicts outcomes that fall below the mean of a simple
   horizontal line.
 - **Evaluate Robustness and Transformations**: Explore Kvalseth’s
   recommendations for using for consistency and for robustness against
@@ -110,7 +110,9 @@ r2(model_int)
 #> R2_6 :  0.9808 
 #> R2_7 :  0.9966 
 #> R2_8 :  0.9966 
-#> R2_9 :  0.9778
+#> R2_9 :  0.9778 
+#> ---------------------------------
+#> (Type: linear, with intercept, n: 6, k: 2)
 
 # Case B: Linear regression without intercept (Values diverge)
 model_no_int <- lm(y ~ x - 1, data = df1)
@@ -124,7 +126,9 @@ results
 #> R2_6 :  0.9808 
 #> R2_7 :  0.9961 
 #> R2_8 :  0.9961 
-#> R2_9 :  0.9717
+#> R2_9 :  0.9717 
+#> ---------------------------------
+#> (Type: linear, without intercept, n: 6, k: 1)
 ```
 
 **Observation:** In Case B, notice that \\R^2_2\\ and \\R^2_3\\ exceed
@@ -152,7 +156,30 @@ results$r2_9
 my_val <- results$r2_1
 ```
 
-### 3. Model Comparison with Error Metrics
+### 3. Visualizing the Sensitivity of R-squared
+
+To better understand the divergence between these definitions, the
+`kvr2` package provides a specialized plotting function. When you apply
+[`plot_kvr2()`](https://indenkun.github.io/kvr2/reference/plot_kvr2.md)
+to your model, it displays both the comparison of \\R^2\\ definitions
+and a diagnostic observed-vs-predicted plot.
+
+``` r
+# Example with the forced no-intercept model
+plot_kvr2(model_no_int)
+```
+
+![](reference/figures/README-unnamed-chunk-3-1.png)
+
+In the resulting side-by-side plot:
+
+- **Left Panel**: Shows which definitions are most affected by the
+  intercept constraint.
+
+- **Right Panel**: Reveals if the model (green line) is performing worse
+  than the simple average (red line).
+
+### 4. Model Comparison with Error Metrics
 
 To complement \\R^2\\ analysis, use
 [`comp_fit()`](https://indenkun.github.io/kvr2/reference/comp_kvr2.md)
@@ -161,12 +188,40 @@ MSE.
 
 ``` r
 comp_fit(model_no_int)
-#> RMES :  3.9008 
+#> RMSE :  3.9008 
 #> MAE :  3.6520 
-#> MSE :  18.2593
+#> MSE :  18.2593 
+#> ---------------------------------
+#> (Type: linear, without intercept, n: 6, k: 1)
 ```
 
 For details, refer to the documentation for each function.
+
+### 5. Direct Comparison of Constraints
+
+The
+[`comp_model()`](https://indenkun.github.io/kvr2/reference/comp_model.md)
+function allows you to instantly see the impact of the intercept
+constraint. In the example below, notice how \\R^2_2\\ remains
+misleadingly high in the no-intercept model, whereas \\R^2_1\\ drops,
+reflecting the true decrease in predictive accuracy relative to the
+mean.
+
+``` r
+comp_model(model_no_int)
+#> model             |   R2_1 |   R2_2 |   R2_3 |   R2_4 |   R2_5 |   R2_6
+#> -----------------------------------------------------------------------
+#> with intercept    | 0.9808 | 0.9808 | 0.9808 | 0.9808 | 0.9808 | 0.9808
+#> without intercept | 0.9777 | 1.0836 | 1.0830 | 0.9783 | 0.9808 | 0.9808
+#> 
+#> model             |   R2_7 |   R2_8 |   R2_9 |   RMSE |    MAE |     MSE
+#> ------------------------------------------------------------------------
+#> with intercept    | 0.9966 | 0.9966 | 0.9778 | 3.6165 | 3.5238 | 19.6190
+#> without intercept | 0.9961 | 0.9961 | 0.9717 | 3.9008 | 3.6520 | 18.2593
+#> ---------------------------------
+#> 
+#> Note: Some R2 values exceed 1.0 or are negative, indicating that these definitions may be inappropriate for the no-intercept model.
+```
 
 ## References
 
@@ -183,11 +238,23 @@ Statistician, 39(4), 279-285. [DOI:
   [`MAE()`](https://indenkun.github.io/kvr2/reference/comp_kvr2.md)
   [`MSE()`](https://indenkun.github.io/kvr2/reference/comp_kvr2.md) :
   Calculate Comparative Fit Measures for Regression Models
+- [`comp_model()`](https://indenkun.github.io/kvr2/reference/comp_model.md)
+  : Contrast R-squared Definitions: Intercept vs. No-Intercept
+- [`model_info()`](https://indenkun.github.io/kvr2/reference/model_info.md)
+  : Get Model Information Used for Calculations
+- [`plot_diagnostic()`](https://indenkun.github.io/kvr2/reference/plot_diagnostic.md)
+  : Plot Observed vs Predicted Values
+- [`plot_kvr2()`](https://indenkun.github.io/kvr2/reference/plot_kvr2.md)
+  : Plot Method for Kvalseth's R-squared Objects
+- [`plot_r2()`](https://indenkun.github.io/kvr2/reference/plot_r2.md) :
+  Plot Method for r2_kvr2 Objects
+- [`print(`*`<comp_model>`*`)`](https://indenkun.github.io/kvr2/reference/print.comp_model.md)
+  : Print Method for Model Comparison Objects
 - [`print(`*`<r2_kvr2>`*`)`](https://indenkun.github.io/kvr2/reference/print.kvr2.md)
   [`print(`*`<comp_kvr2>`*`)`](https://indenkun.github.io/kvr2/reference/print.kvr2.md)
   : Print Methods for r2 and comp_fit calculation Objects
 - [`r2_adjusted()`](https://indenkun.github.io/kvr2/reference/r2_adjusted.md)
-  : Calculate the adjusted determination coefficient
+  : Calculate the Adjusted Determination Coefficient
 - [`r2()`](https://indenkun.github.io/kvr2/reference/r2_kvr2.md)
   [`r2_1()`](https://indenkun.github.io/kvr2/reference/r2_kvr2.md)
   [`r2_2()`](https://indenkun.github.io/kvr2/reference/r2_kvr2.md)

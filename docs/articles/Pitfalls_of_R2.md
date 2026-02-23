@@ -54,10 +54,10 @@ robust alternative. Here are the core definitions used in this package:
 
 ------------------------------------------------------------------------
 
-## When Goes Negative: Interpretation and Risks
+## When \\R^2\\ Goes Negative: Interpretation and Risks
 
 One of the most confusing moments for a researcher is encountering a
-negative . Mathematically, is often expected to be between and .
+negative . Mathematically, is often expected to be between 0 and 1.
 However, in several formulas—most notably —the value can become
 negative.
 
@@ -97,14 +97,113 @@ r2(model_forced)
 #> R2_6 :  0.8976 
 #> R2_7 :  0.9303 
 #> R2_8 :  0.9303 
-#> R2_9 :  -9.0197
+#> R2_9 :  -9.0197 
+#> ---------------------------------
+#> (Type: linear, without intercept, n: 10, k: 1)
 ```
 
-In this case, is approximately. This massive negative value tells us
-that using the mean of as a predictor would be far more accurate than
-this zero-intercept model. Interestingly, and remain positive because
-they measure correlation or re-fit the intercept, potentially masking
-how poor the original forced model actually is.
+In this case, is approximately -15.2. This massive negative value tells
+us that using the mean of as a predictor would be far more accurate than
+this zero-intercept model. Interestingly, \\R^2_6\\ and \\R^2_8\\ remain
+positive because they measure correlation or re-fit the intercept,
+potentially masking how poor the original forced model actually is.
+
+## The Transformation Trap (Power Models)
+
+In power regression models (typically fitted via log-log
+transformation), the definition of the “mean” and “residuals” becomes
+ambiguous. Does the \\R^2\\ refer to the transformed space or the
+original space?
+
+When `type = "auto"` (the default), `kvr2` detects whether the model is
+a power regression by analyzing the model formula. It specifically looks
+for the [`log()`](https://rdrr.io/r/base/Log.html) function call on the
+dependent variable.
+
+``` r
+# Power model via log-transformation
+df1 <- data.frame(x = 1:6, y = c(15, 37, 52, 59, 83, 92))
+model_power <- lm(log(y) ~ log(x), data = df1)
+r2(model_power)
+#> R2_1 :  0.9777 
+#> R2_2 :  1.0984 
+#> R2_3 :  1.0983 
+#> R2_4 :  0.9778 
+#> R2_5 :  0.9816 
+#> R2_6 :  0.9811 
+#> R2_7 :  0.9961 
+#> R2_8 :  1.0232 
+#> R2_9 :  0.9706 
+#> ---------------------------------
+#> (Type: power, with intercept, n: 6, k: 2)
+```
+
+## Distinguishing Variable Names from Functions
+
+Unlike simpler string-matching approaches, `kvr2` distinguishes between
+a variable actually named “log” and the logarithmic function. This
+prevents misclassification when you have a linear model where a variable
+is named “log”.
+
+``` r
+# A linear model where the dependent variable is named 'log'
+df_log_name <- data.frame(x = 1:6, log = c(15, 37, 52, 59, 83, 92))
+model_linear_log <- lm(log ~ x, data = df_log_name)
+
+# kvr2 correctly identifies this as "linear", not "power"
+model_info(r2(model_linear_log))$type
+#> [1] "linear"
+```
+
+## Transparency and Metadata: Beyond the Numbers
+
+When comparing nine different definitions of \\R^2\\, it is crucial to
+know the exact parameters used in the calculation. The `kvr2` package
+ensures transparency by storing and displaying the model metadata.
+
+### Inspecting Model Information
+
+The
+[`model_info()`](https://indenkun.github.io/kvr2/reference/model_info.md)
+function allows you to retrieve the underlying specifications of the
+calculation:
+
+``` r
+model_no_int <- lm(y ~ x - 1, df1)
+res <- r2(model_no_int)
+model_info(res)
+#> $type
+#> [1] "linear"
+#> 
+#> $has_intercept
+#> [1] FALSE
+#> 
+#> $n
+#> [1] 6
+#> 
+#> $k
+#> [1] 1
+#> 
+#> $df_res
+#> [1] 5
+```
+
+This returns:
+
+- **type**: Whether the calculation treated the model as linear or
+  power.
+- **has_intercept**: Verification of the intercept’s presence.
+- **n**: The actual sample size used (excluding any missing values).
+- **k**: The number of parameters (important for adjusted \\R^2\\).
+- **df_res**: Residual degrees of freedom (\\n - k\\).
+
+### Enhanced Console Output
+
+By default, the print method for `r2_kvr2` and `comp_kvr2` objects now
+displays this information at the bottom. This feature serves as a
+built-in “sanity check” to ensure you are comparing like with like. If
+you only need the numerical results, you can disable this using
+print(results, `model_info = FALSE`).
 
 ------------------------------------------------------------------------
 
@@ -153,7 +252,9 @@ results
 #> R2_6 :  0.9808 
 #> R2_7 :  0.9961 
 #> R2_8 :  0.9961 
-#> R2_9 :  0.9717
+#> R2_9 :  0.9717 
+#> ---------------------------------
+#> (Type: linear, without intercept, n: 6, k: 1)
 ```
 
 ### The Trap
@@ -169,46 +270,125 @@ reduction.”
 
 ------------------------------------------------------------------------
 
-## The Transformation Trap (Power Models)
+## Visualizing the Sensitivity of R-squared
 
-In power regression models (typically fitted via log-log
-transformation), the definition of the “mean” and “residuals” becomes
-ambiguous. Does the \\R^2\\ refer to the transformed space or the
-original space?
+To better understand the divergence between these definitions, the
+`kvr2` package provides a specialized plotting function. When you apply
+[`plot_kvr2()`](https://indenkun.github.io/kvr2/reference/plot_kvr2.md)
+to your model, it displays both the comparison of \\R^2\\ definitions
+and a diagnostic observed-vs-predicted plot.
 
 ``` r
-# Power model via log-transformation
-model_power <- lm(log(y) ~ log(x), data = df1)
-r2(model_power)
-#> R2_1 :  0.9777 
-#> R2_2 :  1.0984 
-#> R2_3 :  1.0983 
-#> R2_4 :  0.9778 
-#> R2_5 :  0.9816 
-#> R2_6 :  0.9811 
-#> R2_7 :  0.9961 
-#> R2_8 :  1.0232 
-#> R2_9 :  0.9706
+# Example with the forced no-intercept model
+plot_kvr2(model_forced)
 ```
 
-In this case, `kvr2` automatically detects the transformation (if
-`type = "auto"`) and helps you evaluate if the reported fit is
-consistent with your research goals.
+![](Pitfalls_of_R2_files/figure-html/unnamed-chunk-7-1.png)
+
+The diagnostic plot (right panel) provides an immediate visual
+explanation for anomalous \\R^2\\ values.
+
+As you can see, when the data points are clustered closer to the **red
+dashed line (mean)** than the **green solid line (model prediction)**,
+it mathematically forces \\R^2_1\\ to become negative. This is because
+\\R^2_1\\ is defined as:
+
+\\R_1^2 = 1 - \frac{RSS}{TSS}\\
+
+Where: - **RSS** (Residual Sum of Squares) is the distance to the green
+line. - **TSS** (Total Sum of Squares) is the distance to the red line.
+
+When the green line is a poorer fit than the red line, \\RSS \> TSS\\,
+resulting in \\R^2_1 \< 0\\.
+
+Similarly, in no-intercept models, some definitions like \\R^2_2\\ can
+exceed 1.0 because the standard decomposition \\SS\_{tot} = SS\_{reg} +
+SS\_{res}\\ no longer applies. The plot reveals this instability by
+showing how the model’s trajectory (green line) deviates from the actual
+trend of the data points.
 
 ------------------------------------------------------------------------
+
+## Comparing Intercept vs. No-Intercept Models
+
+One of the most critical insights from Kvalseth (1985) is that certain
+\\R^2\\ definitions become unreliable—or even mathematically
+invalid—when a model is forced through the origin (no-intercept
+model).To facilitate this comparison, the kvr2 package provides the
+comp_model() function. This tool automatically fits both the intercept
+and no-intercept versions of your model and aligns their metrics
+side-by-side.
+
+### Practical Example: The Sensitivity of \\R^2\\
+
+Consider a scenario where we force a linear model through the origin. We
+can use the df1 dataset from Kvalseth’s original paper:
+
+``` r
+model_int <- lm(y ~ x, data = df1)
+
+# Compare the two model specifications
+comparison <- comp_model(model_int)
+```
+
+#### 1. The Inflation of \\R^2_2\\
+
+Notice that in the **without intercept** row, **R2_2** exceeds 1.0
+(e.g., 1.0836). This occurs because \\R^2_2\\ is defined as \\\sum
+\hat{y}^2 / \sum (y - \bar{y})^2\\ in some contexts, and without an
+intercept, the standard sum-of-squares decomposition breaks down. This
+serves as a visual warning that \\R^2_2\\ is an inappropriate measure
+for no-intercept models.
+
+#### 2. The Drop in Predictive Accuracy
+
+While some \\R^2\\ values might appear higher in the no-intercept model,
+the **RMSE** (Root Mean Squared Error) typically increases. This
+indicates that the “forced” model actually has poorer predictive
+performance, even if certain \\R^2\\ definitions suggest otherwise.
+
+#### Adjusted R-squared Comparison
+
+You can also compare degree-of-freedom adjusted values by setting
+`adjusted = TRUE`. This is particularly useful when comparing models
+with different numbers of predictors, though in the intercept
+vs. no-intercept case, it primarily highlights the penalty for removing
+the intercept term.
+
+``` r
+# Compare adjusted R-squared values
+comp_model(model_int, adjusted = TRUE)
+#> model             | R2_1_adj | R2_2_adj | R2_3_adj | R2_4_adj | R2_5_adj
+#> ------------------------------------------------------------------------
+#> with intercept    |   0.9760 |   0.9760 |   0.9760 |   0.9760 |   0.9760
+#> without intercept |   0.9732 |   1.1003 |   1.0996 |   0.9739 |   0.9770
+#> 
+#> model             | R2_6_adj | R2_7_adj | R2_8_adj | R2_9_adj |   RMSE |    MAE |     MSE
+#> -----------------------------------------------------------------------------------------
+#> with intercept    |   0.9760 |   0.9958 |   0.9958 |   0.9722 | 3.6165 | 3.5238 | 19.6190
+#> without intercept |   0.9770 |   0.9953 |   0.9953 |   0.9661 | 3.9008 | 3.6520 | 18.2593
+#> ---------------------------------
+#> 
+#> Note: Some R2 values exceed 1.0 or are negative, indicating that these definitions may be inappropriate for the no-intercept model.
+```
 
 ## Conclusion: A Multi-Metric Approach
 
 As demonstrated, a single value can be misleading. When is negative or
 exceeds, it is a diagnostic signal. We recommend:
 
-1.  **Compare and** : If they differ wildly, your intercept constraint
-    is likely problematic.
-2.  **Check Absolute Errors**: Always look at RMSE or MAE alongside to
-    understand the actual scale of the prediction error.
-3.  **Context Matters**: Use for legitimate origin-constrained physical
-    models, but be wary of its tendency to inflate the perception of
-    fit.
+1.  **Compare \\R^2_1\\ and \\R^2\_{reported}\\**: If they differ
+    wildly, your intercept constraint is likely problematic.
+2.  **Check Absolute Errors**: Always look at RMSE or MAE alongside
+    \\R^2\\ to understand the actual scale of the prediction error.
+3.  **Verify the Calculation Context**: Use
+    [`model_info()`](https://indenkun.github.io/kvr2/reference/model_info.md)
+    to ensure that the sample size (\\n\\) and model type (linear
+    vs. power) match your expectations across different model
+    comparisons.
+4.  **Context Matters**: Use \\R^2_7\\ for legitimate origin-constrained
+    physical models, but be wary of its tendency to inflate the
+    perception of fit.
 
 ## References
 

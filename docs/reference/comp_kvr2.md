@@ -8,13 +8,13 @@ comparing different model specifications.
 ## Usage
 
 ``` r
-comp_fit(model, type = c("auto", "liner", "power"))
+comp_fit(model, type = c("auto", "linear", "power"))
 
-RMSE(model, type = c("auto", "liner", "power"))
+RMSE(model, type = c("auto", "linear", "power"))
 
-MAE(model, type = c("auto", "liner", "power"))
+MAE(model, type = c("auto", "linear", "power"))
 
-MSE(model, type = c("auto", "liner", "power"))
+MSE(model, type = c("auto", "linear", "power"))
 ```
 
 ## Arguments
@@ -31,8 +31,11 @@ MSE(model, type = c("auto", "liner", "power"))
 
 ## Value
 
-An object of class `comp_kvr2`, which is a list containing the
-calculated RMSE, MAE, and MSE values.
+- For `comp_fit()`: An object of class `comp_kvr2`, which is a list
+  containing the calculated RMSE, MAE, and MSE values.
+
+- For individual functions (`RMSE()`, `MAE()`, `MSE()`): A named numeric
+  value of the specific metric.
 
 ## Details
 
@@ -60,10 +63,15 @@ p\\ as the denominator.
 The power regression model must be based on a logarithmic
 transformation.
 
-The auto-selection between linear regression and power regression models
-is determined by whether the dependent variable's name contains “log”.
-If the name “log” is intentionally used for a linear regression model,
-the selection cannot be made correctly.
+When `type = "auto"`, the choice between linear and power regression is
+determined by analyzing the model formula. It identifies a power
+regression if the dependent variable is a function call to
+[`log()`](https://rdrr.io/r/base/Log.html) (e.g., `lm(log(y) ~ x)`).
+
+Note that simple variable names containing the string "log" (e.g.,
+`lm(log_value ~ x)`) are correctly treated as linear regression. To
+override this automatic detection, manually specify `type = "linear"` or
+`type = "power"`.
 
 ## References
 
@@ -85,15 +93,21 @@ model_intercept <- lm(y ~ x, df1)
 model_without <- lm(y ~ x - 1, df1)
 model_power <- lm(log(y) ~ log(x), df1)
 comp_fit(model_intercept)
-#> RMES :  3.6165 
+#> RMSE :  3.6165 
 #> MAE :  3.5238 
 #> MSE :  19.6190 
+#> ---------------------------------
+#> (Type: linear, with intercept, n: 6, k: 2)
 comp_fit(model_without)
-#> RMES :  3.9008 
+#> RMSE :  3.9008 
 #> MAE :  3.6520 
 #> MSE :  18.2593 
+#> ---------------------------------
+#> (Type: linear, without intercept, n: 6, k: 1)
 comp_fit(model_power)
-#> RMES :  3.8982 
+#> RMSE :  3.8982 
 #> MAE :  3.6334 
 #> MSE :  22.7938 
+#> ---------------------------------
+#> (Type: power, with intercept, n: 6, k: 2)
 ```

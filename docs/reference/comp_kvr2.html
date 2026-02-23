@@ -58,13 +58,13 @@ model specifications.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">comp_fit</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"liner"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">comp_fit</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"linear"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">RMSE</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"liner"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">RMSE</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"linear"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">MAE</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"liner"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">MAE</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"linear"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">MSE</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"liner"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">MSE</span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"linear"</span>, <span class="st">"power"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -83,9 +83,12 @@ variable is log-transformed.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An object of class <code>comp_kvr2</code>, which is a list containing
-the calculated RMSE, MAE, and MSE values.</p>
-    </div>
+
+<ul><li><p>For <code>comp_fit()</code>: An object of class <code>comp_kvr2</code>, which is a list
+containing the calculated RMSE, MAE, and MSE values.</p></li>
+<li><p>For individual functions (<code>RMSE()</code>, <code>MAE()</code>, <code>MSE()</code>):
+A named numeric value of the specific metric.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The metrics are calculated according to the formulas in Kvalseth (1985):</p>
@@ -105,8 +108,14 @@ as the denominator.</p>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
     <p>The power regression model must be based on a logarithmic transformation.</p>
-<p>The auto-selection between linear regression and power regression models is determined by whether the dependent variable's name contains “log”.
-If the name “log” is intentionally used for a linear regression model, the selection cannot be made correctly.</p>
+<p>When <code>type = "auto"</code>, the choice between linear and power regression
+is determined by analyzing the model formula. It identifies a power
+regression if the dependent variable is a function call to <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code>
+(e.g., <code>lm(log(y) ~ x)</code>).</p>
+<p>Note that simple variable names containing the string "log" (e.g.,
+<code>lm(log_value ~ x)</code>) are correctly treated as linear regression.
+To override this automatic detection, manually specify <code>type = "linear"</code>
+or <code>type = "power"</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -126,17 +135,23 @@ If the name “log” is intentionally used for a linear regression model, the s
 <span class="r-in"><span><span class="va">model_without</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span> <span class="op">-</span> <span class="fl">1</span>, <span class="va">df1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">model_power</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="va">df1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">comp_fit</span><span class="op">(</span><span class="va">model_intercept</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RMES :  3.6165 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RMSE :  3.6165 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MAE :  3.5238 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MSE :  19.6190 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Type: linear, with intercept, n: 6, k: 2)</span>
 <span class="r-in"><span><span class="fu">comp_fit</span><span class="op">(</span><span class="va">model_without</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RMES :  3.9008 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RMSE :  3.9008 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MAE :  3.6520 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MSE :  18.2593 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Type: linear, without intercept, n: 6, k: 1)</span>
 <span class="r-in"><span><span class="fu">comp_fit</span><span class="op">(</span><span class="va">model_power</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RMES :  3.8982 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RMSE :  3.8982 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MAE :  3.6334 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MSE :  22.7938 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Type: power, with intercept, n: 6, k: 2)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

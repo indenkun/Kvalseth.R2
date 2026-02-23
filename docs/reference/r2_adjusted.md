@@ -1,4 +1,4 @@
-# Calculate the adjusted determination coefficient
+# Calculate the Adjusted Determination Coefficient
 
 Calculate the adjusted coefficient of determination by entering the
 regression model and coefficient of determination. See details.

@@ -99,7 +99,7 @@
 <li>
 <strong>Understand Mathematical Sensitivity</strong>: Observe firsthand how different algebraic formulas (eight + one definitions) can lead to dramatically different interpretations of the same model fit, especially in non-intercept models.</li>
 <li>
-<strong>Diagnose Negative </strong>: It is imperative to acknowledge that a negative (typically in) should not be interpreted as a “bug”; rather, it functions as a critical diagnostic signal. This signal indicates that the model predicts outcomes that fall below the mean of a simple horizontal line.</li>
+<strong>Diagnose Negative</strong>: It is imperative to acknowledge that a negative (typically in) should not be interpreted as a “bug”; rather, it functions as a critical diagnostic signal. This signal indicates that the model predicts outcomes that fall below the mean of a simple horizontal line.</li>
 <li>
 <strong>Evaluate Robustness and Transformations</strong>: Explore Kvalseth’s recommendations for using for consistency and for robustness against outliers, and see how behaves when models are fitted in transformed spaces (e.g., log power regression models).</li>
 </ul>
@@ -151,7 +151,9 @@
 <span><span class="co">#&gt; R2_6 :  0.9808 </span></span>
 <span><span class="co">#&gt; R2_7 :  0.9966 </span></span>
 <span><span class="co">#&gt; R2_8 :  0.9966 </span></span>
-<span><span class="co">#&gt; R2_9 :  0.9778</span></span>
+<span><span class="co">#&gt; R2_9 :  0.9778 </span></span>
+<span><span class="co">#&gt; ---------------------------------</span></span>
+<span><span class="co">#&gt; (Type: linear, with intercept, n: 6, k: 2)</span></span>
 <span></span>
 <span><span class="co"># Case B: Linear regression without intercept (Values diverge)</span></span>
 <span><span class="va">model_no_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span> <span class="op">-</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">df1</span><span class="op">)</span></span>
@@ -165,7 +167,9 @@
 <span><span class="co">#&gt; R2_6 :  0.9808 </span></span>
 <span><span class="co">#&gt; R2_7 :  0.9961 </span></span>
 <span><span class="co">#&gt; R2_8 :  0.9961 </span></span>
-<span><span class="co">#&gt; R2_9 :  0.9717</span></span></code></pre></div>
+<span><span class="co">#&gt; R2_9 :  0.9717 </span></span>
+<span><span class="co">#&gt; ---------------------------------</span></span>
+<span><span class="co">#&gt; (Type: linear, without intercept, n: 6, k: 1)</span></span></code></pre></div>
 <p><strong>Observation:</strong> In Case B, notice that <span class="math inline">\(R^2_2\)</span> and <span class="math inline">\(R^2_3\)</span> exceed 1.0. This demonstrates why choosing the correct definition is critical for models without an intercept.</p>
 </div>
 <div class="section level3">
@@ -186,15 +190,50 @@
 <span><span class="va">my_val</span> <span class="op">&lt;-</span> <span class="va">results</span><span class="op">$</span><span class="va">r2_1</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="id_3-model-comparison-with-error-metrics">3. Model Comparison with Error Metrics<a class="anchor" aria-label="anchor" href="#id_3-model-comparison-with-error-metrics"></a>
+<h3 id="id_3-visualizing-the-sensitivity-of-r-squared">3. Visualizing the Sensitivity of R-squared<a class="anchor" aria-label="anchor" href="#id_3-visualizing-the-sensitivity-of-r-squared"></a>
+</h3>
+<p>To better understand the divergence between these definitions, the <code>kvr2</code> package provides a specialized plotting function. When you apply <code><a href="reference/plot_kvr2.html">plot_kvr2()</a></code> to your model, it displays both the comparison of <span class="math inline">\(R^2\)</span> definitions and a diagnostic observed-vs-predicted plot.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Example with the forced no-intercept model</span></span>
+<span><span class="fu"><a href="reference/plot_kvr2.html">plot_kvr2</a></span><span class="op">(</span><span class="va">model_no_int</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-3-1.png" alt="" width="100%"></p>
+<p>In the resulting side-by-side plot:</p>
+<ul>
+<li><p><strong>Left Panel</strong>: Shows which definitions are most affected by the intercept constraint.</p></li>
+<li><p><strong>Right Panel</strong>: Reveals if the model (green line) is performing worse than the simple average (red line).</p></li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="id_4-model-comparison-with-error-metrics">4. Model Comparison with Error Metrics<a class="anchor" aria-label="anchor" href="#id_4-model-comparison-with-error-metrics"></a>
 </h3>
 <p>To complement <span class="math inline">\(R^2\)</span> analysis, use <code><a href="reference/comp_kvr2.html">comp_fit()</a></code> to evaluate models via standard error metrics such as RMSE, MAE, and MSE.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/comp_kvr2.html">comp_fit</a></span><span class="op">(</span><span class="va">model_no_int</span><span class="op">)</span></span>
-<span><span class="co">#&gt; RMES :  3.9008 </span></span>
+<span><span class="co">#&gt; RMSE :  3.9008 </span></span>
 <span><span class="co">#&gt; MAE :  3.6520 </span></span>
-<span><span class="co">#&gt; MSE :  18.2593</span></span></code></pre></div>
+<span><span class="co">#&gt; MSE :  18.2593 </span></span>
+<span><span class="co">#&gt; ---------------------------------</span></span>
+<span><span class="co">#&gt; (Type: linear, without intercept, n: 6, k: 1)</span></span></code></pre></div>
 <p>For details, refer to the documentation for each function.</p>
+</div>
+<div class="section level3">
+<h3 id="id_5-direct-comparison-of-constraints">5. Direct Comparison of Constraints<a class="anchor" aria-label="anchor" href="#id_5-direct-comparison-of-constraints"></a>
+</h3>
+<p>The <code><a href="reference/comp_model.html">comp_model()</a></code> function allows you to instantly see the impact of the intercept constraint. In the example below, notice how <span class="math inline">\(R^2_2\)</span> remains misleadingly high in the no-intercept model, whereas <span class="math inline">\(R^2_1\)</span> drops, reflecting the true decrease in predictive accuracy relative to the mean.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/comp_model.html">comp_model</a></span><span class="op">(</span><span class="va">model_no_int</span><span class="op">)</span></span>
+<span><span class="co">#&gt; model             |   R2_1 |   R2_2 |   R2_3 |   R2_4 |   R2_5 |   R2_6</span></span>
+<span><span class="co">#&gt; -----------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; with intercept    | 0.9808 | 0.9808 | 0.9808 | 0.9808 | 0.9808 | 0.9808</span></span>
+<span><span class="co">#&gt; without intercept | 0.9777 | 1.0836 | 1.0830 | 0.9783 | 0.9808 | 0.9808</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; model             |   R2_7 |   R2_8 |   R2_9 |   RMSE |    MAE |     MSE</span></span>
+<span><span class="co">#&gt; ------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; with intercept    | 0.9966 | 0.9966 | 0.9778 | 3.6165 | 3.5238 | 19.6190</span></span>
+<span><span class="co">#&gt; without intercept | 0.9961 | 0.9961 | 0.9717 | 3.9008 | 3.6520 | 18.2593</span></span>
+<span><span class="co">#&gt; ---------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Note: Some R2 values exceed 1.0 or are negative, indicating that these definitions may be inappropriate for the no-intercept model.</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
