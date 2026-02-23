@@ -9,6 +9,12 @@
   Calculate Comparative Fit Measures for Regression Models
 - [`model_info()`](https://indenkun.github.io/kvr2/reference/model_info.md)
   : Get Model Information Used for Calculations
+- [`plot_diagnostic()`](https://indenkun.github.io/kvr2/reference/plot_diagnostic.md)
+  : Plot Observed vs Predicted Values
+- [`plot_kvr2()`](https://indenkun.github.io/kvr2/reference/plot_kvr2.md)
+  : Plot Method for Kvalseth's R-squared Objects
+- [`plot_r2()`](https://indenkun.github.io/kvr2/reference/plot_r2.md) :
+  Plot Method for r2_kvr2 Objects
 - [`print(`*`<r2_kvr2>`*`)`](https://indenkun.github.io/kvr2/reference/print.kvr2.md)
   [`print(`*`<comp_kvr2>`*`)`](https://indenkun.github.io/kvr2/reference/print.kvr2.md)
   : Print Methods for r2 and comp_fit calculation Objects
