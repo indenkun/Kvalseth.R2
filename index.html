@@ -190,10 +190,24 @@
 <span><span class="va">my_val</span> <span class="op">&lt;-</span> <span class="va">results</span><span class="op">$</span><span class="va">r2_1</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="id_3-model-comparison-with-error-metrics">3. Model Comparison with Error Metrics<a class="anchor" aria-label="anchor" href="#id_3-model-comparison-with-error-metrics"></a>
+<h3 id="id_3-visualizing-the-sensitivity-of-r-squared">3. Visualizing the Sensitivity of R-squared<a class="anchor" aria-label="anchor" href="#id_3-visualizing-the-sensitivity-of-r-squared"></a>
+</h3>
+<p>To better understand the divergence between these definitions, the <code>kvr2</code> package provides a specialized plotting function. When you apply <code><a href="reference/plot_kvr2.html">plot_kvr2()</a></code> to your model, it displays both the comparison of <span class="math inline">\(R^2\)</span> definitions and a diagnostic observed-vs-predicted plot.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Example with the forced no-intercept model</span></span>
+<span><span class="fu"><a href="reference/plot_kvr2.html">plot_kvr2</a></span><span class="op">(</span><span class="va">model_no_int</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-3-1.png" alt="" width="100%"></p>
+<p>In the resulting side-by-side plot:</p>
+<ul>
+<li><p><strong>Left Panel</strong>: Shows which definitions are most affected by the intercept constraint.</p></li>
+<li><p><strong>Right Panel</strong>: Reveals if the model (green line) is performing worse than the simple average (red line).</p></li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="id_4-model-comparison-with-error-metrics">4. Model Comparison with Error Metrics<a class="anchor" aria-label="anchor" href="#id_4-model-comparison-with-error-metrics"></a>
 </h3>
 <p>To complement <span class="math inline">\(R^2\)</span> analysis, use <code><a href="reference/comp_kvr2.html">comp_fit()</a></code> to evaluate models via standard error metrics such as RMSE, MAE, and MSE.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/comp_kvr2.html">comp_fit</a></span><span class="op">(</span><span class="va">model_no_int</span><span class="op">)</span></span>
 <span><span class="co">#&gt; RMSE :  3.9008 </span></span>
 <span><span class="co">#&gt; MAE :  3.6520 </span></span>

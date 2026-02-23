@@ -270,6 +270,45 @@ reduction.”
 
 ------------------------------------------------------------------------
 
+## Visualizing the Sensitivity of R-squared
+
+To better understand the divergence between these definitions, the
+`kvr2` package provides a specialized plotting function. When you apply
+[`plot_kvr2()`](https://indenkun.github.io/kvr2/reference/plot_kvr2.md)
+to your model, it displays both the comparison of \\R^2\\ definitions
+and a diagnostic observed-vs-predicted plot.
+
+``` r
+# Example with the forced no-intercept model
+plot_kvr2(model_forced)
+```
+
+![](Pitfalls_of_R2_files/figure-html/unnamed-chunk-7-1.png)
+
+The diagnostic plot (right panel) provides an immediate visual
+explanation for anomalous \\R^2\\ values.
+
+As you can see, when the data points are clustered closer to the **red
+dashed line (mean)** than the **green solid line (model prediction)**,
+it mathematically forces \\R^2_1\\ to become negative. This is because
+\\R^2_1\\ is defined as:
+
+\\R_1^2 = 1 - \frac{RSS}{TSS}\\
+
+Where: - **RSS** (Residual Sum of Squares) is the distance to the green
+line. - **TSS** (Total Sum of Squares) is the distance to the red line.
+
+When the green line is a poorer fit than the red line, \\RSS \> TSS\\,
+resulting in \\R^2_1 \< 0\\.
+
+Similarly, in no-intercept models, some definitions like \\R^2_2\\ can
+exceed 1.0 because the standard decomposition \\SS\_{tot} = SS\_{reg} +
+SS\_{res}\\ no longer applies. The plot reveals this instability by
+showing how the model’s trajectory (green line) deviates from the actual
+trend of the data points.
+
+------------------------------------------------------------------------
+
 ## Conclusion: A Multi-Metric Approach
 
 As demonstrated, a single value can be misleading. When is negative or

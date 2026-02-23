@@ -369,6 +369,37 @@ clear interpretation of “error reduction.”</p>
 </div>
 </div>
 <div class="section level2">
+<h2 id="visualizing-the-sensitivity-of-r-squared">Visualizing the Sensitivity of R-squared<a class="anchor" aria-label="anchor" href="#visualizing-the-sensitivity-of-r-squared"></a>
+</h2>
+<p>To better understand the divergence between these definitions, the
+<code>kvr2</code> package provides a specialized plotting function. When
+you apply <code><a href="../reference/plot_kvr2.html">plot_kvr2()</a></code> to your model, it displays both the
+comparison of <span class="math inline">\(R^2\)</span> definitions and a
+diagnostic observed-vs-predicted plot.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Example with the forced no-intercept model</span></span>
+<span><span class="fu"><a href="../reference/plot_kvr2.html">plot_kvr2</a></span><span class="op">(</span><span class="va">model_forced</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Pitfalls_of_R2_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="960"></p>
+<p>The diagnostic plot (right panel) provides an immediate visual
+explanation for anomalous <span class="math inline">\(R^2\)</span>
+values.</p>
+<p>As you can see, when the data points are clustered closer to the
+<strong>red dashed line (mean)</strong> than the <strong>green solid
+line (model prediction)</strong>, it mathematically forces <span class="math inline">\(R^2_1\)</span> to become negative. This is because
+<span class="math inline">\(R^2_1\)</span> is defined as:</p>
+<p><span class="math display">\[R_1^2 = 1 - \frac{RSS}{TSS}\]</span></p>
+<p>Where: - <strong>RSS</strong> (Residual Sum of Squares) is the
+distance to the green line. - <strong>TSS</strong> (Total Sum of
+Squares) is the distance to the red line.</p>
+<p>When the green line is a poorer fit than the red line, <span class="math inline">\(RSS &gt; TSS\)</span>, resulting in <span class="math inline">\(R^2_1 &lt; 0\)</span>.</p>
+<p>Similarly, in no-intercept models, some definitions like <span class="math inline">\(R^2_2\)</span> can exceed 1.0 because the standard
+decomposition <span class="math inline">\(SS_{tot} = SS_{reg} +
+SS_{res}\)</span> no longer applies. The plot reveals this instability
+by showing how the model’s trajectory (green line) deviates from the
+actual trend of the data points.</p>
+<hr>
+</div>
+<div class="section level2">
 <h2 id="conclusion-a-multi-metric-approach">Conclusion: A Multi-Metric Approach<a class="anchor" aria-label="anchor" href="#conclusion-a-multi-metric-approach"></a>
 </h2>
 <p>As demonstrated, a single value can be misleading. When is negative
