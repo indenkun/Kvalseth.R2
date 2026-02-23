@@ -109,7 +109,22 @@ results$r2_9
 my_val <- results$r2_1
 ```
 
-### 3. Model Comparison with Error Metrics
+### 3. Visualizing the Sensitivity of R-squared
+
+To better understand the divergence between these definitions, the `kvr2` package provides a specialized plotting function. When you apply `plot_kvr2()` to your model, it displays both the comparison of $R^2$ definitions and a diagnostic observed-vs-predicted plot.
+
+```{r, fig.width=10, fig.height=6}
+# Example with the forced no-intercept model
+plot_kvr2(model_no_int)
+```
+
+In the resulting side-by-side plot:
+
+- **Left Panel**: Shows which definitions are most affected by the intercept constraint.
+
+- **Right Panel**: Reveals if the model (green line) is performing worse than the simple average (red line).
+
+### 4. Model Comparison with Error Metrics
 
 To complement $R^2$ analysis, use `comp_fit()` to evaluate models via standard error metrics such as RMSE, MAE, and MSE.
 
