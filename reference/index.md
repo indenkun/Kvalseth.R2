@@ -7,6 +7,8 @@
   [`MAE()`](https://indenkun.github.io/kvr2/reference/comp_kvr2.md)
   [`MSE()`](https://indenkun.github.io/kvr2/reference/comp_kvr2.md) :
   Calculate Comparative Fit Measures for Regression Models
+- [`comp_model()`](https://indenkun.github.io/kvr2/reference/comp_model.md)
+  : Contrast R-squared Definitions: Intercept vs. No-Intercept
 - [`model_info()`](https://indenkun.github.io/kvr2/reference/model_info.md)
   : Get Model Information Used for Calculations
 - [`plot_diagnostic()`](https://indenkun.github.io/kvr2/reference/plot_diagnostic.md)
@@ -15,6 +17,8 @@
   : Plot Method for Kvalseth's R-squared Objects
 - [`plot_r2()`](https://indenkun.github.io/kvr2/reference/plot_r2.md) :
   Plot Method for r2_kvr2 Objects
+- [`print(`*`<comp_model>`*`)`](https://indenkun.github.io/kvr2/reference/print.comp_model.md)
+  : Print Method for Model Comparison Objects
 - [`print(`*`<r2_kvr2>`*`)`](https://indenkun.github.io/kvr2/reference/print.kvr2.md)
   [`print(`*`<comp_kvr2>`*`)`](https://indenkun.github.io/kvr2/reference/print.kvr2.md)
   : Print Methods for r2 and comp_fit calculation Objects

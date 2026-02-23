@@ -31,8 +31,11 @@ MSE(model, type = c("auto", "linear", "power"))
 
 ## Value
 
-An object of class `comp_kvr2`, which is a list containing the
-calculated RMSE, MAE, and MSE values.
+- For `comp_fit()`: An object of class `comp_kvr2`, which is a list
+  containing the calculated RMSE, MAE, and MSE values.
+
+- For individual functions (`RMSE()`, `MAE()`, `MSE()`): A named numeric
+  value of the specific metric.
 
 ## Details
 

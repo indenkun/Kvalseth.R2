@@ -15,6 +15,13 @@
 - Added a new argument `model_info` (default is `TRUE`) to
   [`print()`](https://rdrr.io/r/base/print.html) methods, allowing users
   to toggle the display of model metadata.
+- Added
+  [`comp_model()`](https://indenkun.github.io/kvr2/reference/comp_model.md)
+  to contrast intercept and no-intercept versions of the same model
+  using QR-decomposition for robust re-calculation.
+- Added a set of plot functions that visually display the difference
+  between the actual and predicted values of the dependent variable in
+  the model and the coefficient of determination.
 
 ### Improvements
 

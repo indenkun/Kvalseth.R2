@@ -400,6 +400,72 @@ actual trend of the data points.</p>
 <hr>
 </div>
 <div class="section level2">
+<h2 id="comparing-intercept-vs--no-intercept-models">Comparing Intercept vs. No-Intercept Models<a class="anchor" aria-label="anchor" href="#comparing-intercept-vs--no-intercept-models"></a>
+</h2>
+<p>One of the most critical insights from Kvalseth (1985) is that
+certain <span class="math inline">\(R^2\)</span> definitions become
+unreliable—or even mathematically invalid—when a model is forced through
+the origin (no-intercept model).To facilitate this comparison, the kvr2
+package provides the comp_model() function. This tool automatically fits
+both the intercept and no-intercept versions of your model and aligns
+their metrics side-by-side.</p>
+<div class="section level3">
+<h3 id="practical-example-the-sensitivity-of-r2">Practical Example: The Sensitivity of <span class="math inline">\(R^2\)</span><a class="anchor" aria-label="anchor" href="#practical-example-the-sensitivity-of-r2"></a>
+</h3>
+<p>Consider a scenario where we force a linear model through the origin.
+We can use the df1 dataset from Kvalseth’s original paper:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, data <span class="op">=</span> <span class="va">df1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Compare the two model specifications</span></span>
+<span><span class="va">comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/comp_model.html">comp_model</a></span><span class="op">(</span><span class="va">model_int</span><span class="op">)</span></span></code></pre></div>
+<div class="section level4">
+<h4 id="the-inflation-of-r2_2">1. The Inflation of <span class="math inline">\(R^2_2\)</span><a class="anchor" aria-label="anchor" href="#the-inflation-of-r2_2"></a>
+</h4>
+<p>Notice that in the <strong>without intercept</strong> row,
+<strong>R2_2</strong> exceeds 1.0 (e.g., 1.0836). This occurs because
+<span class="math inline">\(R^2_2\)</span> is defined as <span class="math inline">\(\sum \hat{y}^2 / \sum (y - \bar{y})^2\)</span> in
+some contexts, and without an intercept, the standard sum-of-squares
+decomposition breaks down. This serves as a visual warning that <span class="math inline">\(R^2_2\)</span> is an inappropriate measure for
+no-intercept models.</p>
+</div>
+<div class="section level4">
+<h4 id="the-drop-in-predictive-accuracy">2. The Drop in Predictive Accuracy<a class="anchor" aria-label="anchor" href="#the-drop-in-predictive-accuracy"></a>
+</h4>
+<p>While some <span class="math inline">\(R^2\)</span> values might
+appear higher in the no-intercept model, the <strong>RMSE</strong> (Root
+Mean Squared Error) typically increases. This indicates that the
+“forced” model actually has poorer predictive performance, even if
+certain <span class="math inline">\(R^2\)</span> definitions suggest
+otherwise.</p>
+</div>
+<div class="section level4">
+<h4 id="adjusted-r-squared-comparison">Adjusted R-squared Comparison<a class="anchor" aria-label="anchor" href="#adjusted-r-squared-comparison"></a>
+</h4>
+<p>You can also compare degree-of-freedom adjusted values by setting
+<code>adjusted = TRUE</code>. This is particularly useful when comparing
+models with different numbers of predictors, though in the intercept
+vs. no-intercept case, it primarily highlights the penalty for removing
+the intercept term.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compare adjusted R-squared values</span></span>
+<span><span class="fu"><a href="../reference/comp_model.html">comp_model</a></span><span class="op">(</span><span class="va">model_int</span>, adjusted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; model             | R2_1_adj | R2_2_adj | R2_3_adj | R2_4_adj | R2_5_adj</span></span>
+<span><span class="co">#&gt; ------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; with intercept    |   0.9760 |   0.9760 |   0.9760 |   0.9760 |   0.9760</span></span>
+<span><span class="co">#&gt; without intercept |   0.9732 |   1.1003 |   1.0996 |   0.9739 |   0.9770</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; model             | R2_6_adj | R2_7_adj | R2_8_adj | R2_9_adj |   RMSE |    MAE |     MSE</span></span>
+<span><span class="co">#&gt; -----------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; with intercept    |   0.9760 |   0.9958 |   0.9958 |   0.9722 | 3.6165 | 3.5238 | 19.6190</span></span>
+<span><span class="co">#&gt; without intercept |   0.9770 |   0.9953 |   0.9953 |   0.9661 | 3.9008 | 3.6520 | 18.2593</span></span>
+<span><span class="co">#&gt; ---------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Note: Some R2 values exceed 1.0 or are negative, indicating that these definitions may be inappropriate for the no-intercept model.</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="section level2">
 <h2 id="conclusion-a-multi-metric-approach">Conclusion: A Multi-Metric Approach<a class="anchor" aria-label="anchor" href="#conclusion-a-multi-metric-approach"></a>
 </h2>
 <p>As demonstrated, a single value can be misleading. When is negative

@@ -6,7 +6,12 @@ observed-vs-predicted plot to understand the model fit.
 ## Usage
 
 ``` r
-plot_kvr2(x, plot_type = c("both", "r2", "diag"), ...)
+plot_kvr2(
+  x,
+  type = c("auto", "linear", "power"),
+  plot_type = c("both", "r2", "diag"),
+  ...
+)
 ```
 
 ## Arguments
@@ -14,6 +19,12 @@ plot_kvr2(x, plot_type = c("both", "r2", "diag"), ...)
 - x:
 
   An object of class `lm`.
+
+- type:
+
+  Character string. Selects the model type: `"linear"`, `"power"`, or
+  `"auto"` (default). In `"auto"`, the function detects if the dependent
+  variable is log-transformed.
 
 - plot_type:
 
@@ -27,6 +38,10 @@ plot_kvr2(x, plot_type = c("both", "r2", "diag"), ...)
   Further graphical parameters passed to
   [`barplot()`](https://rdrr.io/r/graphics/barplot.html) or
   [`plot()`](https://rdrr.io/r/graphics/plot.default.html).
+
+- r2:
+
+  type
 
 ## Value
 

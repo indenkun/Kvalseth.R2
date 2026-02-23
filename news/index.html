@@ -49,6 +49,8 @@
 <ul><li>Added <code><a href="../reference/model_info.html">model_info()</a></code> function to extract metadata used for calculations, such as regression type (linear/power), sample size (<span class="math inline">\(n\)</span>), and degrees of freedom (<span class="math inline">\(k\)</span>, <span class="math inline">\(df_{res}\)</span>).</li>
 <li>The <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> methods for <code>r2_kvr2</code> and <code>comp_kvr2</code> objects now display model information at the end of the output by default.</li>
 <li>Added a new argument <code>model_info</code> (default is <code>TRUE</code>) to <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> methods, allowing users to toggle the display of model metadata.</li>
+<li>Added <code><a href="../reference/comp_model.html">comp_model()</a></code> to contrast intercept and no-intercept versions of the same model using QR-decomposition for robust re-calculation.</li>
+<li>Added a set of plot functions that visually display the difference between the actual and predicted values of the dependent variable in the model and the coefficient of determination.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>

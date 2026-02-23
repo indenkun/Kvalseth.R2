@@ -6,7 +6,7 @@ identify potential issues (e.g., values exceeding 1 or falling below 0).
 ## Usage
 
 ``` r
-plot_r2(x, ...)
+plot_r2(x, type = c("auto", "linear", "power"), ...)
 ```
 
 ## Arguments
@@ -14,6 +14,12 @@ plot_r2(x, ...)
 - x:
 
   An object of class `lm`.
+
+- type:
+
+  Character string. Selects the model type: `"linear"`, `"power"`, or
+  `"auto"` (default). In `"auto"`, the function detects if the dependent
+  variable is log-transformed.
 
 - ...:
 

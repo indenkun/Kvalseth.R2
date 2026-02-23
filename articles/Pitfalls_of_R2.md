@@ -309,6 +309,69 @@ trend of the data points.
 
 ------------------------------------------------------------------------
 
+## Comparing Intercept vs. No-Intercept Models
+
+One of the most critical insights from Kvalseth (1985) is that certain
+\\R^2\\ definitions become unreliable—or even mathematically
+invalid—when a model is forced through the origin (no-intercept
+model).To facilitate this comparison, the kvr2 package provides the
+comp_model() function. This tool automatically fits both the intercept
+and no-intercept versions of your model and aligns their metrics
+side-by-side.
+
+### Practical Example: The Sensitivity of \\R^2\\
+
+Consider a scenario where we force a linear model through the origin. We
+can use the df1 dataset from Kvalseth’s original paper:
+
+``` r
+model_int <- lm(y ~ x, data = df1)
+
+# Compare the two model specifications
+comparison <- comp_model(model_int)
+```
+
+#### 1. The Inflation of \\R^2_2\\
+
+Notice that in the **without intercept** row, **R2_2** exceeds 1.0
+(e.g., 1.0836). This occurs because \\R^2_2\\ is defined as \\\sum
+\hat{y}^2 / \sum (y - \bar{y})^2\\ in some contexts, and without an
+intercept, the standard sum-of-squares decomposition breaks down. This
+serves as a visual warning that \\R^2_2\\ is an inappropriate measure
+for no-intercept models.
+
+#### 2. The Drop in Predictive Accuracy
+
+While some \\R^2\\ values might appear higher in the no-intercept model,
+the **RMSE** (Root Mean Squared Error) typically increases. This
+indicates that the “forced” model actually has poorer predictive
+performance, even if certain \\R^2\\ definitions suggest otherwise.
+
+#### Adjusted R-squared Comparison
+
+You can also compare degree-of-freedom adjusted values by setting
+`adjusted = TRUE`. This is particularly useful when comparing models
+with different numbers of predictors, though in the intercept
+vs. no-intercept case, it primarily highlights the penalty for removing
+the intercept term.
+
+``` r
+# Compare adjusted R-squared values
+comp_model(model_int, adjusted = TRUE)
+#> model             | R2_1_adj | R2_2_adj | R2_3_adj | R2_4_adj | R2_5_adj
+#> ------------------------------------------------------------------------
+#> with intercept    |   0.9760 |   0.9760 |   0.9760 |   0.9760 |   0.9760
+#> without intercept |   0.9732 |   1.1003 |   1.0996 |   0.9739 |   0.9770
+#> 
+#> model             | R2_6_adj | R2_7_adj | R2_8_adj | R2_9_adj |   RMSE |    MAE |     MSE
+#> -----------------------------------------------------------------------------------------
+#> with intercept    |   0.9760 |   0.9958 |   0.9958 |   0.9722 | 3.6165 | 3.5238 | 19.6190
+#> without intercept |   0.9770 |   0.9953 |   0.9953 |   0.9661 | 3.9008 | 3.6520 | 18.2593
+#> ---------------------------------
+#> 
+#> Note: Some R2 values exceed 1.0 or are negative, indicating that these definitions may be inappropriate for the no-intercept model.
+```
+
 ## Conclusion: A Multi-Metric Approach
 
 As demonstrated, a single value can be misleading. When is negative or

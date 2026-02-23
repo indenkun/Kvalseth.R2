@@ -83,9 +83,12 @@ variable is log-transformed.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An object of class <code>comp_kvr2</code>, which is a list containing
-the calculated RMSE, MAE, and MSE values.</p>
-    </div>
+
+<ul><li><p>For <code>comp_fit()</code>: An object of class <code>comp_kvr2</code>, which is a list
+containing the calculated RMSE, MAE, and MSE values.</p></li>
+<li><p>For individual functions (<code>RMSE()</code>, <code>MAE()</code>, <code>MSE()</code>):
+A named numeric value of the specific metric.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The metrics are calculated according to the formulas in Kvalseth (1985):</p>

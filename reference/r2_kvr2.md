@@ -49,8 +49,12 @@ r2_9(model, type = c("auto", "linear", "power"))
 
 ## Value
 
-An object of class `r2_kvr2`, which is a list containing the calculated
-values for each \\R^2\\ formula.
+- For `r2()`: An object of class `r2_kvr2`, which is a list containing
+  calculated values for all \\R^2\\ formulas.
+
+- For individual functions (`r2_1()` to `r2_9()`): A named numeric value
+  of the specific \\R^2\\ definition. calculated values for each \\R^2\\
+  formula.
 
 ## Details
 
