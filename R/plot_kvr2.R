@@ -6,12 +6,11 @@
 #'
 #' @param x An object of class `lm`.
 #' @param plot_type A string specifying the plot layout: `"both"` (default) displays
-#'   the bar plot and diagnostic plot side-by-side using `par(mfrow = c(1, 2))`,
+#'   the bar plot and diagnostic plot side-by-side,
 #'   `"r2"` shows only the R-squared comparison,
 #'   and `"diag"` shows only the observed-vs-predicted plot.
 #' @inheritParams r2
-#' @param ... Further graphical parameters passed to `barplot()` or `plot()`.
-#' @param r2 type
+#' @param ... Currently ignored.
 #'
 #' @details
 #' When `plot_type = "r2"`, the function creates a bar plot comparing all nine
@@ -21,7 +20,7 @@
 #'   \item **Orange**: Values exceeding 1.0 or falling below 0.0 (warnings).
 #' }
 #'
-#' When `plot_ype = "diag"`, the function displays a scatter plot of observed
+#' When `plot_type = "diag"`, the function displays a scatter plot of observed
 #' vs. predicted values. Two reference lines are added:
 #' \itemize{
 #'   \item **Darkgreen Solid Line**: The 1:1 "perfect fit" line (RSS reference).
@@ -34,8 +33,14 @@
 #' Automatically configures the plotting device to show both plots simultaneously
 #' for a comprehensive model evaluation.
 #'
-#' @return The function is called for its side effect of generating a plot.
-#'   It returns `x` invisibly.
+#' @return
+#' The return value depends on the `plot_type` argument:
+#' \itemize{
+#'   \item For `"r2"` and `"diag"`: Returns a `ggplot` object
+#'     that can be further customized.
+#'   \item For `"both"`: Generates a combined plot using the `grid`
+#'     system and returns the input object `x` invisibly.
+#' }
 #'
 #' @examples
 #' df1 <- data.frame(x = 1:6, y = c(15, 37, 52, 59, 83, 92))
@@ -48,23 +53,31 @@
 #' plot_kvr2(model, plot_type = "diag")
 #'
 #' @export
-plot_kvr2 <- function(x, type = c("auto", "linear", "power"), plot_type = c("both", "r2", "diag"), ...) {
-  plot_type <- match.arg(plot_type)
+plot_kvr2 <- function(x,
+                      type = c("auto", "linear", "power"),
+                      plot_type = c("both", "r2", "diag"), ...) {
+
   type <- match.arg(type)
+  plot_type <- match.arg(plot_type)
 
-  oldpar <- graphics::par(no.readonly = TRUE)
-  on.exit(graphics::par(oldpar))
-
-  if(plot_type == "both") {
-    graphics::par(mfrow = c(1, 2))
+  if (plot_type == "r2") {
+    return(plot(r2(x, type = type)))
   }
 
-  if(plot_type %in% c("both", "r2")){
-    plot_r2(x, type, ...)
+  if (plot_type == "diag") {
+    return(plot_diagnostic(x))
   }
-  if(plot_type %in% c("both", "diag")) {
-    plot_diagnostic(x, ...)
-  }
+
+  res_r2 <- r2(x, type = type)
+  p1 <- plot(res_r2)
+  p2 <- plot_diagnostic(x)
+
+
+  grid::grid.newpage()
+  grid::pushViewport(grid::viewport(layout = grid::grid.layout(1, 2, widths = grid::unit(c(1, 1), "null"))))
+
+  print(p1, vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1))
+  print(p2, vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 2))
 
   invisible(x)
 }
@@ -73,75 +86,107 @@ plot_kvr2 <- function(x, type = c("auto", "linear", "power"), plot_type = c("bot
 #' @description
 #' Visualizes the nine definitions of R-squared to compare their values
 #' and identify potential issues (e.g., values exceeding 1 or falling below 0).
-#' @inheritParams plot_kvr2
+#' @param x An object of class `r2_kvr2`.
+#' @param ... Currently ignored.
 #'
-#' @inherit plot_kvr2 return
+#' @return A \code{ggplot} object representing the visual analysis.
 #'
 #' @examples
 #' df1 <- data.frame(x = 1:6, y = c(15, 37, 52, 59, 83, 92))
 #' model <- lm(y ~ x - 1, data = df1) # No-intercept model
-#' plot_r2(model)
+#' r2(model)
+#'
+#' @importFrom ggplot2 .data
 #'
 #' @export
-plot_r2 <- function(x, type = c("auto", "linear", "power"), ...) {
-  type <- match.arg(type)
-  x <- r2(x, type)
-  vals <- unlist(x)
-  names(vals) <- toupper(names(x))
+plot.r2_kvr2 <- function(x, ...) {
 
-  bp <- graphics::barplot.default(vals,
-                                  main = "Comparison of \n Kvalseth's R2 Definitions",
-                                  ylab = "R-squared Value",
-                                  ylim = c(min(-0.1, min(vals)), max(1.1, max(vals))), # 範囲外も見えるように調整
-                                  col = ifelse(vals < 0 | vals > 1, "orange", "skyblue"),
-                                  las = 2)
+  df_plot <- data.frame(
+    Definition = toupper(names(x)),
+    Value = as.numeric(unlist(x))
+  )
 
-  graphics::abline(h = 1, col = "blue", lwd = 2, lty = 2)
-  graphics::abline(h = 0, col = "red", lwd = 2, lty = 2)
+  df_plot$Status <- ifelse(df_plot$Value < 0 | df_plot$Value > 1, "Warning", "Normal")
 
-  if(any(vals > 1)) graphics::mtext("Warning: Some values exceed 1.0", side = 3, col = "orange")
-  if(any(vals < 0)) graphics::mtext("Warning: Some values are negative", side = 1, col = "red", line = 4)
+  df_plot$Definition <- factor(df_plot$Definition, levels = df_plot$Definition)
 
-  invisible(x)
+  p <- ggplot2::ggplot(df_plot, ggplot2::aes(x = .data$Definition, y = .data$Value, fill = .data$Status)) +
+    ggplot2::geom_col(show.legend = FALSE) +
+    ggplot2::geom_hline(yintercept = 1, color = "blue", linetype = "dashed", linewidth = 0.8) +
+    ggplot2::geom_hline(yintercept = 0, color = "red", linetype = "dashed", linewidth = 0.8) +
+    ggplot2::scale_fill_manual(values = c("Normal" = "skyblue", "Warning" = "orange")) +
+    ggplot2::theme_minimal() +
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
+      plot.title = ggplot2::element_text(hjust = 0.5, face = "bold")
+    ) +
+    ggplot2::labs(
+      title = "Comparison of Kvalseth's R2 Definitions",
+      x = NULL,
+      y = "R-squared Value",
+      caption = if(any(df_plot$Status == "Warning")) "Note: Orange bars indicate values outside [0, 1] range." else NULL
+    )
+
+  y_min <- min(-0.1, min(df_plot$Value))
+  y_max <- max(1.1, max(df_plot$Value))
+  p <- p + ggplot2::coord_cartesian(ylim = c(y_min, y_max))
+
+  return(p)
 }
+
 
 #' Plot Observed vs Predicted Values
 #' @description
 #' A diagnostic plot to visualize why R-squared might be low or negative.
-#' It compares the model predictions (45-degree line) against the mean (horizontal line).
-#' @inheritParams plot_kvr2
+#' It compares the model predictions (identity line) against the mean (horizontal line).
 #'
-#' @inherit plot_kvr2 return
+#' @param x A fitted `lm` object.
+#' @param ... Currently ignored.
+#'
+#' @return A \code{ggplot} object representing the visual analysis.
 #'
 #' @examples
 #' df1 <- data.frame(x = 1:6, y = c(15, 37, 52, 59, 83, 92))
 #' model <- lm(y ~ x - 1, data = df1) # No-intercept model
-#' plot_kvr2(model)
+#' plot_diagnostic(model)
+#'
+#' @importFrom ggplot2 .data
 #'
 #' @export
 plot_diagnostic <- function(x, ...) {
 
+  # 1. データの準備
   y <- x$model[[1]]
   y_hat <- stats::predict(x)
   y_mean <- mean(y)
 
+  df_diag <- data.frame(
+    observed = y,
+    predicted = y_hat
+  )
+
   lims <- range(c(y, y_hat))
 
-  graphics::plot.default(y_hat, y,
-                         main = "Observed vs. Predicted Plot",
-                         xlab = "Predicted Values (y-hat)",
-                         ylab = "Observed Values (y)",
-                         pch = 16, col = "blue",
-                         xlim = lims, ylim = lims,
-                         type = "p",
-                         ...)
+  p <- ggplot2::ggplot(df_diag, ggplot2::aes(x = .data$predicted, y = .data$observed)) +
+    ggplot2::geom_point(color = "blue", alpha = 0.6, size = 2) +
+    ggplot2::geom_abline(ggplot2::aes(intercept = 0, slope = 1, color = "Perfect Fit (y = y_hat)"),
+                         linewidth = 1) +
+    ggplot2::geom_hline(ggplot2::aes(yintercept = y_mean, color = "Overall Mean (y = mean_y)"),
+                        linewidth = 1, linetype = "dashed") +
+    ggplot2::coord_equal(xlim = lims, ylim = lims) +
+    ggplot2::scale_color_manual(
+      name = "References",
+      values = c("Perfect Fit (y = y_hat)" = "darkgreen",
+                 "Overall Mean (y = mean_y)" = "red")
+    ) +
+    ggplot2::theme_minimal() +
+    ggplot2::theme(legend.position = "bottom") +
+    ggplot2::labs(
+      title = "Observed vs. Predicted Plot",
+      subtitle = "Visualizing RSS (distance to green) vs. TSS (distance to red)",
+      x = "Predicted Values (\u0177)",
+      y = "Observed Values (y)"
+    )
 
-  graphics::abline(0, 1, col = "darkgreen", lwd = 2)
-  graphics::abline(h = y_mean, col = "red", lwd = 2, lty = 2)
-
-  graphics::legend("topleft",
-                   legend = c("Perfect Fit (RSS=0)", "Overall Mean (TSS reference)"),
-                   col = c("darkgreen", "red"), lty = c(1, 2), lwd = 2, bty = "n")
-
-  invisible(x)
+  return(p)
 }

@@ -19,17 +19,20 @@ or \code{"auto"} (default). In \code{"auto"}, the function detects if the depend
 variable is log-transformed.}
 
 \item{plot_type}{A string specifying the plot layout: \code{"both"} (default) displays
-the bar plot and diagnostic plot side-by-side using \code{par(mfrow = c(1, 2))},
+the bar plot and diagnostic plot side-by-side,
 \code{"r2"} shows only the R-squared comparison,
 and \code{"diag"} shows only the observed-vs-predicted plot.}
 
-\item{...}{Further graphical parameters passed to \code{barplot()} or \code{plot()}.}
-
-\item{r2}{type}
+\item{...}{Currently ignored.}
 }
 \value{
-The function is called for its side effect of generating a plot.
-It returns \code{x} invisibly.
+The return value depends on the \code{plot_type} argument:
+\itemize{
+\item For \code{"r2"} and \code{"diag"}: Returns a \code{ggplot} object
+that can be further customized.
+\item For \code{"both"}: Generates a combined plot using the \code{grid}
+system and returns the input object \code{x} invisibly.
+}
 }
 \description{
 Visualizes the different R-squared definitions or provides a diagnostic
@@ -43,7 +46,7 @@ definitions. Bars are colored based on their validity:
 \item \strong{Orange}: Values exceeding 1.0 or falling below 0.0 (warnings).
 }
 
-When \code{plot_ype = "diag"}, the function displays a scatter plot of observed
+When \code{plot_type = "diag"}, the function displays a scatter plot of observed
 vs. predicted values. Two reference lines are added:
 \itemize{
 \item \strong{Darkgreen Solid Line}: The 1:1 "perfect fit" line (RSS reference).

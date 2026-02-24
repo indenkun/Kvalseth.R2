@@ -88,10 +88,9 @@ comp_model <- function(model, type = c("auto", "linear", "power"), adjusted = FA
 #'
 #' @seealso [comp_model()]
 #'
-#' @importFrom insight export_table
 #' @export
 print.comp_model <- function(x, ..., digits = 4){
-  print(insight::export_table(x, digits = digits))
+  print(insight::export_table(x, digits = digits, ...))
 
   if (any(x[, 2:10] > 1 | x[, 2:10] < 0)) {
     cat("---------------------------------\n")
