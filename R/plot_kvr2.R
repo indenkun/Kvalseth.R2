@@ -155,10 +155,15 @@ plot.r2_kvr2 <- function(x, ...) {
 #' @export
 plot_diagnostic <- function(x, ...) {
 
-  # 1. データの準備
-  y <- x$model[[1]]
-  y_hat <- stats::predict(x)
-  y_mean <- mean(y)
+  if(inherits(x, "lm")){
+    y <- x$model[[1]]
+    y_hat <- stats::predict(x)
+    y_mean <- mean(y)
+  }else if(inherits(x, "lm_forced")){
+    y <- as.vector(x$y)
+    y_hat <- as.vector(x$fitted_values)
+    y_mean <- mean(y)
+  }
 
   df_diag <- data.frame(
     observed = y,

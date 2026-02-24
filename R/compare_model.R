@@ -21,6 +21,9 @@
 #'   definitions and three fit metrics (RMSE, MAE, MSE) for both intercept
 #'   and no-intercept versions.
 #'
+#'   The original model objects are stored as attributes `with_int` and `without_int`
+#'   for use by the plot method.
+#'
 #' @examples
 #' df1 <- data.frame(x = 1:6, y = c(15, 37, 52, 59, 83, 92))
 #' model <- lm(y ~ x, data = df1)
@@ -37,6 +40,7 @@
 #'
 #' @export
 comp_model <- function(model, type = c("auto", "linear", "power"), adjusted = FALSE){
+  check_lm_forced(model)
   type <- match.arg(type)
 
   if(attr(model$terms, "intercept")){
@@ -58,6 +62,10 @@ comp_model <- function(model, type = c("auto", "linear", "power"), adjusted = FA
   res_names <- names(res)
   names(res) <- c(res_names[1], chartr("r", "R", res_names[2:10]), toupper(res_names[11:13]))
   class(res) <- c("comp_model", class(res))
+
+  attr(res, "with_int") <- lm_forced_int(model)
+  attr(res, "without_int") <- lm_forced_without_int(model)
+
   res
 }
 

@@ -24,7 +24,8 @@ Imports:
     insight,
     ggplot2,
     grid,
-    stats
+    stats,
+    tidyr
 Suggests: 
     knitr,
     rmarkdown,
