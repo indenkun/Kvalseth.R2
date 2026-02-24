@@ -76,30 +76,28 @@ variable is log-transformed.</p></dd>
 
 <dt id="arg-plot-type">plot_type<a class="anchor" aria-label="anchor" href="#arg-plot-type"></a></dt>
 <dd><p>A string specifying the plot layout: <code>"both"</code> (default) displays
-the bar plot and diagnostic plot side-by-side using <code>par(mfrow = c(1, 2))</code>,
+the bar plot and diagnostic plot side-by-side,
 <code>"r2"</code> shows only the R-squared comparison,
 and <code>"diag"</code> shows only the observed-vs-predicted plot.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Further graphical parameters passed to <code><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot()</a></code> or <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>.</p></dd>
-
-
-<dt id="arg-r-">r2<a class="anchor" aria-label="anchor" href="#arg-r-"></a></dt>
-<dd><p>type</p></dd>
+<dd><p>Currently ignored.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>The function is called for its side effect of generating a plot.
-It returns <code>x</code> invisibly.</p>
-    </div>
+    <p>The return value depends on the <code>plot_type</code> argument:</p><ul><li><p>For <code>"r2"</code> and <code>"diag"</code>: Returns a <code>ggplot</code> object
+that can be further customized.</p></li>
+<li><p>For <code>"both"</code>: Generates a combined plot using the <code>grid</code>
+system and returns the input object <code>x</code> invisibly.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>When <code>plot_type = "r2"</code>, the function creates a bar plot comparing all nine
 definitions. Bars are colored based on their validity:</p><ul><li><p><strong>Skyblue</strong>: Standard values between 0 and 1.</p></li>
 <li><p><strong>Orange</strong>: Values exceeding 1.0 or falling below 0.0 (warnings).</p></li>
-</ul><p>When <code>plot_ype = "diag"</code>, the function displays a scatter plot of observed
+</ul><p>When <code>plot_type = "diag"</code>, the function displays a scatter plot of observed
 vs. predicted values. Two reference lines are added:</p><ul><li><p><strong>Darkgreen Solid Line</strong>: The 1:1 "perfect fit" line (RSS reference).</p></li>
 <li><p><strong>Red Dashed Line</strong>: The overall mean of the observed data (TSS reference).</p></li>
 </ul><p>If the data points are closer to the red dashed line than the green solid line,
