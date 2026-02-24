@@ -11,6 +11,8 @@
   : Contrast R-squared Definitions: Intercept vs. No-Intercept
 - [`model_info()`](https://indenkun.github.io/kvr2/reference/model_info.md)
   : Get Model Information Used for Calculations
+- [`plot(`*`<comp_model>`*`)`](https://indenkun.github.io/kvr2/reference/plot.comp_model.md)
+  : Plot Comparison of Model Specifications
 - [`plot(`*`<r2_kvr2>`*`)`](https://indenkun.github.io/kvr2/reference/plot.r2_kvr2.md)
   : Plot Method for r2_kvr2 Objects
 - [`plot_diagnostic()`](https://indenkun.github.io/kvr2/reference/plot_diagnostic.md)
