@@ -54,74 +54,40 @@ check_power <- function(model){
 }
 
 lm_forced_int <- function(model){
-  check_lm_forced(model)
-
-  if(inherits(model, "lm")){
-    mf <- stats::model.frame(model)
-    if(attr(model$terms, "intercept")) X <- stats::model.matrix(stats::formula(model), mf)
-    else X <- cbind(`(Intercept)` = 1, stats::model.matrix(stats::formula(model), mf))
-    y <- stats::model.response(mf)
-  }else if(inherits(model, "lm_forced")){
-    mf <- model$mf
-    if(model$intercept) X <- model$X
-    else X <- cbind(`(Intercept)` = 1, model$X)
-    y <- model$y
-  }
-
-  qr_decomp <- qr(X)
-
-  betas <- qr.coef(qr_decomp, y)
-
-  residuals <- y - X %*% betas
-  df_residual <- nrow(X) - ncol(X)
-
-  sigma_sq <- sum(residuals^2) / df_residual
-
-  R <- qr.R(qr_decomp)
-  v_cov <- solve(t(R) %*% R) * sigma_sq
-  std_errors <- sqrt(diag(v_cov))
-
-  # betas_vec <- as.matrix(betas)
-  # fitted_values <- X %*% betas_vec
-
-  Q <- qr.Q(qr_decomp)
-  fitted_values <- Q %*% (t(Q) %*% y)
-
-  weigths <- stats::weights(model)
-
-  results <- list(
-    mf = mf,
-    X = X,
-    Estimate = betas,
-    Std.Error = std_errors,
-    df.residual = df_residual,
-    rank = ncol(X),
-    t_value = betas / std_errors,
-    y = y,
-    fitted_values = fitted_values,
-    residuals = residuals,
-    weights = weigths,
-    intercept = TRUE
-  )
-
-  class(results) <- "lm_forced"
-
-  results
+  lm_forced(model, intercept = TRUE)
 }
 
 lm_forced_without_int <- function(model){
+  lm_forced(model, intercept = FALSE)
+}
+
+lm_forced <- function(model, intercept){
   check_lm_forced(model)
 
-  if(inherits(model, "lm")){
-    mf <- stats::model.frame(model)
-    if(!attr(model$terms, "intercept")) X <- stats::model.matrix(stats::formula(model), mf)
-    else X <- stats::model.matrix(stats::formula(model), mf)[, -1, drop = FALSE]
-    y <- stats::model.response(mf)
-  }else if(inherits(model, "lm_forced")){
-    mf <- model$mf
-    if(!model$intercept) X <- model$X
-    else X <- model$X[, -1, drop = FALSE]
-    y <- model$y
+  if(intercept){
+    if(inherits(model, "lm")){
+      mf <- stats::model.frame(model)
+      if(attr(model$terms, "intercept")) X <- stats::model.matrix(stats::formula(model), mf)
+      else X <- cbind(`(Intercept)` = 1, stats::model.matrix(stats::formula(model), mf))
+      y <- stats::model.response(mf)
+    }else if(inherits(model, "lm_forced")){
+      mf <- model$mf
+      if(model$intercept) X <- model$X
+      else X <- cbind(`(Intercept)` = 1, model$X)
+      y <- model$y
+    }
+  }else{
+    if(inherits(model, "lm")){
+      mf <- stats::model.frame(model)
+      if(!attr(model$terms, "intercept")) X <- stats::model.matrix(stats::formula(model), mf)
+      else X <- stats::model.matrix(stats::formula(model), mf)[, -1, drop = FALSE]
+      y <- stats::model.response(mf)
+    }else if(inherits(model, "lm_forced")){
+      mf <- model$mf
+      if(!model$intercept) X <- model$X
+      else X <- model$X[, -1, drop = FALSE]
+      y <- model$y
+    }
   }
 
   qr_decomp <- qr(X)
