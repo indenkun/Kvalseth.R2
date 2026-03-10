@@ -372,6 +372,117 @@ comp_model(model_int, adjusted = TRUE)
 #> Note: Some R2 values exceed 1.0 or are negative, indicating that these definitions may be inappropriate for the no-intercept model.
 ```
 
+### Visualizing the Comparison: The Diagnostic Dashboard
+
+To truly understand why \\R^2\\ values fluctuate or become inappropriate
+when the intercept is removed, numerical tables are often not enough.
+The `kvr2` package provides a specialized
+[`plot()`](https://rdrr.io/r/graphics/plot.default.html) method for
+`comp_model` objects that generates a comprehensive **2x2 diagnostic
+dashboard**.
+
+By simply calling
+[`plot()`](https://rdrr.io/r/graphics/plot.default.html) on the
+comparison results, you can simultaneously inspect the statistical
+shifts and the underlying data distribution.
+
+``` r
+# Generate the 2x2 comparison dashboard
+plot(comparison)
+```
+
+![](Pitfalls_of_R2_files/figure-html/unnamed-chunk-10-1.png)
+
+#### Key Features of the Dashboard:
+
+- **Left Column (Metrics)**: Shows the 9 types of \\R^2\\ and the fit
+  metrics (RMSE/MAE/MSE) side-by-side for both models. Orange bars
+  immediately highlight “illegal” \\R^2\\ values (outside the \\\[0,
+  1\]\\ range) in the no-intercept model.
+- **Right Column (Diagnostics)**: Provides Observed-vs-Predicted plots
+  for both specifications. This allows you to visually confirm how the
+  regression line “forces” itself through the origin in the no-intercept
+  model, often leading to a poorer fit compared to the horizontal mean
+  line (the red dashed line).
+
+This visual approach is essential for educational purposes, as it
+demonstrates the “cause and effect” between model constraints and
+statistical outcomes.
+
+------------------------------------------------------------------------
+
+### Example: When \\R^2\\ Breaks (The Importance of Visuals)
+
+To illustrate why we need nine different definitions and a diagnostic
+plot, let’s look at a dataset where the relationship between \\x\\ and
+\\y\\ is strong, but the regression line does not pass near the origin.
+When we force the model through \\(0,0)\\ by removing the intercept,
+several \\R^2\\ definitions will produce misleading or even impossible
+values (outside the \\\[0, 1\]\\ range).
+
+``` r
+# Create a dataset where y = 50 + 2x + noise
+set.seed(123)
+df_break <- data.frame(x = 1:10, y = 50 + 2 * (1:10) + rnorm(10, 0, 2))
+
+# Compare models
+res_break <- comp_model(lm(y ~ x, data = df_break))
+
+# The numerical output will show R2_2 and R2_3 > 1.0
+res_break
+#> model             |     R2_1 |    R2_2 |    R2_3 |     R2_4 |   R2_5 |   R2_6
+#> -----------------------------------------------------------------------------
+#> with intercept    |   0.9011 |  0.9011 |  0.9011 |   0.9011 | 0.9011 | 0.9011
+#> without intercept | -17.1930 | 26.1535 | 22.2762 | -13.3157 | 0.9011 | 0.9011
+#> 
+#> model             |   R2_7 |   R2_8 |     R2_9 |    RMSE |     MAE |      MSE
+#> -----------------------------------------------------------------------------
+#> with intercept    | 0.9992 | 0.9992 |   0.9252 |  1.7473 |  1.3934 |   3.8165
+#> without intercept | 0.8511 | 0.8511 | -20.2905 | 23.6965 | 20.3954 | 623.9158
+#> ---------------------------------
+#> 
+#> Note: Some R2 values exceed 1.0 or are negative, indicating that these definitions may be inappropriate for the no-intercept model.
+```
+
+By plotting this comparison, we can see exactly **why** the statistics
+fail:
+
+``` r
+plot(res_break)
+```
+
+![](Pitfalls_of_R2_files/figure-html/unnamed-chunk-12-1.png)
+
+In the **Bottom-Right** panel (Without Intercept), the green “Perfect
+Fit” line is forced to go through the origin, causing it to stay far
+away from all data points. This distance is much larger than the
+distance to the red “Mean” line. Consequently, the Residual Sum of
+Squares (RSS) exceeds the Total Sum of Squares (TSS), leading to a
+negative \\R^2_1\\. Simultaneously, other definitions like \\R^2_2\\
+overstate the fit because they use a different baseline that doesn’t
+account for this forced displacement.
+
+------------------------------------------------------------------------
+
+### A Note on Plot Customization
+
+Unlike standard `ggplot2` objects, the output of `plot(comp_model_obj)`
+**cannot** be modified using the `+` operator (e.g., `+ theme_bw()`).
+
+This is because the function uses the `grid` system to arrange four
+independent plots into a single dashboard. Internally, the function
+returns the input object `x` **invisibly** after drawing the grid.
+
+If you need to customize the individual plots, we recommend using the
+standalone plotting functions:
+
+- Use `plot_kvr2(model, plot_type = "r2")` to get a single, customizable
+  `ggplot` object for \\R^2\\ comparison.
+- Use `plot_diagnostic(model)` to get a single, customizable `ggplot`
+  object for the observed-vs-predicted view.
+
+------------------------------------------------------------------------
+
 ## Conclusion: A Multi-Metric Approach
 
 As demonstrated, a single value can be misleading. When is negative or

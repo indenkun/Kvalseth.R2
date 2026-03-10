@@ -222,7 +222,8 @@
 </h3>
 <p>The <code><a href="reference/comp_model.html">comp_model()</a></code> function allows you to instantly see the impact of the intercept constraint. In the example below, notice how <span class="math inline">\(R^2_2\)</span> remains misleadingly high in the no-intercept model, whereas <span class="math inline">\(R^2_1\)</span> drops, reflecting the true decrease in predictive accuracy relative to the mean.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/comp_model.html">comp_model</a></span><span class="op">(</span><span class="va">model_no_int</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">res_comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/comp_model.html">comp_model</a></span><span class="op">(</span><span class="va">model_no_int</span><span class="op">)</span></span>
+<span><span class="va">res_comp</span></span>
 <span><span class="co">#&gt; model             |   R2_1 |   R2_2 |   R2_3 |   R2_4 |   R2_5 |   R2_6</span></span>
 <span><span class="co">#&gt; -----------------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; with intercept    | 0.9808 | 0.9808 | 0.9808 | 0.9808 | 0.9808 | 0.9808</span></span>
@@ -235,6 +236,29 @@
 <span><span class="co">#&gt; ---------------------------------</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Note: Some R2 values exceed 1.0 or are negative, indicating that these definitions may be inappropriate for the no-intercept model.</span></span></code></pre></div>
+<p>The power of <code>kvr22</code> lies in its ability to visually demonstrate <strong>why</strong> certain <span class="math inline">\(R^2\)</span> definitions fail when an intercept is removed. By calling <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> on a <code>comp_model</code> object, you generate a comprehensive <strong>2x2 Diagnostic Dashboard</strong>.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Generate the dashboard</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res_comp</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-6-1.png" alt="" width="100%"></p>
+<div class="section level4">
+<h4 id="what-the-dashboard-reveals">What the dashboard reveals:<a class="anchor" aria-label="anchor" href="#what-the-dashboard-reveals"></a>
+</h4>
+<ul>
+<li>
+<strong>R-squared Comparison (Top-Left)</strong>: Side-by-side bars for all 9 definitions. Orange bars instantly flag “illegal” values (e.g., <span class="math inline">\(R^2 &gt; 1\)</span> or <span class="math inline">\(R^2 &lt; 0\)</span>), which are common in no-intercept models.</li>
+<li>
+<strong>Fit Metrics (Bottom-Left)</strong>: Direct comparison of RMSE, MAE, and MSE to see the actual error trade-off.</li>
+<li>
+<strong>Diagnostic Plots (Right Column)</strong>: Observed vs. Predicted scatter plots.</li>
+<li>The <strong>Green line</strong> represents a perfect fit (<span class="math inline">\(y = \hat{y}\)</span>).</li>
+<li>The <strong>Red dashed line</strong> represents the global mean (<span class="math inline">\(y = \bar{y}\)</span>).</li>
+<li>If the data points are closer to the red line than the green line, <span class="math inline">\(R^2_1\)</span> will be negative—a clear visual proof of model poorness.</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>: This dashboard is built using the <code>grid</code> system. While it provides a complete overview, it cannot be modified with <code>ggplot2</code>’s <code>+</code> operator. For customized single plots, use <code>plot_kvr2(model, plot_type = "r2")</code> or <code>plot_diagnostic(model)</code>.</p>
+</blockquote>
+</div>
 </div>
 </div>
 <div class="section level2">
