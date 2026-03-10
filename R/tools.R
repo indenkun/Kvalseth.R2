@@ -123,7 +123,7 @@ lm_forced <- function(model, intercept){
     fitted_values = fitted_values,
     residuals = residuals,
     weights = weigths,
-    intercept = FALSE
+    intercept = intercept
   )
 
   class(results) <- "lm_forced"
