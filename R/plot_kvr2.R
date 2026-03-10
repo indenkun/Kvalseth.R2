@@ -189,7 +189,7 @@ plot_diagnostic <- function(x, ...) {
     ggplot2::labs(
       title = "Observed vs. Predicted Plot",
       subtitle = "Visualizing RSS (distance to green) vs. TSS (distance to red)",
-      x = "Predicted Values (\u0177)",
+      x = "Predicted Values (y_hat)",
       y = "Observed Values (y)"
     )
 

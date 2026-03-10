@@ -33,12 +33,10 @@
 #'
 #' @seealso [comp_model()], [plot_diagnostic()]
 #' @examples
-#' \dontrun{
 #' df <- data.frame(x = 1:5, y = c(2, 3, 5, 4, 6))
-#' m1 <- lm(y ~ x)
+#' m1 <- lm(y ~ x, data = df)
 #' res <- comp_model(m1)
 #' plot(res)
-#' }
 #'
 #' @importFrom ggplot2 .data
 #' @export
