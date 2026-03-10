@@ -9,31 +9,18 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 0 note
 
-* checking CRAN incoming feasibility ... NOTE
-* Possibly misspelled words in DESCRIPTION:
-Kvalseth (13:133)
+## Update (v0.2.0)
+This is a minor update from v0.1.0. 
 
-This is a new submission.
-"Kvalseth" is a proper noun (the author's name) and not a misspelling.
+### Key Changes:
+* **Visualization Suite**: Added a comprehensive plotting system using `ggplot2`. 
+  - `plot.r2_kvr2()`: Visualizes the 9 R-squared definitions.
+  - `plot_diagnostic()`: Added a diagnostic observed-vs-predicted plot.
+  - `plot.comp_model()`: A 2x2 dashboard to compare intercept vs. no-intercept models.
+* **Testing**: 
+  - Significantly expanded `testthat` coverage for R-squared adjustments and model comparisons.
 
-## Resubmission
-
-This is a resubmission. I have addressed the following comments from the CRAN maintainers:
-
-> please omit the redundant "Provides functions to" from the start of the description.
-
-**Response:** I have removed the redundant phrase. The Description now starts with "Calculates...".
-
-> Please add \value to .Rd files regarding exported methods and explain the functions results in the documentation.
-
-**Response:** I have added the `@return` (translated to `\value`) tag to all exported methods.
-Specifically:
-
-* For `print.kvr2.Rd`: Added a description stating that it returns the input object invisibly and is called for its side effect (printing to the console).
-* For `r2_adjusted.Rd`: Added a description of the structure (class) and the meaning of the calculated adjusted R-squared values.
-
-## Background
-
-The `kvr2` package implements the classification of coefficients of determination () as described by Kvalseth (1985). It is designed as an educational tool to compare different mathematical definitions of , particularly for models without an intercept or power regression models.
+## Downstream dependencies
+There are currently no downstream dependencies for this package.

@@ -35,6 +35,9 @@ A data frame of class `comp_model` containing nine R-squared definitions
 and three fit metrics (RMSE, MAE, MSE) for both intercept and
 no-intercept versions.
 
+The original model objects are stored as attributes `with_int` and
+`without_int` for use by the plot method.
+
 ## Details
 
 This function reconstructs the alternative model using QR decomposition

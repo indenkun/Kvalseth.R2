@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kvr2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +24,8 @@
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Pitfalls_of_R2.html">The Pitfalls of R-squared: Understanding Mathematical Sensitivity</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/internal-design.html">Internal Design</a></li>
+    <li><a class="dropdown-item" href="../articles/Pitfalls_of_R2.html">The Pitfalls of R-squared: Understanding Mathematical Sensitivity</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -43,9 +44,9 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="kvr2-development-version">kvr2 (development version)<a class="anchor" aria-label="anchor" href="#kvr2-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.2.0" id="kvr2-020">kvr2 0.2.0<a class="anchor" aria-label="anchor" href="#kvr2-020"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="new-features-0-2-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
 <ul><li>Added <code><a href="../reference/model_info.html">model_info()</a></code> function to extract metadata used for calculations, such as regression type (linear/power), sample size (<span class="math inline">\(n\)</span>), and degrees of freedom (<span class="math inline">\(k\)</span>, <span class="math inline">\(df_{res}\)</span>).</li>
 <li>The <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> methods for <code>r2_kvr2</code> and <code>comp_kvr2</code> objects now display model information at the end of the output by default.</li>
 <li>Added a new argument <code>model_info</code> (default is <code>TRUE</code>) to <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> methods, allowing users to toggle the display of model metadata.</li>
@@ -53,12 +54,12 @@
 <li>Added a set of plot functions that visually display the difference between the actual and predicted values of the dependent variable in the model and the coefficient of determination.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
+<h3 id="improvements-0-2-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-2-0"></a></h3>
 <ul><li>Improved the auto-detection logic for power regression models. It now correctly distinguishes between a variable named “log” and the <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code> function call (e.g., <code>lm(log(y) ~ x)</code> is correctly identified while <code>lm(log ~ x)</code> is treated as linear).</li>
 <li>Internal calculations now explicitly store model attributes to ensure consistency between <code><a href="../reference/r2_kvr2.html">r2()</a></code> and <code><a href="../reference/model_info.html">model_info()</a></code>.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<h3 id="bug-fixes-0-2-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-0"></a></h3>
 <ul><li>Fixed several typographical errors in the output and documentation. Notably, corrected “RMES” to “RMSE” (Root Mean Square Error) in the output of <code><a href="../reference/comp_kvr2.html">comp_fit()</a></code>.</li>
 <li>Fixed a misclassification issue where models with a dependent variable named “log” were incorrectly identified as power regression when using <code>type = "auto"</code>.</li>
 <li>Corrected “liner” to “linear” in various internal labels and documentation to ensure consistency with standard statistical terminology.</li>

@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kvr2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/Pitfalls_of_R2.html">The Pitfalls of R-squared: Understanding Mathematical Sensitivity</a></li>
+<li><a class="dropdown-item" href="../articles/internal-design.html">Internal Design</a></li>
+    <li><a class="dropdown-item" href="../articles/Pitfalls_of_R2.html">The Pitfalls of R-squared: Understanding Mathematical Sensitivity</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -463,6 +464,113 @@ the intercept term.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Note: Some R2 values exceed 1.0 or are negative, indicating that these definitions may be inappropriate for the no-intercept model.</span></span></code></pre></div>
 </div>
+</div>
+<div class="section level3">
+<h3 id="visualizing-the-comparison-the-diagnostic-dashboard">Visualizing the Comparison: The Diagnostic Dashboard<a class="anchor" aria-label="anchor" href="#visualizing-the-comparison-the-diagnostic-dashboard"></a>
+</h3>
+<p>To truly understand why <span class="math inline">\(R^2\)</span>
+values fluctuate or become inappropriate when the intercept is removed,
+numerical tables are often not enough. The <code>kvr2</code> package
+provides a specialized <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method for
+<code>comp_model</code> objects that generates a comprehensive
+<strong>2x2 diagnostic dashboard</strong>.</p>
+<p>By simply calling <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> on the comparison results, you
+can simultaneously inspect the statistical shifts and the underlying
+data distribution.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Generate the 2x2 comparison dashboard</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">comparison</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Pitfalls_of_R2_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="960"></p>
+<div class="section level4">
+<h4 id="key-features-of-the-dashboard">Key Features of the Dashboard:<a class="anchor" aria-label="anchor" href="#key-features-of-the-dashboard"></a>
+</h4>
+<ul>
+<li>
+<strong>Left Column (Metrics)</strong>: Shows the 9 types of <span class="math inline">\(R^2\)</span> and the fit metrics (RMSE/MAE/MSE)
+side-by-side for both models. Orange bars immediately highlight
+“illegal” <span class="math inline">\(R^2\)</span> values (outside the
+<span class="math inline">\([0, 1]\)</span> range) in the no-intercept
+model.</li>
+<li>
+<strong>Right Column (Diagnostics)</strong>: Provides
+Observed-vs-Predicted plots for both specifications. This allows you to
+visually confirm how the regression line “forces” itself through the
+origin in the no-intercept model, often leading to a poorer fit compared
+to the horizontal mean line (the red dashed line).</li>
+</ul>
+<p>This visual approach is essential for educational purposes, as it
+demonstrates the “cause and effect” between model constraints and
+statistical outcomes.</p>
+<hr>
+</div>
+</div>
+<div class="section level3">
+<h3 id="example-when-r2-breaks-the-importance-of-visuals">Example: When <span class="math inline">\(R^2\)</span> Breaks (The
+Importance of Visuals)<a class="anchor" aria-label="anchor" href="#example-when-r2-breaks-the-importance-of-visuals"></a>
+</h3>
+<p>To illustrate why we need nine different definitions and a diagnostic
+plot, let’s look at a dataset where the relationship between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> is strong, but the regression line does
+not pass near the origin. When we force the model through <span class="math inline">\((0,0)\)</span> by removing the intercept, several
+<span class="math inline">\(R^2\)</span> definitions will produce
+misleading or even impossible values (outside the <span class="math inline">\([0, 1]\)</span> range).</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create a dataset where y = 50 + 2x + noise</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span><span class="va">df_break</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, y <span class="op">=</span> <span class="fl">50</span> <span class="op">+</span> <span class="fl">2</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Compare models</span></span>
+<span><span class="va">res_break</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/comp_model.html">comp_model</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, data <span class="op">=</span> <span class="va">df_break</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># The numerical output will show R2_2 and R2_3 &gt; 1.0</span></span>
+<span><span class="va">res_break</span></span>
+<span><span class="co">#&gt; model             |     R2_1 |    R2_2 |    R2_3 |     R2_4 |   R2_5 |   R2_6</span></span>
+<span><span class="co">#&gt; -----------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; with intercept    |   0.9011 |  0.9011 |  0.9011 |   0.9011 | 0.9011 | 0.9011</span></span>
+<span><span class="co">#&gt; without intercept | -17.1930 | 26.1535 | 22.2762 | -13.3157 | 0.9011 | 0.9011</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; model             |   R2_7 |   R2_8 |     R2_9 |    RMSE |     MAE |      MSE</span></span>
+<span><span class="co">#&gt; -----------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; with intercept    | 0.9992 | 0.9992 |   0.9252 |  1.7473 |  1.3934 |   3.8165</span></span>
+<span><span class="co">#&gt; without intercept | 0.8511 | 0.8511 | -20.2905 | 23.6965 | 20.3954 | 623.9158</span></span>
+<span><span class="co">#&gt; ---------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Note: Some R2 values exceed 1.0 or are negative, indicating that these definitions may be inappropriate for the no-intercept model.</span></span></code></pre></div>
+<p>By plotting this comparison, we can see exactly <strong>why</strong>
+the statistics fail:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res_break</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Pitfalls_of_R2_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="960"></p>
+<p>In the <strong>Bottom-Right</strong> panel (Without Intercept), the
+green “Perfect Fit” line is forced to go through the origin, causing it
+to stay far away from all data points. This distance is much larger than
+the distance to the red “Mean” line. Consequently, the Residual Sum of
+Squares (RSS) exceeds the Total Sum of Squares (TSS), leading to a
+negative <span class="math inline">\(R^2_1\)</span>. Simultaneously,
+other definitions like <span class="math inline">\(R^2_2\)</span>
+overstate the fit because they use a different baseline that doesn’t
+account for this forced displacement.</p>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="a-note-on-plot-customization">A Note on Plot Customization<a class="anchor" aria-label="anchor" href="#a-note-on-plot-customization"></a>
+</h3>
+<p>Unlike standard <code>ggplot2</code> objects, the output of
+<code>plot(comp_model_obj)</code> <strong>cannot</strong> be modified
+using the <code>+</code> operator (e.g., <code>+ theme_bw()</code>).</p>
+<p>This is because the function uses the <code>grid</code> system to
+arrange four independent plots into a single dashboard. Internally, the
+function returns the input object <code>x</code>
+<strong>invisibly</strong> after drawing the grid.</p>
+<p>If you need to customize the individual plots, we recommend using the
+standalone plotting functions:</p>
+<ul>
+<li>Use <code>plot_kvr2(model, plot_type = "r2")</code> to get a single,
+customizable <code>ggplot</code> object for <span class="math inline">\(R^2\)</span> comparison.</li>
+<li>Use <code>plot_diagnostic(model)</code> to get a single,
+customizable <code>ggplot</code> object for the observed-vs-predicted
+view.</li>
+</ul>
+<hr>
 </div>
 </div>
 <div class="section level2">

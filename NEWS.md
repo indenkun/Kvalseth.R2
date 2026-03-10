@@ -1,4 +1,4 @@
-# kvr2 (development version)
+# kvr2 0.2.0
 
 ## New Features
 * Added `model_info()` function to extract metadata used for calculations, such as regression type (linear/power), sample size ($n$), and degrees of freedom ($k$, $df_{res}$).

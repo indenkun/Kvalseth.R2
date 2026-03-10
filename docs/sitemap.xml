@@ -1,6 +1,7 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://indenkun.github.io/kvr2/404.html</loc></url>
 <url><loc>https://indenkun.github.io/kvr2/articles/index.html</loc></url>
+<url><loc>https://indenkun.github.io/kvr2/articles/internal-design.html</loc></url>
 <url><loc>https://indenkun.github.io/kvr2/articles/Pitfalls_of_R2.html</loc></url>
 <url><loc>https://indenkun.github.io/kvr2/authors.html</loc></url>
 <url><loc>https://indenkun.github.io/kvr2/index.html</loc></url>
@@ -11,6 +12,8 @@
 <url><loc>https://indenkun.github.io/kvr2/reference/comp_model.html</loc></url>
 <url><loc>https://indenkun.github.io/kvr2/reference/index.html</loc></url>
 <url><loc>https://indenkun.github.io/kvr2/reference/model_info.html</loc></url>
+<url><loc>https://indenkun.github.io/kvr2/reference/plot.comp_model.html</loc></url>
+<url><loc>https://indenkun.github.io/kvr2/reference/plot.r2_kvr2.html</loc></url>
 <url><loc>https://indenkun.github.io/kvr2/reference/plot_diagnostic.html</loc></url>
 <url><loc>https://indenkun.github.io/kvr2/reference/plot_kvr2.html</loc></url>
 <url><loc>https://indenkun.github.io/kvr2/reference/plot_r2.html</loc></url>

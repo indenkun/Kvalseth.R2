@@ -29,24 +29,23 @@ plot_kvr2(
 - plot_type:
 
   A string specifying the plot layout: `"both"` (default) displays the
-  bar plot and diagnostic plot side-by-side using
-  `par(mfrow = c(1, 2))`, `"r2"` shows only the R-squared comparison,
-  and `"diag"` shows only the observed-vs-predicted plot.
+  bar plot and diagnostic plot side-by-side, `"r2"` shows only the
+  R-squared comparison, and `"diag"` shows only the
+  observed-vs-predicted plot.
 
 - ...:
 
-  Further graphical parameters passed to
-  [`barplot()`](https://rdrr.io/r/graphics/barplot.html) or
-  [`plot()`](https://rdrr.io/r/graphics/plot.default.html).
-
-- r2:
-
-  type
+  Currently ignored.
 
 ## Value
 
-The function is called for its side effect of generating a plot. It
-returns `x` invisibly.
+The return value depends on the `plot_type` argument:
+
+- For `"r2"` and `"diag"`: Returns a `ggplot` object that can be further
+  customized.
+
+- For `"both"`: Generates a combined plot using the `grid` system and
+  returns the input object `x` invisibly.
 
 ## Details
 
@@ -57,7 +56,7 @@ nine definitions. Bars are colored based on their validity:
 
 - **Orange**: Values exceeding 1.0 or falling below 0.0 (warnings).
 
-When `plot_ype = "diag"`, the function displays a scatter plot of
+When `plot_type = "diag"`, the function displays a scatter plot of
 observed vs. predicted values. Two reference lines are added:
 
 - **Darkgreen Solid Line**: The 1:1 "perfect fit" line (RSS reference).
