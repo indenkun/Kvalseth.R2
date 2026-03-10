@@ -211,7 +211,8 @@ drops, reflecting the true decrease in predictive accuracy relative to
 the mean.
 
 ``` r
-comp_model(model_no_int)
+res_comp <- comp_model(model_no_int)
+res_comp
 #> model             |   R2_1 |   R2_2 |   R2_3 |   R2_4 |   R2_5 |   R2_6
 #> -----------------------------------------------------------------------
 #> with intercept    | 0.9808 | 0.9808 | 0.9808 | 0.9808 | 0.9808 | 0.9808
@@ -225,6 +226,37 @@ comp_model(model_no_int)
 #> 
 #> Note: Some R2 values exceed 1.0 or are negative, indicating that these definitions may be inappropriate for the no-intercept model.
 ```
+
+The power of `kvr22` lies in its ability to visually demonstrate **why**
+certain $R^2$ definitions fail when an intercept is removed. By calling
+`plot()` on a `comp_model` object, you generate a comprehensive **2x2
+Diagnostic Dashboard**.
+
+``` r
+# Generate the dashboard
+plot(res_comp)
+```
+
+<img src="man/figures/README-unnamed-chunk-6-1.png" alt="" width="100%" />
+
+#### What the dashboard reveals:
+
+- **R-squared Comparison (Top-Left)**: Side-by-side bars for all 9
+  definitions. Orange bars instantly flag “illegal” values (e.g.,
+  $R^2 > 1$ or $R^2 < 0$), which are common in no-intercept models.
+- **Fit Metrics (Bottom-Left)**: Direct comparison of RMSE, MAE, and MSE
+  to see the actual error trade-off.
+- **Diagnostic Plots (Right Column)**: Observed vs. Predicted scatter
+  plots.
+- The **Green line** represents a perfect fit ($y = \hat{y}$).
+- The **Red dashed line** represents the global mean ($y = \bar{y}$).
+- If the data points are closer to the red line than the green line,
+  $R^2_1$ will be negative—a clear visual proof of model poorness.
+
+> **Note**: This dashboard is built using the `grid` system. While it
+> provides a complete overview, it cannot be modified with `ggplot2`’s
+> `+` operator. For customized single plots, use
+> `plot_kvr2(model, plot_type = "r2")` or `plot_diagnostic(model)`.
 
 ## References
 

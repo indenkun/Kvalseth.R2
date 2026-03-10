@@ -2,7 +2,7 @@
 title: "Internal Design"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{internal-design}
+  %\VignetteIndexEntry{Internal Design}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
