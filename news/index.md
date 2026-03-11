@@ -2,6 +2,8 @@
 
 ## kvr2 0.2.0
 
+CRAN release: 2026-03-10
+
 ### New Features
 
 - Added
